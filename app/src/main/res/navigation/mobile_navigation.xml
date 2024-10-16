@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.hruby.vcelnice.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_stanoviste"
+        android:name="com.hruby.vcelnice.ui.stanoviste.StanovisteFragment"
+        android:label="@string/menu_stanoviste"
+        tools:layout="@layout/fragment_stanoviste" />
+
+    <fragment
+        android:id="@+id/nav_parovani"
+        android:name="com.hruby.vcelnice.ui.parovani.ParovaniFragment"
+        android:label="@string/menu_parovani"
+        tools:layout="@layout/fragment_parovani" />
+
+    <fragment
+        android:id="@+id/nav_nastaveni"
+        android:name="com.hruby.vcelnice.ui.nastaveni.NastaveniFragment"
+        android:label="@string/menu_nastaveni"
+        tools:layout="@layout/fragment_nastaveni" />
+
+    <fragment
+        android:id="@+id/nav_informace"
+        android:name="com.hruby.vcelnice.ui.informace.InformaceFragment"
+        android:label="@string/menu_informace"
+        tools:layout="@layout/fragment_informace" />
+</navigation>
