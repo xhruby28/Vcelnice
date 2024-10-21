@@ -76,7 +76,7 @@ class StanovisteRecycleViewAdapter(
                     true
                 }
                 R.id.action_delete -> {
-                    //onDeleteClick(stanoviste, position)
+                    onDeleteClick(stanoviste, position)
                     true
                 }
                 else -> false

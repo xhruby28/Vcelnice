@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,6 +80,11 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         recyclerView.adapter = adapter
     }
 
+    // TODO: (
+    //  Zrušit EditDialogFragment a přesunout logiku do showEditDialog - zjednodučení
+    //  Odůvodnění - fragment nebude nikde znovu použit
+    //  )
+
     private fun showEditDialog(stanoviste: Stanoviste, position: Int) {
         Log.d("StanovisteFragment", "showEditDialog called for position $position")
         val dialog = EditDialogFragment()
@@ -94,7 +100,20 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
     }
 
     private fun showDeleteDialog(stanoviste: Stanoviste, position: Int){
-        stanovisteViewModel.deleteStanoviste(stanoviste)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Potvrzení smazání")
+            .setMessage("Opravdu chcete smazat stanoviště: ${stanoviste.name}?")
+            .setPositiveButton("Ano") { dialog, _ ->
+                // Volání funkce pro smazání
+                stanovisteViewModel.deleteStanoviste(stanoviste)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Ne") { dialog, _ ->
+                dialog.cancel()
+            }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 
     override fun onDialogSave(index: Int, name: String, lastCheck: String, locationUrl: String) {
