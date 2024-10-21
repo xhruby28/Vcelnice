@@ -2,21 +2,21 @@ package com.hruby.vcelnice.ui.stanoviste
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.hruby.vcelnice.R
-import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 
 
-class StanovisteRecycleViewAdapter(private val stanovisteList: List<Stanoviste>) : RecyclerView.Adapter<StanovisteRecycleViewAdapter.StanovisteViewHolder>() {
+class StanovisteRecycleViewAdapter(
+    private var stanovisteList: List<Stanoviste>,
+    private val onEditClick: (Stanoviste, Int) -> Unit, // Lambda pro úpravu
+    private val onDeleteClick: (Stanoviste, Int) -> Unit // Lambda pro mazání
+) : RecyclerView.Adapter<StanovisteRecycleViewAdapter.StanovisteViewHolder>() {
 
     class StanovisteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName: TextView = itemView.findViewById(R.id.stanoviste_name)
@@ -42,7 +42,13 @@ class StanovisteRecycleViewAdapter(private val stanovisteList: List<Stanoviste>)
         holder.textName.text = stanoviste.name
         holder.textLastCheck.text = "${stanoviste.lastCheck}"
         //holder.textLocationUrl.text = stanoviste.locationUrl
-        holder.textLocationUrl.text = arrayGPS[1]
+        var gpsCoordinates = if (arrayGPS.size > 1 && arrayGPS[1].isNotEmpty()) {
+            arrayGPS[1] // Pokud je v seznamu více než jeden prvek a není prázdný
+        } else {
+            "NULL, NULL" // Jinak nastavíme na "NULL, NULL"
+        }
+
+        holder.textLocationUrl.text = gpsCoordinates
         holder.textLastState.text = stanoviste.lastState
         holder.imageView
 
@@ -55,22 +61,22 @@ class StanovisteRecycleViewAdapter(private val stanovisteList: List<Stanoviste>)
 
         // Přidání popup menu pro úpravy a mazání
         holder.itemView.setOnLongClickListener {
-            showPopupMenu(holder.itemView, stanoviste, holder, position)
+            showPopupMenu(holder.itemView, stanoviste, position)
             true
         }
     }
 
-    private fun showPopupMenu(view: View, stanoviste: Stanoviste, holder: StanovisteViewHolder, position: Int) {
+    private fun showPopupMenu(view: View, stanoviste: Stanoviste, position: Int) {
         val popup = PopupMenu(view.context, view)
         popup.inflate(R.menu.menu_stanoviste)
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_edit -> {
-                    editStanoviste(holder, stanoviste, position)
+                    onEditClick(stanoviste, position) // Volání pro úpravu
                     true
                 }
                 R.id.action_delete -> {
-                    // logika pro mazání
+                    //onDeleteClick(stanoviste, position)
                     true
                 }
                 else -> false
@@ -79,28 +85,12 @@ class StanovisteRecycleViewAdapter(private val stanovisteList: List<Stanoviste>)
         popup.show()
     }
 
-    private fun editStanoviste(holder: StanovisteViewHolder, stanoviste: Stanoviste, position: Int) {
-        val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
-        val dialog = EditDialogFragment()
-
-        // Pass the current data to the dialog
-        val bundle = Bundle()
-
-        bundle.putInt("id", position)  // Předání ID
-        bundle.putString("name", stanoviste.name)
-        bundle.putString("lastCheck", stanoviste.lastCheck)
-        bundle.putString("locationUrl", stanoviste.locationUrl)
-        dialog.arguments = bundle
-
-        dialog.show(fragmentManager, "EditDialogFragment")
+    override fun getItemCount(): Int {
+        return stanovisteList.size
     }
 
     private fun deleteStanoviste(stanoviste: Stanoviste) {
         // Logika pro smazání položky
         // Můžete přidat potvrzovací dialog
-    }
-
-    override fun getItemCount(): Int {
-        return stanovisteList.size
     }
 }

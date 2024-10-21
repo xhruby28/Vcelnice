@@ -6,25 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
+import com.hruby.vcelnice.ui.stanoviste.database.StanovisteDatabase
+import com.hruby.vcelnice.ui.stanoviste.database.StanovisteRepository
+import com.hruby.vcelnice.ui.stanoviste.database.StanovisteViewModelFactory
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 
 class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: StanovisteRecycleViewAdapter
-    private var stanovisteList: MutableList<Stanoviste> = mutableListOf()
+    private lateinit var stanovisteViewModel: StanovisteViewModel
+    private val stanovisteList: MutableList<Stanoviste> = mutableListOf()
 
     private var _binding: FragmentStanovisteBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -39,30 +39,84 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("StanovisteFragment", "onViewCreated called")
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        if(stanovisteList.isEmpty()){
-
+        val fab: FloatingActionButton = view.findViewById(R.id.stanoviste_add)
+        fab.setOnClickListener {
+            val dialog = EditDialogFragment()
+            val bundle = Bundle()
+            bundle.putInt("index", -1)  // Přidání argumentů
+            dialog.arguments = bundle
+            dialog.show(childFragmentManager, "EditDialogFragment")
         }
-        stanovisteList.add(Stanoviste("Stanoviste1","2024-09-28", "https://maps.google.com/?q=49.1951,16.6075", "V pořádku", 0))
-        stanovisteList.add(Stanoviste("Stanoviste2","2024-03-24", "https://maps.google.com/?q=49.1951,16.6075", "Problém s úlem č.13", 0))
 
-        adapter = StanovisteRecycleViewAdapter(stanovisteList)
+        // Inicializace ViewModel
+        val application = requireActivity().application
+        val repository = StanovisteRepository(StanovisteDatabase.getDatabase(application).stanovisteDao())
+        val factory = StanovisteViewModelFactory(repository)
+        stanovisteViewModel = ViewModelProvider(this, factory).get(StanovisteViewModel::class.java)
+
+        // Pozorování na změny v LiveData
+        stanovisteViewModel.allStanoviste.observe(viewLifecycleOwner) { stanoviste ->
+            // Aktualizace seznamu
+            stanovisteList.clear()
+            stanovisteList.addAll(stanoviste)
+            adapter.notifyDataSetChanged()
+        }
+
+        adapter = StanovisteRecycleViewAdapter(
+            stanovisteList,
+            { stanoviste, position ->
+                showEditDialog(stanoviste, position)
+            },
+            { stanoviste, position ->
+                showDeleteDialog(stanoviste, position)
+            }
+        )
         recyclerView.adapter = adapter
     }
 
-    override fun onDialogSave(id: Int, name: String, lastCheck: String, locationUrl: String) {
-        Log.d("EditDialog", "Saving: ID: $id, Name: $name, Last Check: $lastCheck, Location URL: $locationUrl")
-        if (id in stanovisteList.indices) {
-            val existingStanoviste = stanovisteList[id]
+    private fun showEditDialog(stanoviste: Stanoviste, position: Int) {
+        Log.d("StanovisteFragment", "showEditDialog called for position $position")
+        val dialog = EditDialogFragment()
+        val bundle = Bundle()
+        bundle.putInt("index", position)
+        bundle.putString("name", stanoviste.name)
+        bundle.putString("lastCheck", stanoviste.lastCheck)
+        bundle.putString("locationUrl", stanoviste.locationUrl)
+        dialog.arguments = bundle
+
+        // Použij childFragmentManager místo parentFragmentManager
+        dialog.show(childFragmentManager, "EditDialogFragment")
+    }
+
+    private fun showDeleteDialog(stanoviste: Stanoviste, position: Int){
+        stanovisteViewModel.deleteStanoviste(stanoviste)
+    }
+
+    override fun onDialogSave(index: Int, name: String, lastCheck: String, locationUrl: String) {
+        if (index in stanovisteList.indices) {
+            val existingStanoviste = stanovisteList[index]
             existingStanoviste.name = name
             existingStanoviste.lastCheck = lastCheck
             existingStanoviste.locationUrl = locationUrl
-            adapter.notifyItemChanged(id) // Informuj adaptér
+
+            // Aktualizace databáze
+            stanovisteViewModel.updateStanoviste(existingStanoviste)
+            adapter.notifyItemChanged(index) // Označ nový stav položky
         } else {
-            Log.e("EditDialog", "Invalid ID: $id")
+            val newStanoviste = Stanoviste(
+                name = name,
+                lastCheck = lastCheck,
+                locationUrl = locationUrl,
+                lastState = "Nové stanoviště",
+                imageResId = 0 // Můžeš zde upravit výchozí hodnotu obrázku
+            )
+            stanovisteViewModel.insertStanoviste(newStanoviste)
+            adapter.notifyItemChanged(index) // Označ nový stav položky
         }
     }
 
