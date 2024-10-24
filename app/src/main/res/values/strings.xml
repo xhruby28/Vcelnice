@@ -36,4 +36,8 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="posledni_kontrola">Poslední kontrola</string>
+    <string name="nazev_stanoviste">Název stanoviště</string>
+    <string name="odkaz_na_polohu">Odkaz na polohu</string>
+    <string name="vybrat_na_mape">Vybrat na mapě</string>
 </resources>

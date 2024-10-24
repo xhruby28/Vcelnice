@@ -4,23 +4,51 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/fragment_stanoviste_edit">
 
     <EditText
         android:id="@+id/edit_text_name"
-        android:hint="Název stanoviště"
+        android:hint="@string/nazev_stanoviste"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="textAutoCorrect"/>
 
     <EditText
         android:id="@+id/edit_text_last_check"
-        android:hint="Poslední kontrola"
+        android:hint="@string/posledni_kontrola"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="date"/>
 
+    <!-- Přidáme Spinner pro výběr mezi zadáním URL nebo výběrem GPS -->
+    <Spinner
+        android:id="@+id/spinner_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/location_options"/>
+
+    <!-- EditText pro URL, zobrazený pokud je vybrána možnost zadání URL -->
     <EditText
         android:id="@+id/edit_text_location_url"
-        android:hint="Odkaz na polohu"
+        android:hint="@string/odkaz_na_polohu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="textUri"/>
+
+    <!-- Tlačítko pro výběr polohy na mapě, zobrazené pokud je vybrán režim mapy -->
+    <Button
+        android:id="@+id/button_select_map"
+        android:text="@string/vybrat_na_mape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <!-- Kontejner pro fragment s mapou, výchozí viditelnost je GONE -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:visibility="gone" />
+
 </LinearLayout>

@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Oprávnění pro přístup k internetu -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Oprávnění pro přístup k poloze -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,10 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBIawG3kd6MBC4rdua2TCZtWDKogdhzuno"/>
     </application>
-
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyBIawG3kd6MBC4rdua2TCZtWDKogdhzuno"/>
-
 </manifest>

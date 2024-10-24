@@ -4,23 +4,31 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.gms.maps.model.LatLng
 import com.hruby.vcelnice.R
 
-class EditDialogFragment : DialogFragment() {
+class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListener {
 
     internal lateinit var listener: EditDialogListener
+    private lateinit var editTextLocationUrl: EditText
+    private var fragmentContainer: FrameLayout? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // Verify that the host fragment implements the callback interface.
-        if (parentFragment is EditDialogListener) {
-            listener = parentFragment as EditDialogListener
+        listener = if(parentFragment is EditDialogListener) {
+            parentFragment as EditDialogListener
         } else if (context is EditDialogListener) {
-            listener = context
+            context
         } else {
             throw ClassCastException("$context must implement EditDialogListener")
         }
@@ -28,38 +36,67 @@ class EditDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
-
-        // Inflate a custom layout for the dialog
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.fragment_stanoviste_edit_dialog, null)
 
-        // Get the data from the arguments
-        val index = arguments?.getInt("index") ?: -1  // Získání ID
-        val name = arguments?.getString("name") ?: ""
-        val lastCheck = arguments?.getString("lastCheck") ?: ""
-        val locationUrl = arguments?.getString("locationUrl") ?: ""
-
-        // Populate dialog fields
+        // Získání prvků z layoutu
         val editTextName = view.findViewById<EditText>(R.id.edit_text_name)
         val editTextLastCheck = view.findViewById<EditText>(R.id.edit_text_last_check)
-        val editTextLocationUrl = view.findViewById<EditText>(R.id.edit_text_location_url)
+        editTextLocationUrl = view.findViewById<EditText>(R.id.edit_text_location_url)
+        val btnPickLocation = view.findViewById<Button>(R.id.button_select_map)
+        val locationSpinner = view.findViewById<Spinner>(R.id.spinner_mode)
 
-        editTextName.setText(name)
-        editTextLastCheck.setText(lastCheck)
-        editTextLocationUrl.setText(locationUrl)
+        // Nastavení výchozích hodnot
+        val index = arguments?.getInt("index") ?: -1  // Získání ID
+        editTextName.setText(arguments?.getString("name") ?: "")
+        editTextLastCheck.setText(arguments?.getString("lastCheck") ?: "")
+        editTextLocationUrl.setText(arguments?.getString("locationUrl") ?: "")
+
+        // Skrytí fragment_containeru na začátku
+        fragmentContainer = view.findViewById(R.id.fragment_container)
+        fragmentContainer?.visibility = View.GONE
+
+
+        // Listener pro výběr z rozbalovacího seznamu
+        locationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        // Zvoleno "Zadat URL"
+                        editTextLocationUrl.visibility = View.VISIBLE
+                        btnPickLocation.visibility = View.GONE
+                    }
+                    1 -> {
+                        // Zvoleno "Vybrat na mapě"
+                        editTextLocationUrl.visibility = View.GONE
+                        btnPickLocation.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Nic nezvoleno, výchozí je "Zadat URL"
+                editTextLocationUrl.visibility = View.VISIBLE
+                btnPickLocation.visibility = View.GONE
+            }
+        }
+
+        // Kliknutí na "Vybrat na mapě" otevře mapu
+        btnPickLocation.setOnClickListener {
+            openMap()
+        }
 
         builder.setView(view)
             .setTitle("Upravit stanoviště")
             .setPositiveButton("Uložit") { _, _ ->
-                // Handle saving the edited data
                 val newName = editTextName.text.toString()
                 val newLastCheck = editTextLastCheck.text.toString()
                 val newLocationUrl = editTextLocationUrl.text.toString()
 
                 // Zavolání metody pro uložení změn
-                // Zde zkontroluj, jestli listener není null
                 listener.onDialogSave(index, newName, newLastCheck, newLocationUrl)
 
+                // Skrýt klávesnici
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view?.windowToken, 0)
                 Log.d("EditDialog", "Saving: ID: $index, Name: $newName, Last Check: $newLastCheck, Location URL: $newLocationUrl")
@@ -69,7 +106,28 @@ class EditDialogFragment : DialogFragment() {
         return builder.create()
     }
 
-    // Interface for communicating with the parent fragment/activity
+    // Otevření mapy jako child fragment
+    private fun openMap() {
+        // Zobrazení fragment_containeru
+        fragmentContainer?.visibility = View.VISIBLE
+        val mapFragment = MapFragment()
+
+        // Nastavení listeneru pro MapFragment
+        mapFragment.setOnLocationSelectedListener(this)
+
+        childFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, mapFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    // Implementace metody z MapFragment
+    override fun onLocationSelected(latLng: LatLng) {
+        val locationUrl = "https://maps.google.com/?q=${latLng.latitude},${latLng.longitude}"
+        editTextLocationUrl.setText(locationUrl)
+        fragmentContainer?.visibility = View.GONE
+    }
+
     interface EditDialogListener {
         fun onDialogSave(index: Int, name: String, lastCheck: String, locationUrl: String)
     }

@@ -1,5 +1,6 @@
 package com.hruby.vcelnice.ui.stanoviste
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,7 +19,7 @@ import com.hruby.vcelnice.ui.stanoviste.database.StanovisteRepository
 import com.hruby.vcelnice.ui.stanoviste.database.StanovisteViewModelFactory
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 
-class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
+class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: StanovisteRecycleViewAdapter
@@ -38,6 +39,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         return root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("StanovisteFragment", "onViewCreated called")
@@ -80,13 +82,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         recyclerView.adapter = adapter
     }
 
-    // TODO: (
-    //  Zrušit EditDialogFragment a přesunout logiku do showEditDialog - zjednodučení
-    //  Odůvodnění - fragment nebude nikde znovu použit
-    //  )
-
     private fun showEditDialog(stanoviste: Stanoviste, position: Int) {
-        Log.d("StanovisteFragment", "showEditDialog called for position $position")
         val dialog = EditDialogFragment()
         val bundle = Bundle()
         bundle.putInt("index", position)
@@ -95,7 +91,6 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         bundle.putString("locationUrl", stanoviste.locationUrl)
         dialog.arguments = bundle
 
-        // Použij childFragmentManager místo parentFragmentManager
         dialog.show(childFragmentManager, "EditDialogFragment")
     }
 
@@ -106,6 +101,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
             .setPositiveButton("Ano") { dialog, _ ->
                 // Volání funkce pro smazání
                 stanovisteViewModel.deleteStanoviste(stanoviste)
+                adapter.notifyItemRemoved(position)
                 dialog.dismiss()
             }
             .setNegativeButton("Ne") { dialog, _ ->
