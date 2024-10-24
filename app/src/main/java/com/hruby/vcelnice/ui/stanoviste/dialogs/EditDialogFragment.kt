@@ -123,7 +123,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
 
     // Implementace metody z MapFragment
     override fun onLocationSelected(latLng: LatLng) {
-        val locationUrl = "https://maps.google.com/?q=${latLng.latitude},${latLng.longitude}"
+        val locationUrl = String.format("https://maps.google.com/?q=%.6f,%.6f", latLng.latitude, latLng.longitude)
         editTextLocationUrl.setText(locationUrl)
         fragmentContainer?.visibility = View.GONE
     }

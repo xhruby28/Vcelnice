@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -46,7 +47,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.setOnMapClickListener { latLng ->
+        // Souřadnice pro Českou republiku
+        val czechRepublicLatLng = LatLng(49.8175, 15.4730) // Střed České republiky
+        val zoomLevel = 6.0f // Přizpůsobte si úroveň zoomu podle potřeby
+
+        // Nastavení kamery na Českou republiku
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(czechRepublicLatLng, zoomLevel))
+
+        map.setOnMapLongClickListener { latLng ->
             // Přidání markeru na vybrané souřadnice
             map.clear() // Vyčisti předchozí markery
             map.addMarker(MarkerOptions().position(latLng))
@@ -55,7 +63,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    // Nezapomeň na metody lifecycle pro MapView
     override fun onResume() {
         super.onResume()
         view?.findViewById<MapView>(R.id.map)?.onResume()
