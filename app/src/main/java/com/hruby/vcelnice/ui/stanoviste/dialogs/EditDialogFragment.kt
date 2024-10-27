@@ -124,6 +124,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
     // Implementace metody z MapFragment
     override fun onLocationSelected(latLng: LatLng) {
         val locationUrl = String.format("https://maps.google.com/?q=%.6f,%.6f", latLng.latitude, latLng.longitude)
+        // Problém s českými mapami - Místo desetinné tečky je desetinná čárka a v mapách to nevyhledává
         editTextLocationUrl.setText(locationUrl)
         fragmentContainer?.visibility = View.GONE
     }
