@@ -11,12 +11,6 @@ class StanovisteViewModel(private val repository: StanovisteRepository) : ViewMo
     //private val repository: StanovisteRepository
     val allStanoviste: LiveData<List<Stanoviste>> = repository.allStanoviste
 
-//    init {
-//        val stanovisteDao = StanovisteDatabase.getDatabase(application).stanovisteDao()
-//        repository = StanovisteRepository(stanovisteDao)
-//        allStanoviste = repository.allStanoviste // Všechny stanoviště
-//    }
-
     // Přidání nového stanoviště
     fun insertStanoviste(stanoviste: Stanoviste) {
         viewModelScope.launch {
