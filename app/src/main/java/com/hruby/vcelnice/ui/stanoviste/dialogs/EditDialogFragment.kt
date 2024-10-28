@@ -1,13 +1,18 @@
 package com.hruby.vcelnice.ui.stanoviste.dialogs
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Spinner
@@ -15,12 +20,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.maps.model.LatLng
 import com.hruby.vcelnice.R
+import java.util.Calendar
 import java.util.Locale
 
 class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListener {
 
     internal lateinit var listener: EditDialogListener
     private lateinit var editTextLocationUrl: EditText
+    private lateinit var editTextLastCheck: EditText
     private var fragmentContainer: FrameLayout? = null
 
     override fun onAttach(context: Context) {
@@ -42,7 +49,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
 
         // Získání prvků z layoutu
         val editTextName = view.findViewById<EditText>(R.id.edit_text_name)
-        val editTextLastCheck = view.findViewById<EditText>(R.id.edit_text_last_check)
+        editTextLastCheck = view.findViewById<EditText>(R.id.edit_text_last_check)
         editTextLocationUrl = view.findViewById<EditText>(R.id.edit_text_location_url)
         val btnPickLocation = view.findViewById<Button>(R.id.button_select_map)
         val locationSpinner = view.findViewById<Spinner>(R.id.spinner_mode)
@@ -52,6 +59,11 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         editTextName.setText(arguments?.getString("name") ?: "")
         editTextLastCheck.setText(arguments?.getString("lastCheck") ?: "")
         editTextLocationUrl.setText(arguments?.getString("locationUrl") ?: "")
+
+        // Otevření kalendáře při kliknutí na editTextLastCheck
+        editTextLastCheck.setOnClickListener {
+            showDatePickerDialog()
+        }
 
         // Skrytí fragment_containeru na začátku
         fragmentContainer = view.findViewById(R.id.fragment_container)
@@ -130,6 +142,22 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         val locationUrl = "https://maps.google.com/?q=$latitude,$longitude"
         editTextLocationUrl.setText(locationUrl)
         fragmentContainer?.visibility = View.GONE
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(requireContext(),
+            { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
+                // Zobrazit vybrané datum ve formátu DD-MM-YYYY
+                val formattedDate = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
+                editTextLastCheck.setText(formattedDate)
+            }, year, month, day)
+
+        datePickerDialog.show()
     }
 
     interface EditDialogListener {

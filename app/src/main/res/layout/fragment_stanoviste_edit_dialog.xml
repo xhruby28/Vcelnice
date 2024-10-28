@@ -19,6 +19,7 @@
         android:hint="@string/posledni_kontrola"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="false"
         android:inputType="date"/>
 
     <!-- Přidáme Spinner pro výběr mezi zadáním URL nebo výběrem GPS -->
