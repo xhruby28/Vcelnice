@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.maps.model.LatLng
 import com.hruby.vcelnice.R
+import java.util.Locale
 
 class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListener {
 
@@ -123,8 +124,10 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
 
     // Implementace metody z MapFragment
     override fun onLocationSelected(latLng: LatLng) {
-        val locationUrl = String.format("https://maps.google.com/?q=%.6f,%.6f", latLng.latitude, latLng.longitude)
-        // Problém s českými mapami - Místo desetinné tečky je desetinná čárka a v mapách to nevyhledává
+        // Použití NumberFormat k zajištění formátování s tečkami
+        val latitude = String.format(Locale.US, "%.6f", latLng.latitude)
+        val longitude = String.format(Locale.US, "%.6f", latLng.longitude)
+        val locationUrl = "https://maps.google.com/?q=$latitude,$longitude"
         editTextLocationUrl.setText(locationUrl)
         fragmentContainer?.visibility = View.GONE
     }

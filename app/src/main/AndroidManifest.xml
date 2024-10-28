@@ -5,7 +5,9 @@
     <!-- Oprávnění pro přístup k Bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <!-- Pokud bude potřeba přístup k ACCESS_FINE_LOCATION, tak se musí definovat povolení oprávnění -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <!-- Oprávnění pro přístup k internetu -->
