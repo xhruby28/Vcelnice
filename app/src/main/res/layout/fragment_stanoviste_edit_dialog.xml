@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="false"
+        android:focusableInTouchMode="false"
         android:inputType="date"/>
 
     <!-- Přidáme Spinner pro výběr mezi zadáním URL nebo výběrem GPS -->
@@ -32,7 +33,7 @@
     <!-- EditText pro URL, zobrazený pokud je vybrána možnost zadání URL -->
     <EditText
         android:id="@+id/edit_text_location_url"
-        android:hint="@string/odkaz_na_polohu"
+        android:hint="@string/vybrat_na_mape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textUri"/>
@@ -40,7 +41,7 @@
     <!-- Tlačítko pro výběr polohy na mapě, zobrazené pokud je vybrán režim mapy -->
     <Button
         android:id="@+id/button_select_map"
-        android:text="@string/vybrat_na_mape"
+        android:text="@string/odkaz_na_polohu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"/>

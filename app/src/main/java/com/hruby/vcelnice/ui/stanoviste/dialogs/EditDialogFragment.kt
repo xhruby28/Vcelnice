@@ -3,10 +3,7 @@ package com.hruby.vcelnice.ui.stanoviste.dialogs
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -16,6 +13,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.maps.model.LatLng
@@ -59,6 +57,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         editTextName.setText(arguments?.getString("name") ?: "")
         editTextLastCheck.setText(arguments?.getString("lastCheck") ?: "")
         editTextLocationUrl.setText(arguments?.getString("locationUrl") ?: "")
+        val macAdress = arguments?.getString("macAddress") ?: ""
 
         // Otevření kalendáře při kliknutí na editTextLastCheck
         editTextLastCheck.setOnClickListener {
@@ -75,22 +74,22 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position) {
                     0 -> {
-                        // Zvoleno "Zadat URL"
-                        editTextLocationUrl.visibility = View.VISIBLE
-                        btnPickLocation.visibility = View.GONE
-                    }
-                    1 -> {
                         // Zvoleno "Vybrat na mapě"
                         editTextLocationUrl.visibility = View.GONE
                         btnPickLocation.visibility = View.VISIBLE
+                    }
+                    1 -> {
+                        // Zvoleno "Zadat URL"
+                        editTextLocationUrl.visibility = View.VISIBLE
+                        btnPickLocation.visibility = View.GONE
                     }
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Nic nezvoleno, výchozí je "Zadat URL"
-                editTextLocationUrl.visibility = View.VISIBLE
-                btnPickLocation.visibility = View.GONE
+                // Nic nezvoleno, výchozí je "Vybrat na mapě"
+                editTextLocationUrl.visibility = View.GONE
+                btnPickLocation.visibility = View.VISIBLE
             }
         }
 
@@ -107,12 +106,12 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
                 val newLocationUrl = editTextLocationUrl.text.toString()
 
                 // Zavolání metody pro uložení změn
-                listener.onDialogSave(index, newName, newLastCheck, newLocationUrl)
+                listener.onDialogSave(macAdress, index, newName, newLastCheck, newLocationUrl)
 
                 // Skrýt klávesnici
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view?.windowToken, 0)
-                Log.d("EditDialog", "Saving: ID: $index, Name: $newName, Last Check: $newLastCheck, Location URL: $newLocationUrl")
+                Log.d("EditDialog", "Saving: MAC: $macAdress, ID: $index, Name: $newName, Last Check: $newLastCheck, Location URL: $newLocationUrl")
             }
             .setNegativeButton("Zrušit") { dialog, _ -> dialog.cancel() }
 
@@ -121,6 +120,8 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
 
     // Otevření mapy jako child fragment
     private fun openMap() {
+        Toast.makeText(context, "Vyberte místo na mapě dlouhým stisknutím", Toast.LENGTH_SHORT).show()
+
         // Zobrazení fragment_containeru
         fragmentContainer?.visibility = View.VISIBLE
         val mapFragment = MapFragment()
@@ -161,6 +162,6 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
     }
 
     interface EditDialogListener {
-        fun onDialogSave(index: Int, name: String, lastCheck: String, locationUrl: String)
+        fun onDialogSave(macAddress: String, index: Int, name: String, lastCheck: String, locationUrl: String)
     }
 }

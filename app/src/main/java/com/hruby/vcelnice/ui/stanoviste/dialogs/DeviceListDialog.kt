@@ -1,5 +1,6 @@
 package com.hruby.vcelnice.ui.stanoviste.dialogs
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.bluetooth.BluetoothDevice
@@ -8,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +27,7 @@ class DeviceListDialog(
         val builder = AlertDialog.Builder(requireActivity())
         val view = requireActivity().layoutInflater.inflate(R.layout.dialog_device_list, null)
         builder.setView(view)
+            // přidat Toast při přesměrování na nastavní BT ve znení "Vyberte zařízení s názvem (Třeba SmartHive)...
             .setTitle("Vyberte zařízení")
             .setNegativeButton("Zavřít") { dialog, _ -> dialog.dismiss() }
 
@@ -49,12 +50,6 @@ class DeviceListDialog(
         nearbyDevices.addAll(nearbyDevicesList)
 
         adapter.notifyDataSetChanged()
-    }
-
-    private fun pairWithDevice(device: BluetoothDevice) {
-        // Logika pro spárování se zařízením
-        Toast.makeText(context, "Párování s ${device.name}", Toast.LENGTH_SHORT).show()
-        // Volání openEditDialog nebo jiné funkce
     }
 
     inner class DeviceAdapter(
@@ -120,6 +115,7 @@ class DeviceListDialog(
                 }
             }
 
+            @SuppressLint("MissingPermission")
             fun bind(device: BluetoothDevice) {
                 deviceName.text = device.name ?: "Neznámé zařízení"
                 deviceAddress.text = device.address

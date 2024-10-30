@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,6 +48,8 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
 
     private var _binding: FragmentStanovisteBinding? = null
     private val binding get() = _binding!!
+
+    private var isFabMenuOpen = false
 
     // BLE
     private val bluetoothPermissionLauncher: ActivityResultLauncher<String> =
@@ -75,14 +79,24 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        val fab: FloatingActionButton = view.findViewById(R.id.stanoviste_add)
+        val fab: FloatingActionButton = view.findViewById(R.id.stanoviste_fab)
+        val fabMenu: LinearLayout = view.findViewById(R.id.fab_menu)
+        val buttonAddSmartHive: Button = view.findViewById(R.id.button_add_smart_hive)
+        val buttonAddLocation: Button = view.findViewById(R.id.button_add_location)
+
+        // Nastavení listeneru pro FAB
         fab.setOnClickListener {
+            toggleFabMenu(fab, fabMenu)
+        }
+
+        // Listener pro tlačítko "Přidat zařízení pomocí BT/BLE"
+        buttonAddSmartHive.setOnClickListener {
             checkBluetoothPermissions()
-//            val dialog = EditDialogFragment()
-//            val bundle = Bundle()
-//            bundle.putInt("index", -1)  // Přidání argumentů
-//            dialog.arguments = bundle
-//            dialog.show(childFragmentManager, "EditDialogFragment")
+        }
+
+        // Listener pro tlačítko "Přidat lokalitu bez SmartHive"
+        buttonAddLocation.setOnClickListener {
+            openAddDialog("Lokalita bez SmartHive")
         }
 
         // Inicializace ViewModel
@@ -111,6 +125,12 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
         recyclerView.adapter = adapter
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    // Dialogy
     private fun showEditDialog(stanoviste: Stanoviste, position: Int) {
         val dialog = EditDialogFragment()
         val bundle = Bundle()
@@ -120,6 +140,15 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
         bundle.putString("locationUrl", stanoviste.locationUrl)
         dialog.arguments = bundle
 
+        dialog.show(childFragmentManager, "EditDialogFragment")
+    }
+
+    private fun openAddDialog(macAddress: String) {
+        val dialog = EditDialogFragment()
+        val bundle = Bundle()
+        bundle.putInt("index", -1)  // Přidání argumentů
+        bundle.putString("macAddress", macAddress)
+        dialog.arguments = bundle
         dialog.show(childFragmentManager, "EditDialogFragment")
     }
 
@@ -141,7 +170,9 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
         alertDialog.show()
     }
 
-    override fun onDialogSave(index: Int, name: String, lastCheck: String, locationUrl: String) {
+    override fun onDialogSave(macAddress: String, index: Int, name: String, lastCheck: String, locationUrl: String) {
+        val fabMenu: LinearLayout = requireView().findViewById(R.id.fab_menu)
+        val fab: FloatingActionButton = requireView().findViewById(R.id.stanoviste_fab)
         if (index in stanovisteList.indices) {
             val existingStanoviste = stanovisteList[index]
             existingStanoviste.name = name
@@ -157,15 +188,37 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
                 lastCheck = lastCheck,
                 locationUrl = locationUrl,
                 lastState = "Nové stanoviště",
+                siteMAC = macAddress,
                 imageResId = 0 // Můžeš zde upravit výchozí hodnotu obrázku
             )
             stanovisteViewModel.insertStanoviste(newStanoviste)
             adapter.notifyItemChanged(index) // Označ nový stav položky
         }
+        fab.setImageResource(android.R.drawable.ic_input_add)
+        fabMenu.visibility = View.GONE
     }
 
+    private fun toggleFabMenu(fab: FloatingActionButton, fabMenu: LinearLayout) {
+        if (isFabMenuOpen) {
+            fab.setImageResource(android.R.drawable.ic_input_add)
+            fabMenu.visibility = View.GONE
+        } else {
+            fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
+            fabMenu.visibility = View.VISIBLE
+        }
+        isFabMenuOpen = !isFabMenuOpen
+    }
+
+    // Bluetooth
     private fun checkBluetoothPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.BLUETOOTH_SCAN
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                bluetoothPermissionLauncher.launch(Manifest.permission.BLUETOOTH_SCAN)
+            }
             if (ActivityCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.BLUETOOTH_CONNECT
@@ -186,7 +239,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
 
         val dialog = DeviceListDialog { macAddress ->
             if (isEsp32Device(macAddress)) {
-                openEditDialog(macAddress)
+                openAddDialog(macAddress)
             } else {
                 Toast.makeText(context, "Neplatné ESP32 zařízení", Toast.LENGTH_SHORT).show()
             }
@@ -280,19 +333,5 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
     private fun isEsp32Device(macAddress: String): Boolean {
         // Filtr na MAC adresu ESP zařízení
         return macAddress.startsWith("EC:DA:3B")
-    }
-
-    private fun openEditDialog(macAddress: String) {
-        val dialog = EditDialogFragment()
-        val bundle = Bundle()
-        bundle.putInt("index", -1)  // Přidání argumentů
-        bundle.putString("macAddress", macAddress)
-        dialog.arguments = bundle
-        dialog.show(childFragmentManager, "EditDialogFragment")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
