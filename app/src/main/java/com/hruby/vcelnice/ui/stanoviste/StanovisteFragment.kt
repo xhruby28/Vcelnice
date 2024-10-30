@@ -52,9 +52,10 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
     private var isFabMenuOpen = false
 
     // BLE
-    private val bluetoothPermissionLauncher: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
+    private val bluetoothPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val allGranted = permissions.entries.all { it.value }
+            if (allGranted) {
                 requestBluetoothDevices()
             } else {
                 Toast.makeText(context, "Přístup k Bluetooth byl zamítnut", Toast.LENGTH_SHORT).show()
@@ -212,19 +213,17 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
     // Bluetooth
     private fun checkBluetoothPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.BLUETOOTH_SCAN
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                bluetoothPermissionLauncher.launch(Manifest.permission.BLUETOOTH_SCAN)
+            val permissions = arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+
+            val missingPermissions = permissions.filter {
+                ActivityCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
             }
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                bluetoothPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
+
+            if (missingPermissions.isNotEmpty()) {
+                bluetoothPermissionsLauncher.launch(missingPermissions.toTypedArray())
             } else {
                 requestBluetoothDevices()
             }

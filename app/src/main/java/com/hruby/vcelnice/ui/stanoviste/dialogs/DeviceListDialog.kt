@@ -58,20 +58,20 @@ class DeviceListDialog(
         private val onDeviceClick: (BluetoothDevice) -> Unit
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val VIEW_TYPE_HEADER = 0
-        private val VIEW_TYPE_DEVICE = 1
+        private val viewTypeHeader = 0
+        private val viewTypeDevice = 1
 
         // Vrací typ položky na základě pozice
         override fun getItemViewType(position: Int): Int {
             return when (position) {
-                0 -> VIEW_TYPE_HEADER // Nadpis "Spárovaná zařízení"
-                pairedDevices.size + 1 -> VIEW_TYPE_HEADER // Nadpis "Dostupná zařízení"
-                else -> VIEW_TYPE_DEVICE
+                0 -> viewTypeHeader // Nadpis "Spárovaná zařízení"
+                pairedDevices.size + 1 -> viewTypeHeader // Nadpis "Dostupná zařízení"
+                else -> viewTypeDevice
             }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return if (viewType == VIEW_TYPE_HEADER) {
+            return if (viewType == viewTypeHeader) {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_header, parent, false)
                 HeaderViewHolder(view)
             } else {

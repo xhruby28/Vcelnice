@@ -88,9 +88,4 @@ class StanovisteRecycleViewAdapter(
     override fun getItemCount(): Int {
         return stanovisteList.size
     }
-
-    private fun deleteStanoviste(stanoviste: Stanoviste) {
-        // Logika pro smazání položky
-        // Můžete přidat potvrzovací dialog
-    }
 }
