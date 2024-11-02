@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -40,6 +41,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":databaseModule"))
+    //implementation(project(":stanovisteDetailModule"))
+    implementation(project(":sharedResources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

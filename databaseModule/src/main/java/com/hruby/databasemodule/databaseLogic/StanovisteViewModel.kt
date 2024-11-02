@@ -1,9 +1,9 @@
-package com.hruby.vcelnice.ui.stanoviste
+package com.hruby.databasemodule.databaseLogic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hruby.vcelnice.ui.stanoviste.database.StanovisteRepository
+import com.hruby.databasemodule.data.Stanoviste
 import kotlinx.coroutines.launch
 
 class StanovisteViewModel(private val repository: StanovisteRepository) : ViewModel()  {
@@ -30,5 +30,10 @@ class StanovisteViewModel(private val repository: StanovisteRepository) : ViewMo
         viewModelScope.launch {
             repository.delete(stanoviste)
         }
+    }
+
+    // Získání stanovistě podle ID
+    fun getStanovisteById(id: Int): LiveData<Stanoviste> {
+        return repository.getStanovisteById(id)
     }
 }

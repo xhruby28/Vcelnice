@@ -9,13 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.hruby.databasemodule.data.Stanoviste
 import com.hruby.vcelnice.R
 
 
 class StanovisteRecycleViewAdapter(
     private var stanovisteList: List<Stanoviste>,
     private val onEditClick: (Stanoviste, Int) -> Unit, // Lambda pro úpravu
-    private val onDeleteClick: (Stanoviste, Int) -> Unit // Lambda pro mazání
+    private val onDeleteClick: (Stanoviste, Int) -> Unit, // Lambda pro mazání
+    private val onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<StanovisteRecycleViewAdapter.StanovisteViewHolder>() {
 
     class StanovisteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -64,6 +66,11 @@ class StanovisteRecycleViewAdapter(
             showPopupMenu(holder.itemView, stanoviste, position)
             true
         }
+        holder.itemView.setOnClickListener{
+            if (position != RecyclerView.NO_POSITION) {
+                onItemClick(stanoviste.id) // Předáme ID do lambda funkce
+            }
+        }
     }
 
     private fun showPopupMenu(view: View, stanoviste: Stanoviste, position: Int) {
@@ -87,5 +94,10 @@ class StanovisteRecycleViewAdapter(
 
     override fun getItemCount(): Int {
         return stanovisteList.size
+    }
+
+    fun setStanoviste(stanoviste: List<Stanoviste>) {
+        this.stanovisteList = stanoviste
+        notifyDataSetChanged()
     }
 }

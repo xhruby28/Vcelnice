@@ -1,4 +1,4 @@
-package com.hruby.vcelnice.ui.stanoviste
+package com.hruby.databasemodule.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

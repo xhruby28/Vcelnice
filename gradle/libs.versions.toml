@@ -49,4 +49,5 @@ androidx-preference-ktx = { group = "androidx.preference", name = "preference-kt
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 

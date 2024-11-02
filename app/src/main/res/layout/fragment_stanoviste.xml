@@ -49,7 +49,7 @@
             android:textStyle="bold"
             app:icon="@android:drawable/ic_input_add"
             app:iconPadding="0dp"
-            app:iconTint="#FF6D00"
+            app:iconTint="#0048FF"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -65,9 +65,10 @@
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:icon="@android:drawable/ic_input_add"
+            app:icon="@android:drawable/stat_sys_data_bluetooth"
             app:iconPadding="0dp"
-            app:iconTint="#FF6D00"
+            app:iconSize="26dp"
+            app:iconTint="#0048FF"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
@@ -80,6 +81,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:contentDescription="@null"
         android:focusable="true"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="#FFAB00"

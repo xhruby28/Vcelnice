@@ -1,12 +1,11 @@
-package com.hruby.vcelnice.ui.stanoviste.database
+package com.hruby.databasemodule.databaseLogic
 
 import android.content.Context
-import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.hruby.vcelnice.ui.stanoviste.Stanoviste
+import com.hruby.databasemodule.data.Stanoviste
 
-@Database(entities = [Stanoviste::class], version = 1, exportSchema = false)
+@androidx.room.Database(entities = [Stanoviste::class], version = 1, exportSchema = false)
 abstract class StanovisteDatabase : RoomDatabase() {
 
     abstract fun stanovisteDao(): StanovisteDao

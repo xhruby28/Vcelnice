@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_back_to_main"
+            android:title="Vrátit na hlavní stránku s výběrem stanovišť"/>
+        <item
+            android:id="@+id/nav_info"
+            android:title="Informace o stanovišti"/>
+        <item
+            android:id="@+id/nav_uly"
+            android:title="Dashboard s úly a základními informacemi"/>
+        <item
+            android:id="@+id/nav_notifications"
+            android:title="Notifikace"/>
+        <item
+            android:id="@+id/nav_visits_diary"
+            android:title="Návštěvy/Deník"/>
+        <item
+            android:id="@+id/nav_honey_collection"
+            android:title="Medobraní/Evidence medobraní"/>
+        <item
+            android:id="@+id/nav_feeding"
+            android:title="Krmení"/>
+        <item
+            android:id="@+id/nav_status"
+            android:title="Stav stanoviště"/>
+        <item
+            android:id="@+id/nav_treatment"
+            android:title="Léčení"/>
+    </group>
+</menu>

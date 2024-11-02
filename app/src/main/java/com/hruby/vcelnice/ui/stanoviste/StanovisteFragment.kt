@@ -23,19 +23,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.hruby.databasemodule.data.Stanoviste
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
+import com.hruby.databasemodule.databaseLogic.StanovisteRepository
 import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
-import com.hruby.vcelnice.ui.stanoviste.database.StanovisteDatabase
-import com.hruby.vcelnice.ui.stanoviste.database.StanovisteRepository
-import com.hruby.vcelnice.ui.stanoviste.database.StanovisteViewModelFactory
+import com.hruby.databasemodule.databaseLogic.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.StanovisteViewModelFactory
 import com.hruby.vcelnice.ui.stanoviste.dialogs.DeviceListDialog
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 
@@ -121,6 +123,10 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
             },
             { stanoviste, position ->
                 showDeleteDialog(stanoviste, position)
+                },
+            { stanovisteId ->
+//                val action = StanovisteFragmentDirections.actionNavStanovisteToStanovisteInfoModule(stanovisteId)
+//                findNavController().navigate(action)
             }
         )
         recyclerView.adapter = adapter
@@ -197,6 +203,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
         }
         fab.setImageResource(android.R.drawable.ic_input_add)
         fabMenu.visibility = View.GONE
+        isFabMenuOpen = false
     }
 
     private fun toggleFabMenu(fab: FloatingActionButton, fabMenu: LinearLayout) {
@@ -265,12 +272,14 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
     }
 
     // Vrací seznam spárovaných zařízení
+    @SuppressLint("MissingPermission")
     private fun getPairedBluetoothDevices(): List<BluetoothDevice> {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         return bluetoothAdapter?.bondedDevices?.toList() ?: emptyList()
     }
 
     // Skenuje okolní zařízení a volá callback s nalezenými zařízeními
+    @SuppressLint("MissingPermission")
     private fun scanForNearbyDevices(callback: (List<BluetoothDevice>) -> Unit) {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val scanner = bluetoothAdapter.bluetoothLeScanner
