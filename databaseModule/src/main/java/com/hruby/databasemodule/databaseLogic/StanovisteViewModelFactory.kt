@@ -1,8 +1,7 @@
-package com.hruby.vcelnice.ui.stanoviste.database
+package com.hruby.databasemodule.databaseLogic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.hruby.vcelnice.ui.stanoviste.StanovisteViewModel
 
 class StanovisteViewModelFactory(
     private val repository: StanovisteRepository

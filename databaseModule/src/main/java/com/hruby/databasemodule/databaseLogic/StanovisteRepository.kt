@@ -1,7 +1,7 @@
-package com.hruby.vcelnice.ui.stanoviste.database
+package com.hruby.databasemodule.databaseLogic
 
 import androidx.lifecycle.LiveData
-import com.hruby.vcelnice.ui.stanoviste.Stanoviste
+import com.hruby.databasemodule.data.Stanoviste
 
 class StanovisteRepository(private val stanovisteDao: StanovisteDao) {
 
@@ -17,5 +17,9 @@ class StanovisteRepository(private val stanovisteDao: StanovisteDao) {
 
     suspend fun delete(stanoviste: Stanoviste) {
         stanovisteDao.delete(stanoviste)
+    }
+
+    fun getStanovisteById(id: Int): LiveData<Stanoviste> {
+        return stanovisteDao.getStanovisteById(id)
     }
 }

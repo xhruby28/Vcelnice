@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Vcelnice"
 include(":app")
- 
+include(":stanovisteDetailModule")
+include(":databaseModule")
+include(":sharedResources")

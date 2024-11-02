@@ -1,8 +1,8 @@
-package com.hruby.vcelnice.ui.stanoviste.database
+package com.hruby.databasemodule.databaseLogic
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.hruby.vcelnice.ui.stanoviste.Stanoviste
+import com.hruby.databasemodule.data.Stanoviste
 
 @Dao
 interface StanovisteDao {
@@ -18,4 +18,7 @@ interface StanovisteDao {
 
     @Query("SELECT * FROM stanoviste")
     fun getAllStanoviste(): LiveData<List<Stanoviste>>
+
+    @Query("SELECT * FROM stanoviste WHERE id = :id")
+    fun getStanovisteById(id: Int): LiveData<Stanoviste>
 }

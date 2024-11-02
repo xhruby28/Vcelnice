@@ -15,7 +15,16 @@
         android:id="@+id/nav_stanoviste"
         android:name="com.hruby.vcelnice.ui.stanoviste.StanovisteFragment"
         android:label="@string/menu_stanoviste"
-        tools:layout="@layout/fragment_stanoviste" />
+        tools:layout="@layout/fragment_stanoviste" >
+        <!-- Akce pro navigaci na Detailní stanoviště -->
+        <!--<action
+            android:id="@+id/action_nav_stanoviste_to_stanovisteInfoModule"
+            app:destination="@id/stanovisteDetailActivity">
+            <argument
+                android:name="stanovisteId"
+                app:argType="integer" />
+        </action>-->
+    </fragment>
 
     <fragment
         android:id="@+id/nav_parovani"
@@ -34,4 +43,9 @@
         android:name="com.hruby.vcelnice.ui.informace.InformaceFragment"
         android:label="@string/menu_informace"
         tools:layout="@layout/fragment_informace" />
+
+    <!--<activity
+        android:id="@+id/stanovisteDetailActivity"
+        android:name="com.hruby.stanovistedetailmodule.StanovisteDetailActivity"
+        android:label="stanovisteDetailActivity" />-->
 </navigation>
