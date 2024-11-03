@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation(project(":databaseModule"))
-    //implementation(project(":stanovisteDetailModule"))
+    implementation(project(":stanovisteDetailModule"))
     implementation(project(":sharedResources"))
 
     implementation(libs.androidx.core.ktx)

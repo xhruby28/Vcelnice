@@ -38,6 +38,7 @@ import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
 import com.hruby.databasemodule.databaseLogic.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.StanovisteViewModelFactory
+import com.hruby.stanovistedetailmodule.StanovisteDetailActivity
 import com.hruby.vcelnice.ui.stanoviste.dialogs.DeviceListDialog
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 
@@ -127,6 +128,9 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
             { stanovisteId ->
 //                val action = StanovisteFragmentDirections.actionNavStanovisteToStanovisteInfoModule(stanovisteId)
 //                findNavController().navigate(action)
+                val intent = Intent(context, StanovisteDetailActivity::class.java)
+                intent.putExtra("stanovisteId", stanovisteId)
+                startActivity(intent)
             }
         )
         recyclerView.adapter = adapter

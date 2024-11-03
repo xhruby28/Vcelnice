@@ -1,6 +1,7 @@
 package com.hruby.stanovistedetailmodule
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -9,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.fragment.NavHostFragment
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
 
 class StanovisteDetailActivity : AppCompatActivity() {
@@ -26,7 +28,10 @@ class StanovisteDetailActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_stanoviste_detail)
+        Log.d("NavController", "Initializace navController...")
+        //val navController = findNavController(R.id.nav_host_fragment_content_stanoviste_detail)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_stanoviste_detail) as NavHostFragment
+        val navController = navHostFragment.navController
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -34,6 +39,7 @@ class StanovisteDetailActivity : AppCompatActivity() {
                 R.id.nav_info
             ), drawerLayout
         )
+        Log.d("NavController", "Initializace navbaru...")
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
