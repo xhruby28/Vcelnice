@@ -1,18 +1,18 @@
 package com.hruby.stanovistedetailmodule
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
+import com.google.android.material.navigation.NavigationView
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StanovisteDetailActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -24,24 +24,23 @@ class StanovisteDetailActivity : AppCompatActivity() {
         binding = ActivityStanovisteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarStanovisteDetail.toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        Log.d("NavController", "Initializace navController...")
-        //val navController = findNavController(R.id.nav_host_fragment_content_stanoviste_detail)
+        val stanovisteId = intent.getIntExtra("stanovisteId", -1)
+        // Zpracování stanovisteId podle potřeby
+
+        // NavHostFragment pro správu fragmentů
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_stanoviste_detail) as NavHostFragment
         val navController = navHostFragment.navController
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_info
-            ), drawerLayout
-        )
-        Log.d("NavController", "Initializace navbaru...")
+
+        // Základní konfigurace pro akční panel
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_info, R.id.nav_uly), binding.drawerLayoutStanoviste)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Nastavení NavigationView a jeho propojení s navController
+        val navView: NavigationView = findViewById(R.id.nav_view_stanoviste)
         navView.setupWithNavController(navController)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

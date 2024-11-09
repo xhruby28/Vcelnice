@@ -3,16 +3,17 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.dagger.hilt.android") version "2.48" apply true
 }
 
 android {
     namespace = "com.hruby.vcelnice"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.hruby.vcelnice"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -29,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -44,6 +45,11 @@ dependencies {
     implementation(project(":databaseModule"))
     implementation(project(":stanovisteDetailModule"))
     implementation(project(":sharedResources"))
+    implementation(project(":NavModule"))
+
+    implementation(libs.hilt.android)
+    //implementation(libs.androidx.hilt.lifecycle.viewmodel)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

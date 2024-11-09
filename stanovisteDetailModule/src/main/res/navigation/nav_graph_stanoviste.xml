@@ -7,14 +7,12 @@
 
     <fragment
         android:id="@+id/nav_info"
-        android:name="com.hruby.stanovistedetailmodule.ui.ulyStanoviste.UlyStanovisteFragment"
-        android:label="fragment_info_stanoviste"
+        android:name="com.hruby.stanovistedetailmodule.ui.infoStanoviste.InfoStanovisteFragment"
+        android:label="Informace o stanovišti"
         tools:layout="@layout/fragment_info_stanoviste" />
 
     <fragment
         android:id="@+id/nav_uly"
         android:name="com.hruby.stanovistedetailmodule.ui.ulyStanoviste.UlyStanovisteFragment"
-        android:label="Seznam úlů"
-
-        />
+        android:label="Seznam úlů" />
 </navigation>

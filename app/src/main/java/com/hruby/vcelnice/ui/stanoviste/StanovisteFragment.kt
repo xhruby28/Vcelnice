@@ -27,7 +27,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,16 +37,22 @@ import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
 import com.hruby.databasemodule.databaseLogic.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.StanovisteViewModelFactory
-import com.hruby.stanovistedetailmodule.StanovisteDetailActivity
+import com.hruby.navmodule.Navigator
 import com.hruby.vcelnice.ui.stanoviste.dialogs.DeviceListDialog
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
+@AndroidEntryPoint
+class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: StanovisteRecycleViewAdapter
     private lateinit var stanovisteViewModel: StanovisteViewModel
     private val stanovisteList: MutableList<Stanoviste> = mutableListOf()
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private var _binding: FragmentStanovisteBinding? = null
     private val binding get() = _binding!!
@@ -61,9 +66,19 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
             if (allGranted) {
                 requestBluetoothDevices()
             } else {
-                Toast.makeText(context, "Přístup k Bluetooth byl zamítnut", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Přístup k Bluetooth byl zamítnut", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is Navigator) {
+            navigator = context
+        } else {
+            throw IllegalStateException("Host activity must implement Navigator")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -128,9 +143,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
             { stanovisteId ->
 //                val action = StanovisteFragmentDirections.actionNavStanovisteToStanovisteInfoModule(stanovisteId)
 //                findNavController().navigate(action)
-                val intent = Intent(context, StanovisteDetailActivity::class.java)
-                intent.putExtra("stanovisteId", stanovisteId)
-                startActivity(intent)
+                onStanovisteSelected(stanovisteId)
             }
         )
         recyclerView.adapter = adapter
@@ -345,5 +358,10 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener{
     private fun isEsp32Device(macAddress: String): Boolean {
         // Filtr na MAC adresu ESP zařízení
         return macAddress.startsWith("EC:DA:3B")
+    }
+
+    // Navigace do modulu s detaily
+    private fun onStanovisteSelected(stanovisteId: Int) {
+        navigator.openStanovisteDetail(stanovisteId)
     }
 }

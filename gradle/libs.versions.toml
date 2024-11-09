@@ -2,8 +2,10 @@
 agp = "8.7.2"
 cardview = "1.0.0"
 coordinatorlayout = "1.2.0"
+hiltAndroid = "2.48"
+hiltLifecycleViewmodelVersion = "1.0.0-alpha03"
 kotlin = "2.0.21"
-coreKtx = "1.13.1"
+coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -13,6 +15,7 @@ constraintlayout = "2.2.0"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 navigationFragmentKtx = "2.8.3"
+navigationSafeArgsCompiler = "2.5.3"
 navigationUiKtx = "2.8.3"
 legacySupportV4 = "1.0.0"
 fragmentKtx = "1.8.5"
@@ -27,10 +30,14 @@ roomRuntime = "2.6.1"
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodelVersion" }
+androidx-navigation-safe-args-compiler = { module = "androidx.navigation:navigation-safe-args-compiler", version.ref = "navigationSafeArgsCompiler" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

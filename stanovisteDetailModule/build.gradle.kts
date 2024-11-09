@@ -1,14 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.dagger.hilt.android") version "2.48" apply true
 }
 
 android {
     namespace = "com.hruby.stanovistedetailmodule"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -27,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -39,6 +39,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":databaseModule"))
+    implementation(project(":sharedResources"))
+    implementation(project(":NavModule"))
+
+    implementation(libs.hilt.android)
+    //implementation(libs.androidx.hilt.lifecycle.viewmodel)
+    ksp(libs.hilt.compiler)
+
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.recyclerview)
@@ -57,9 +65,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
-    implementation(project(":databaseModule"))
-    implementation(project(":sharedResources"))
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
