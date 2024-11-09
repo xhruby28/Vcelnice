@@ -1,6 +1,8 @@
 package com.hruby.stanovistedetailmodule
 
 import android.os.Bundle
+import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.google.android.material.navigation.NavigationView
@@ -9,6 +11,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
+import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +23,10 @@ class StanovisteDetailActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityStanovisteDetailBinding
+
+    private val stanovisteViewModel: StanovisteViewModel by viewModels {
+        StanovisteViewModelFactory(StanovisteRepository(StanovisteDatabase.getDatabase(this).stanovisteDao()))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +49,16 @@ class StanovisteDetailActivity : AppCompatActivity() {
 
         // Nastavení NavigationView a jeho propojení s navController
         val navView: NavigationView = findViewById(R.id.nav_view_stanoviste)
+        val headerView = navView.getHeaderView(0) // Získání hlavičky navigation view
+        val navHeaderTitle = headerView.findViewById<TextView>(R.id.nav_stanoviste_detail_header_title) // Odkaz na TextView v headeru
+        //val navHeaderImage = headerView.findViewById<ImageView>(R.id.nav_stanoviste_detail_header_image)
+
         navView.setupWithNavController(navController)
 
+        stanovisteViewModel.getStanovisteById(stanovisteId).observe(this) { stanoviste ->
+            navHeaderTitle.text = stanoviste?.name ?: "Stanoviště Detail"
+            //navHeaderImage.src = stanoviste?.imageResId ?: "Stanoviště Detail"
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

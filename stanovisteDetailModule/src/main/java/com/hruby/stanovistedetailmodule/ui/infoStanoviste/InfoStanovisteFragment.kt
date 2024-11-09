@@ -1,11 +1,11 @@
 package com.hruby.stanovistedetailmodule.ui.infoStanoviste
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.hruby.databasemodule.databaseLogic.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 
 class InfoStanovisteFragment : Fragment() {
     private lateinit var viewModel: StanovisteViewModel

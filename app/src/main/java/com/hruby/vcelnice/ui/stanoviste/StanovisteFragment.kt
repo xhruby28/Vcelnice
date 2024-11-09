@@ -32,11 +32,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.hruby.databasemodule.data.Stanoviste
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
-import com.hruby.databasemodule.databaseLogic.StanovisteRepository
+import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
+import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
-import com.hruby.databasemodule.databaseLogic.StanovisteViewModel
-import com.hruby.databasemodule.databaseLogic.StanovisteViewModelFactory
 import com.hruby.navmodule.Navigator
 import com.hruby.vcelnice.ui.stanoviste.dialogs.DeviceListDialog
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
@@ -139,7 +139,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
             },
             { stanoviste, position ->
                 showDeleteDialog(stanoviste, position)
-                },
+            },
             { stanovisteId ->
 //                val action = StanovisteFragmentDirections.actionNavStanovisteToStanovisteInfoModule(stanovisteId)
 //                findNavController().navigate(action)

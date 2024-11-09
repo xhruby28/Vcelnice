@@ -1,9 +1,10 @@
-package com.hruby.databasemodule.databaseLogic
+package com.hruby.databasemodule.databaseLogic.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hruby.databasemodule.data.Stanoviste
+import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
 import kotlinx.coroutines.launch
 
 class StanovisteViewModel(private val repository: StanovisteRepository) : ViewModel()  {

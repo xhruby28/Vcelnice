@@ -1,7 +1,9 @@
-package com.hruby.databasemodule.databaseLogic
+package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
 import com.hruby.databasemodule.data.Stanoviste
+import com.hruby.databasemodule.databaseLogic.connections.StanovisteWithUly
+import com.hruby.databasemodule.databaseLogic.dao.StanovisteDao
 
 class StanovisteRepository(private val stanovisteDao: StanovisteDao) {
 
@@ -21,5 +23,9 @@ class StanovisteRepository(private val stanovisteDao: StanovisteDao) {
 
     fun getStanovisteById(id: Int): LiveData<Stanoviste> {
         return stanovisteDao.getStanovisteById(id)
+    }
+
+    fun getStanovisteWithUly(id: Int): LiveData<StanovisteWithUly> {
+        return stanovisteDao.getStanovisteWithUly(id)
     }
 }

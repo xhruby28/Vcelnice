@@ -12,6 +12,5 @@ data class Stanoviste(
     var locationUrl: String?,
     var lastState: String?,
     //var imagePath: String?,
-    //val hiveList: MutableList<Hives> = mutableListOf(),
     var imageResId: Int = 0
 )
