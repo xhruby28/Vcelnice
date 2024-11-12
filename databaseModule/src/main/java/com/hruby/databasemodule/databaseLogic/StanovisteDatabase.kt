@@ -16,7 +16,7 @@ import com.hruby.databasemodule.databaseLogic.dao.ProblemDao
 import com.hruby.databasemodule.databaseLogic.dao.StanovisteDao
 import com.hruby.databasemodule.databaseLogic.dao.UlyDao
 
-@androidx.room.Database(entities = [Stanoviste::class, Uly::class, Poznamka::class, MereneHodnoty::class, Problem::class], version = 2, exportSchema = false)
+@androidx.room.Database(entities = [Stanoviste::class, Uly::class, Poznamka::class, MereneHodnoty::class, Problem::class], version = 1, exportSchema = false)
 abstract class StanovisteDatabase : RoomDatabase() {
 
     abstract fun stanovisteDao(): StanovisteDao
@@ -36,7 +36,8 @@ abstract class StanovisteDatabase : RoomDatabase() {
                     StanovisteDatabase::class.java,
                     "stanoviste_database"
                 )
-                    .addMigrations(MIGRATION_1_2)  // Přidání migrace pro verzi 1 → 2
+                    //.addMigrations(MIGRATION_1_2)  // Přidání migrace pro verzi 1 → 2
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

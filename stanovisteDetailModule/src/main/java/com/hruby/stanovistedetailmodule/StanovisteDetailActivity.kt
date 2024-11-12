@@ -1,6 +1,7 @@
 package com.hruby.stanovistedetailmodule
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +16,12 @@ import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
+import com.hruby.navmodule.Navigator
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StanovisteDetailActivity : AppCompatActivity() {
+class StanovisteDetailActivity : AppCompatActivity(), Navigator {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityStanovisteDetailBinding
@@ -59,10 +61,25 @@ class StanovisteDetailActivity : AppCompatActivity() {
             navHeaderTitle.text = stanoviste?.name ?: "Stanoviště Detail"
             //navHeaderImage.src = stanoviste?.imageResId ?: "Stanoviště Detail"
         }
+
+        val navMenu: MenuItem = navView.menu.findItem(R.id.nav_back_to_main)
+        navMenu.setOnMenuItemClickListener {
+            goBackToStanovisteList()
+            true
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_stanoviste_detail)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    // Implementace metody pro návrat zpět na seznam stanovišť
+    override fun goBackToStanovisteList() {
+        finish()
+    }
+
+    // Prázdná metoda kvůli implementaci navigátoru
+    override fun openStanovisteDetail(stanovisteId: Int) {
     }
 }
