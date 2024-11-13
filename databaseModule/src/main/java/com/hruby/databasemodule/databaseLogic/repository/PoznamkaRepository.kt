@@ -2,22 +2,22 @@ package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
 import com.hruby.databasemodule.data.Poznamka
-import com.hruby.databasemodule.databaseLogic.dao.PoznamkaDao
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 
-class PoznamkaRepository(private val poznamkaDao: PoznamkaDao) {
+class PoznamkaRepository(private val db: StanovisteDatabase) {
     suspend fun insertPoznamka(poznamka: Poznamka) {
-        poznamkaDao.insertPoznamka(poznamka)
+        db.poznamkaDao().insertPoznamka(poznamka)
     }
 
     suspend fun updatePoznamka(poznamka: Poznamka) {
-        poznamkaDao.updatePoznamka(poznamka)
+        db.poznamkaDao().updatePoznamka(poznamka)
     }
 
     suspend fun deletePoznamka(poznamka: Poznamka) {
-        poznamkaDao.deletePoznamka(poznamka)
+        db.poznamkaDao().deletePoznamka(poznamka)
     }
 
     fun getPoznamkyByUlId(ulId: Int): LiveData<List<Poznamka>> {
-        return poznamkaDao.getPoznamkyByUlId(ulId)
+        return db.poznamkaDao().getPoznamkyByUlId(ulId)
     }
 }

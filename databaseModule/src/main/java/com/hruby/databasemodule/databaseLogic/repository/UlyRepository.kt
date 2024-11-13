@@ -2,27 +2,27 @@ package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
 import com.hruby.databasemodule.data.Uly
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 import com.hruby.databasemodule.databaseLogic.connections.UlWithOther
-import com.hruby.databasemodule.databaseLogic.dao.UlyDao
 
-class UlyRepository(private val ulyDao: UlyDao) {
+class UlyRepository(private val db: StanovisteDatabase) {
     suspend fun insertUl(ul: Uly) {
-        ulyDao.insertUl(ul)
+        db.ulyDao().insertUl(ul)
     }
 
     suspend fun updateUl(ul: Uly) {
-        ulyDao.updateUl(ul)
+        db.ulyDao().updateUl(ul)
     }
 
     suspend fun deleteUl(ul: Uly) {
-        ulyDao.deleteUl(ul)
+        db.ulyDao().deleteUl(ul)
     }
 
     fun getUlyByStanovisteId(stanovisteId: Int): LiveData<List<Uly>> {
-        return ulyDao.getUlyByStanovisteId(stanovisteId)
+        return db.ulyDao().getUlyByStanovisteId(stanovisteId)
     }
 
     fun getUlWithOthersByStanovisteId(stanovisteId: Int): LiveData<List<UlWithOther>> {
-        return ulyDao.getUlWithOthersByStanovisteId(stanovisteId)
+        return db.ulyDao().getUlWithOthersByStanovisteId(stanovisteId)
     }
 }

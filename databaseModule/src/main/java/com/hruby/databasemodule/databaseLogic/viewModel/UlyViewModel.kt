@@ -15,16 +15,12 @@ class UlyViewModel(private val repository: UlyRepository) : ViewModel() {
     val uly: LiveData<List<Uly>> get() = _uly
     val ulyWithOthers: LiveData<List<UlWithOther>> get() = _ulyWithOthers
 
-    fun getUlyByStanovisteId(stanovisteId: Int) {
-        repository.getUlyByStanovisteId(stanovisteId).observeForever {
-            _uly.value = it
-        }
+    fun getUlyByStanovisteId(stanovisteId: Int): LiveData<List<Uly>> {
+        return repository.getUlyByStanovisteId(stanovisteId)
     }
 
-    fun getUlWithOthersByStanovisteId(stanovisteId: Int) {
-        repository.getUlWithOthersByStanovisteId(stanovisteId).observeForever {
-            _ulyWithOthers.value = it
-        }
+    fun getUlWithOthersByStanovisteId(stanovisteId: Int): LiveData<List<UlWithOther>> {
+        return repository.getUlWithOthersByStanovisteId(stanovisteId)
     }
 
     fun insertUl(ul: Uly) {

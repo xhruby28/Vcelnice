@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 )
 data class Problem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val ulId: Int,
-    val datum: Long, // Datum problému
-    val text: String
+    var ulId: Int,
+    var datum: Long, // Datum problému
+    var text: String
 )

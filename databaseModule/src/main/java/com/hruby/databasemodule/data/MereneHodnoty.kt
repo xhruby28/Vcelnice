@@ -17,17 +17,17 @@ import androidx.room.PrimaryKey
 )
 data class MereneHodnoty(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val ulId: Int,
-    val datum: Long, // Datum měření
-    val hmotnost: Float,
-    val teplotaUl: Float,
-    val vlhkostModul: Float,
-    val teplotaModul: Float,
-    val frekvence: Float, //nebo Int
-    val gyroX: Float,
-    val gyroY: Float,
-    val gyroZ: Float,
-    val accelX: Float,
-    val accelY: Float,
-    val accelZ: Float
+    var ulId: Int,
+    var datum: Long, // Datum měření
+    var hmotnost: Float,
+    var teplotaUl: Float,
+    var vlhkostModul: Float,
+    var teplotaModul: Float,
+    var frekvence: Float, //nebo Int
+    var gyroX: Float,
+    var gyroY: Float,
+    var gyroZ: Float,
+    var accelX: Float,
+    var accelY: Float,
+    var accelZ: Float
 )

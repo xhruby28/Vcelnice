@@ -27,7 +27,7 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
     private lateinit var binding: ActivityStanovisteDetailBinding
 
     private val stanovisteViewModel: StanovisteViewModel by viewModels {
-        StanovisteViewModelFactory(StanovisteRepository(StanovisteDatabase.getDatabase(this).stanovisteDao()))
+        StanovisteViewModelFactory(StanovisteRepository(StanovisteDatabase.getDatabase(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
