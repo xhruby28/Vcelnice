@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/uly_create_dialog">
+
+    <EditText
+        android:id="@+id/uly_create_ul_number"
+        android:hint="@string/cislo_ulu_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/uly_create_ul_description"
+        android:hint="@string/popis_ulu_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textAutoCorrect"
+        android:singleLine="false"
+        android:breakStrategy="simple"
+        android:scrollHorizontally="false"
+        android:gravity="start|top"/>
+
+</LinearLayout>

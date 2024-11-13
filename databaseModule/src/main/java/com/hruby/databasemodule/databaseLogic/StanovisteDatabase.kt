@@ -37,6 +37,7 @@ abstract class StanovisteDatabase : RoomDatabase() {
                     "stanoviste_database"
                 )
                     //.addMigrations(MIGRATION_1_2)  // Přidání migrace pro verzi 1 → 2
+                    //TODO("nezapomenout změnit v oficiálním release .fallbackToDestructiveMigration() na addMigrations()")
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

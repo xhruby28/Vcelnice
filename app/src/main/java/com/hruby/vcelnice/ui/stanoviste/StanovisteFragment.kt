@@ -120,9 +120,9 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
 
         // Inicializace ViewModel
         val application = requireActivity().application
-        val repository = StanovisteRepository(StanovisteDatabase.getDatabase(application).stanovisteDao())
+        val repository = StanovisteRepository(StanovisteDatabase.getDatabase(application))
         val factory = StanovisteViewModelFactory(repository)
-        stanovisteViewModel = ViewModelProvider(this, factory).get(StanovisteViewModel::class.java)
+        stanovisteViewModel = ViewModelProvider(this, factory)[StanovisteViewModel::class.java]
 
         // Pozorování na změny v LiveData
         stanovisteViewModel.allStanoviste.observe(viewLifecycleOwner) { stanoviste ->
@@ -135,6 +135,8 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         adapter = StanovisteRecycleViewAdapter(
             stanovisteList,
             { stanoviste, position ->
+//                TODO("Při kliknutí na možnost EDIT bude uživatel přesměrován na StanovisteDetailModule - Úprava," +
+//                        "kde bude kompletní seznam věcí, které uživatel může změnit")
                 showEditDialog(stanoviste, position)
             },
             { stanoviste, position ->

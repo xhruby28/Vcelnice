@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Yellow main theme-->
+    <color name="yellow_primary">#C67C00</color>
+    <color name="yellow_light">#FFDD4B</color>
+    <color name="yellow_dark">#FFAB00</color>
+
+    <!-- Secondary theme-->
+
+    <!-- Notification bar -->
+    <color name="notification_bar_black_ish">#000A12</color>
+    <color name="notification_bar_white_ish">#F5F5F5</color>
 </resources>

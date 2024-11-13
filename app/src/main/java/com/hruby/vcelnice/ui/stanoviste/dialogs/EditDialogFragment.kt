@@ -41,6 +41,9 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+//        TODO("Tato funkce bude v následující verzi (pravděpodobně až v lednu 2025) využívaná jenom pro vytvoření stanoviště" +
+//                "a úprava bude nahrazena komplexnejší verzí, kdy aplikace uživatele" +
+//                "přesune přímo do StanovisteDetailModule a zde bude moc editovat hodnoty")
         val builder = AlertDialog.Builder(requireContext())
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.fragment_stanoviste_edit_dialog, null)

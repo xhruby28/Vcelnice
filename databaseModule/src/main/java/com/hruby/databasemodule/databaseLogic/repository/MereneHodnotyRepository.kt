@@ -2,22 +2,22 @@ package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
 import com.hruby.databasemodule.data.MereneHodnoty
-import com.hruby.databasemodule.databaseLogic.dao.MereneHodnotyDao
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 
-class MereneHodnotyRepository(private val mereneHodnotyDao: MereneHodnotyDao) {
+class MereneHodnotyRepository(private val db: StanovisteDatabase) {
     suspend fun insertMereneHodnoty(hodnoty: MereneHodnoty) {
-        mereneHodnotyDao.insertMereneHodnoty(hodnoty)
+        db.mereneHodnotyDao().insertMereneHodnoty(hodnoty)
     }
 
     suspend fun updateMereneHodnoty(hodnoty: MereneHodnoty) {
-        mereneHodnotyDao.updateMereneHodnoty(hodnoty)
+        db.mereneHodnotyDao().updateMereneHodnoty(hodnoty)
     }
 
     suspend fun deleteMereneHodnoty(hodnoty: MereneHodnoty) {
-        mereneHodnotyDao.deleteMereneHodnoty(hodnoty)
+        db.mereneHodnotyDao().deleteMereneHodnoty(hodnoty)
     }
 
     fun getMereneHodnotyByUlId(ulId: Int): LiveData<List<MereneHodnoty>> {
-        return mereneHodnotyDao.getMereneHodnotyByUlId(ulId)
+        return db.mereneHodnotyDao().getMereneHodnotyByUlId(ulId)
     }
 }

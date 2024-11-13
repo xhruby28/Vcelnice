@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 )
 data class Poznamka(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val ulId: Int,
-    val datum: Long, // Datum poznámky
-    val text: String
+    var ulId: Int,
+    var datum: Long, // Datum poznámky
+    var text: String
 )

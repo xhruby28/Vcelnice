@@ -2,22 +2,22 @@ package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
 import com.hruby.databasemodule.data.Problem
-import com.hruby.databasemodule.databaseLogic.dao.ProblemDao
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 
-class ProblemRepository(private val problemDao: ProblemDao) {
+class ProblemRepository(private val db: StanovisteDatabase) {
     suspend fun insertProblem(problem: Problem) {
-        problemDao.insertProblem(problem)
+        db.problemDao().insertProblem(problem)
     }
 
     suspend fun updateProblem(problem: Problem) {
-        problemDao.updateProblem(problem)
+        db.problemDao().updateProblem(problem)
     }
 
     suspend fun deleteProblem(problem: Problem) {
-        problemDao.deleteProblem(problem)
+        db.problemDao().deleteProblem(problem)
     }
 
     fun getProblemByUlId(ulId: Int): LiveData<List<Problem>> {
-        return problemDao.getProblemByUlId(ulId)
+        return db.problemDao().getProblemByUlId(ulId)
     }
 }

@@ -17,15 +17,17 @@ import androidx.room.PrimaryKey
 )
 data class Uly(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val stanovisteId: Int,
-    val nazev: String,
-    val popis: String,
-    val problemovyUl: Boolean,
-    val posledniProblem: String?, // Poslední zaznamenaný problém
-    val hodnoceni: Int, // Hodnocení pomocí hvězdiček
-    val agresivita: Int,
-    val stavZasob: String,
-    val mezolitostPlodu: Int,
-    val silaVcelstva: Int,
-    val stavebniPud: Int
+    val stanovisteId: Int, // Možná změnit na var stanovisteId, kdyby chtěl včelař přesunout ul z jednoho stanoviště na druhé
+    var cisloUlu: Int?,
+    var popis: String?,
+    var maMAC: Boolean = false,
+    var macAdress: String? = null,
+    var problemovyUl: Boolean = false,
+    var posledniProblem: String? = null, // Poslední zaznamenaný problém
+    var hodnoceni: Float = 0.0f, // Hodnocení pomocí hvězdiček
+    var agresivita: Int = 0,
+    var stavZasob: String? = null,
+    var mezolitostPlodu: Int = 0,
+    var silaVcelstva: Int = 0,
+    var stavebniPud: Int = 0
 )

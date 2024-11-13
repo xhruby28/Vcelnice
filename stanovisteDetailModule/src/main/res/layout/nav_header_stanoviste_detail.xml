@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_detail_header_height"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -23,8 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Stanoviště Detail"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        tools:text="Stanoviště Detail" />
 
 </LinearLayout>
