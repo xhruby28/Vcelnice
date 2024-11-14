@@ -1,5 +1,6 @@
 package com.hruby.stanovistedetailmodule
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
@@ -77,6 +78,12 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
     // Implementace metody pro návrat zpět na seznam stanovišť
     override fun goBackToStanovisteList() {
         finish()
+    }
+
+    override fun openUlDetail(ulId: Int) {
+        //val intent = Intent(this, UlDetailActivity::class.java)
+        //intent.putExtra("ulId", ulId)
+        //startActivity(intent)
     }
 
     // Prázdná metoda kvůli implementaci navigátoru

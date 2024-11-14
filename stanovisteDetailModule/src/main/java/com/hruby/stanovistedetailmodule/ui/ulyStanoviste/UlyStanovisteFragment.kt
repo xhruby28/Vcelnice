@@ -98,6 +98,7 @@ class UlyStanovisteFragment : Fragment(), UlyCreateDialogFragment.UlCreateDialog
 //                        "naměřené hodnoty, jeho MAC pokud je to SmartHive, grafy naměřených hodnot," +
 //                        "tento modul bude mít také svůj vlastní navigační graf, u toho grafu bude vidět číslo úlu a název stanoviště tak," +
 //                        "jak je to teď u stnaoviště")
+                onUlSelected(ulId)
             }
         )
         recyclerView.adapter = adapter
@@ -155,5 +156,9 @@ class UlyStanovisteFragment : Fragment(), UlyCreateDialogFragment.UlCreateDialog
             ulyViewModel.insertUl(newUl)
             adapter.notifyItemChanged(index)
         }
+    }
+
+    private fun onUlSelected(ulId: Int) {
+        navigator.openUlDetail(ulId)
     }
 }
