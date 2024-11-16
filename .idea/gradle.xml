@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/databaseModule" />
             <option value="$PROJECT_DIR$/sharedResources" />
             <option value="$PROJECT_DIR$/stanovisteDetailModule" />
+            <option value="$PROJECT_DIR$/ulyDetailModule" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

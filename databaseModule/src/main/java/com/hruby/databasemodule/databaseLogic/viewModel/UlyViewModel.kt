@@ -19,8 +19,12 @@ class UlyViewModel(private val repository: UlyRepository) : ViewModel() {
         return repository.getUlyByStanovisteId(stanovisteId)
     }
 
-    fun getUlWithOthersByStanovisteId(stanovisteId: Int): LiveData<List<UlWithOther>> {
-        return repository.getUlWithOthersByStanovisteId(stanovisteId)
+    fun getUlWithOthersByStanovisteId(ulId: Int, stanovisteId: Int): LiveData<UlWithOther> {
+        return repository.getUlWithOthersByStanovisteId(ulId, stanovisteId)
+    }
+
+    fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?> {
+        return  repository.getUlWithOthersByMACAndStanovisteMAC(ulMacAddress, stanovisteMacAddress)
     }
 
     fun insertUl(ul: Uly) {

@@ -26,6 +26,7 @@ class StanovisteRecycleViewAdapter(
         val textLocationUrl: TextView = itemView.findViewById(R.id.stanoviste_location_url)
         val textLastState: TextView = itemView.findViewById(R.id.stanoviste_state)
         val imageView: ImageView = itemView.findViewById(R.id.stanoviste_image)
+        val stanovisteHaveMac: ImageView = itemView.findViewById(R.id.stanoviste_sync_icon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StanovisteViewHolder {
@@ -54,6 +55,12 @@ class StanovisteRecycleViewAdapter(
         holder.textLastState.text = stanoviste.lastState
         holder.imageView
 
+        if (stanoviste.maMAC){
+            holder.stanovisteHaveMac.visibility = View.VISIBLE
+        } else {
+            holder.stanovisteHaveMac.visibility = View.GONE
+        }
+
         holder.textLocationUrl.setOnClickListener{
             //val gmmIntentUri = Uri.parse("geo:$lat,$long?q=$lat,$long(Google+Maps)")
             val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(stanoviste.locationUrl))
@@ -71,6 +78,8 @@ class StanovisteRecycleViewAdapter(
                 onItemClick(stanoviste.id) // Předáme ID do lambda funkce
             }
         }
+
+
     }
 
     private fun showPopupMenu(view: View, stanoviste: Stanoviste, position: Int) {

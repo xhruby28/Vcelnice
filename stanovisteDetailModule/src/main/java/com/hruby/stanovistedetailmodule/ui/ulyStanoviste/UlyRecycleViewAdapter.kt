@@ -3,6 +3,7 @@ package com.hruby.stanovistedetailmodule.ui.ulyStanoviste
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
@@ -22,6 +23,8 @@ class UlyRecycleViewAdapter (
         val ulId: TextView = itemView.findViewById(R.id.ul_id_ids)
         val latestProblem: TextView = itemView.findViewById(R.id.ul_problem)
         val ulRating: RatingBar = itemView.findViewById(R.id.ul_hodnoceni_stars)
+        val latestProblemText: TextView = itemView.findViewById(R.id.ul_problem_text)
+        val haveMacAddress: ImageView = itemView.findViewById(R.id.ul_sync_icon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UlyViewHolder {
@@ -39,7 +42,21 @@ class UlyRecycleViewAdapter (
         holder.ulRating.rating = uly.hodnoceni
 //        TODO("Změnit zobrazování posledního problému na problemovyUl true/false, " +
 //                "když false, tak se neobjeví v seznamu informace o problému")
-        holder.latestProblem.text = uly.posledniProblem
+        if(uly.problemovyUl == false){
+            holder.latestProblem.visibility = View.GONE
+            holder.latestProblemText.visibility = View.GONE
+        } else {
+            holder.latestProblem.text = uly.posledniProblem
+
+            holder.latestProblem.visibility = View.VISIBLE
+            holder.latestProblemText.visibility = View.VISIBLE
+        }
+
+        if(uly.maMAC){
+            holder.haveMacAddress.visibility = View.VISIBLE
+        } else {
+            holder.haveMacAddress.visibility = View.GONE
+        }
 
         holder.itemView.setOnLongClickListener {
             showPopupMenu(holder.itemView, uly, position)

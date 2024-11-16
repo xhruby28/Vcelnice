@@ -143,8 +143,6 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
                 showDeleteDialog(stanoviste, position)
             },
             { stanovisteId ->
-//                val action = StanovisteFragmentDirections.actionNavStanovisteToStanovisteInfoModule(stanovisteId)
-//                findNavController().navigate(action)
                 onStanovisteSelected(stanovisteId)
             }
         )
@@ -169,11 +167,12 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         dialog.show(childFragmentManager, "EditDialogFragment")
     }
 
-    private fun openAddDialog(macAddress: String) {
+    private fun openAddDialog(macAddress: String, maMac: Boolean = false) {
         val dialog = EditDialogFragment()
         val bundle = Bundle()
         bundle.putInt("index", -1)  // Přidání argumentů
         bundle.putString("macAddress", macAddress)
+        bundle.putBoolean("maMac", maMac)
         dialog.arguments = bundle
         dialog.show(childFragmentManager, "EditDialogFragment")
     }
@@ -196,7 +195,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         alertDialog.show()
     }
 
-    override fun onDialogSave(macAddress: String, index: Int, name: String, lastCheck: String, locationUrl: String) {
+    override fun onDialogSave(maMac:Boolean, macAddress: String, index: Int, name: String, lastCheck: String, locationUrl: String) {
         val fabMenu: LinearLayout = requireView().findViewById(R.id.fab_menu)
         val fab: FloatingActionButton = requireView().findViewById(R.id.stanoviste_fab)
         if (index in stanovisteList.indices) {
@@ -211,6 +210,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         } else {
             val newStanoviste = Stanoviste(
                 name = name,
+                maMAC = maMac,
                 lastCheck = lastCheck,
                 locationUrl = locationUrl,
                 lastState = "Nové stanoviště",
@@ -264,7 +264,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
 
         val dialog = DeviceListDialog { macAddress ->
             if (isEsp32Device(macAddress)) {
-                openAddDialog(macAddress)
+                openAddDialog(macAddress, true)
             } else {
                 Toast.makeText(context, "Neplatné ESP32 zařízení", Toast.LENGTH_SHORT).show()
             }

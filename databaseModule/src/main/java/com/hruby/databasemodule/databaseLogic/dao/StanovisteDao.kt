@@ -26,4 +26,7 @@ interface StanovisteDao {
     @Transaction
     @Query("SELECT * FROM stanoviste WHERE id = :id")
     fun getStanovisteWithUly(id: Int): LiveData<StanovisteWithUly>
+
+    @Query("SELECT * FROM stanoviste WHERE siteMAC = :macAddress")
+    fun getStanovisteByMAC(macAddress: String): LiveData<Stanoviste?>
 }

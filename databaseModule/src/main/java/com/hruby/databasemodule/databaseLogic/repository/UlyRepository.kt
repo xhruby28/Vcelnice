@@ -1,6 +1,7 @@
 package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
+import com.hruby.databasemodule.data.Stanoviste
 import com.hruby.databasemodule.data.Uly
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 import com.hruby.databasemodule.databaseLogic.connections.UlWithOther
@@ -22,7 +23,12 @@ class UlyRepository(private val db: StanovisteDatabase) {
         return db.ulyDao().getUlyByStanovisteId(stanovisteId)
     }
 
-    fun getUlWithOthersByStanovisteId(stanovisteId: Int): LiveData<List<UlWithOther>> {
-        return db.ulyDao().getUlWithOthersByStanovisteId(stanovisteId)
+    fun getUlWithOthersByStanovisteId(ulId: Int, stanovisteId: Int): LiveData<UlWithOther> {
+        return db.ulyDao().getUlWithOthersByStanovisteId(ulId, stanovisteId)
+    }
+
+    fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?>{
+        // je třeba dostat id stanvoiště, ale i mac, aby se dalo synchronizovat.
+        return db.ulyDao().getUlWithOthersByMACAndStanovisteMAC(ulMacAddress, stanovisteMacAddress)
     }
 }

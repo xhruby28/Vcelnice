@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 data class Stanoviste(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     var name: String?,
-    var siteMAC: String?,
+    var maMAC: Boolean = false,
+    var siteMAC: String? = null,
     var lastCheck: String?,
     var locationUrl: String?,
     var lastState: String?,

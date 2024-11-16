@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.hruby.stanovistedetailmodule"
+    namespace = "com.hruby.ulydetailmodule"
     compileSdk = 35
 
     defaultConfig {
@@ -44,14 +44,11 @@ dependencies {
     implementation(project(":NavModule"))
 
     implementation(libs.hilt.android)
-    implementation(project(":ulyDetailModule"))
-    //implementation(libs.androidx.hilt.lifecycle.viewmodel)
     ksp(libs.hilt.compiler)
 
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.preference)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.room.runtime)
@@ -59,14 +56,15 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.coordinatorlayout)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

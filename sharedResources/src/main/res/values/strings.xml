@@ -43,8 +43,16 @@
     <string name="posledni_stav">Poslední stav:</string>
     <string name="poloha">Poloha:</string>
 
-    <!-- Uly a editor -->
+    <!-- StanovisteDetailModule -->
+    <string name="title_activity_stanoviste_detail">Detailní přehled stanoviště</string>
+    <string name="cislo_ulu_text">Číslo úlu</string>
+    <string name="popis_ulu_text">Popis úlu</string>
     <string name="cislo_ulu">Úl č.</string>
     <string name="hodnoceni_ulu">Hodnocení úlu</string>
     <string name="problem_ulu">Problém v úlu:</string>
+
+
+    <!-- UlyDetailModule -->
+    <string name="title_activity_uly_detail">Detailní přehled úlu</string>
+
 </resources>

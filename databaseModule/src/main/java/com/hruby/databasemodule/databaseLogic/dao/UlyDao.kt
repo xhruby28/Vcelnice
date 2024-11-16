@@ -1,5 +1,6 @@
 package com.hruby.databasemodule.databaseLogic.dao
 
+import android.net.MacAddress
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -27,6 +28,15 @@ interface UlyDao {
     fun getUlyByStanovisteId(stanovisteId: Int): LiveData<List<Uly>>
 
     @Transaction
-    @Query("SELECT * FROM uly WHERE stanovisteId = :stanovisteId")
-    fun getUlWithOthersByStanovisteId(stanovisteId: Int): LiveData<List<UlWithOther>>
+    @Query("SELECT * FROM uly WHERE id = :ulId AND stanovisteId = :stanovisteId")
+    fun getUlWithOthersByStanovisteId(ulId: Int, stanovisteId: Int): LiveData<UlWithOther>
+
+    @Transaction
+    @Query("""
+        SELECT * 
+        FROM uly 
+        INNER JOIN stanoviste ON uly.stanovisteId = stanoviste.id 
+        WHERE uly.macAddress = :ulMacAddress AND stanoviste.siteMAC = :stanovisteMacAddress
+        """)
+    fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?>
 }

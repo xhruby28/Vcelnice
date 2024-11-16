@@ -21,7 +21,7 @@ data class Uly(
     var cisloUlu: Int?,
     var popis: String?,
     var maMAC: Boolean = false,
-    var macAdress: String? = null,
+    var macAddress: String? = null,
     var problemovyUl: Boolean = false,
     var posledniProblem: String? = null, // Poslední zaznamenaný problém
     var hodnoceni: Float = 0.0f, // Hodnocení pomocí hvězdiček

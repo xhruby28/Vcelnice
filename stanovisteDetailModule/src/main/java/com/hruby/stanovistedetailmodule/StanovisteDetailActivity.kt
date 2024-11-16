@@ -19,6 +19,7 @@ import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
 import com.hruby.navmodule.Navigator
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
+import com.hruby.ulydetailmodule.UlDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +27,8 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityStanovisteDetailBinding
+
+    private var stanovisteId: Int = -1
 
     private val stanovisteViewModel: StanovisteViewModel by viewModels {
         StanovisteViewModelFactory(StanovisteRepository(StanovisteDatabase.getDatabase(this)))
@@ -39,7 +42,7 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
 
         setSupportActionBar(binding.toolbar)
 
-        val stanovisteId = intent.getIntExtra("stanovisteId", -1)
+        stanovisteId = intent.getIntExtra("stanovisteId", -1)
         // Zpracování stanovisteId podle potřeby
 
         // NavHostFragment pro správu fragmentů
@@ -47,7 +50,12 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
         val navController = navHostFragment.navController
 
         // Základní konfigurace pro akční panel
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_info, R.id.nav_uly), binding.drawerLayoutStanoviste)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_info, R.id.nav_uly
+            ),
+            binding.drawerLayoutStanoviste
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Nastavení NavigationView a jeho propojení s navController
@@ -81,9 +89,10 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openUlDetail(ulId: Int) {
-        //val intent = Intent(this, UlDetailActivity::class.java)
-        //intent.putExtra("ulId", ulId)
-        //startActivity(intent)
+        val intent = Intent(this, UlDetailActivity::class.java)
+        intent.putExtra("ulId", ulId)
+        intent.putExtra("stanovisteId", stanovisteId)
+        startActivity(intent)
     }
 
     // Prázdná metoda kvůli implementaci navigátoru

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_back_to_stanoviste"
+            android:title="Zpět na seznam úlů" />
+        <item
+            android:id="@+id/nav_info_ul"
+            android:title="Informace o úlu" />
+        <item
+            android:id="@+id/nav_zaznam_ul"
+            android:title="Záznam kontroly" />
+        <item
+            android:id="@+id/nav_namerene_hodnoty_ul"
+            android:title="Naměřené hodnoty"/>
+        <item
+            android:id="@+id/nav_poznamky_ul"
+            android:title="Poznámky" />
+        <item
+            android:id="@+id/nav_problemy_historie_ul"
+            android:title="Historie problémů" />
+    </group>
+</menu>

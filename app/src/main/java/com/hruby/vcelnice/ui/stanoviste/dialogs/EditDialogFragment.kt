@@ -60,7 +60,8 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         editTextName.setText(arguments?.getString("name") ?: "")
         editTextLastCheck.setText(arguments?.getString("lastCheck") ?: "")
         editTextLocationUrl.setText(arguments?.getString("locationUrl") ?: "")
-        val macAdress = arguments?.getString("macAddress") ?: ""
+        var macAdress = arguments?.getString("macAddress") ?: ""
+        val maMac = requireArguments().getBoolean("maMac")
 
         // Otevření kalendáře při kliknutí na editTextLastCheck
         editTextLastCheck.setOnClickListener {
@@ -109,12 +110,12 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
                 val newLocationUrl = editTextLocationUrl.text.toString()
 
                 // Zavolání metody pro uložení změn
-                listener.onDialogSave(macAdress, index, newName, newLastCheck, newLocationUrl)
+                listener.onDialogSave(maMac, macAdress, index, newName, newLastCheck, newLocationUrl)
 
                 // Skrýt klávesnici
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view?.windowToken, 0)
-                Log.d("EditDialog", "Saving: MAC: $macAdress, ID: $index, Name: $newName, Last Check: $newLastCheck, Location URL: $newLocationUrl")
+                Log.d("EditDialog", "Saving: maMAC: $maMac, MAC: $macAdress, ID: $index, Name: $newName, Last Check: $newLastCheck, Location URL: $newLocationUrl")
             }
             .setNegativeButton("Zrušit") { dialog, _ -> dialog.cancel() }
 
@@ -165,6 +166,6 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
     }
 
     interface EditDialogListener {
-        fun onDialogSave(macAddress: String, index: Int, name: String, lastCheck: String, locationUrl: String)
+        fun onDialogSave(maMac: Boolean, macAddress: String, index: Int, name: String, lastCheck: String, locationUrl: String)
     }
 }
