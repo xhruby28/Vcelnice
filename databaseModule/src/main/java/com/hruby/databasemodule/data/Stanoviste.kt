@@ -12,6 +12,6 @@ data class Stanoviste(
     var lastCheck: String?,
     var locationUrl: String?,
     var lastState: String?,
-    //var imagePath: String?,
-    var imageResId: Int = 0
+    var imagePath: String? = null
+    //var imageResId: Int = 0
 )

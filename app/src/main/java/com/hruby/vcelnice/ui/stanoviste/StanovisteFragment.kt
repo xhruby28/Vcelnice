@@ -38,7 +38,8 @@ import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewMod
 import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
 import com.hruby.navmodule.Navigator
-import com.hruby.vcelnice.ui.stanoviste.dialogs.DeviceListDialog
+import com.hruby.sharedresources.permissionHelpers.BluetoothHelper
+import com.hruby.sharedresources.permissionHelpers.PermissionHelper
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -58,18 +59,6 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
     private val binding get() = _binding!!
 
     private var isFabMenuOpen = false
-
-    // BLE
-    private val bluetoothPermissionsLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val allGranted = permissions.entries.all { it.value }
-            if (allGranted) {
-                requestBluetoothDevices()
-            } else {
-                Toast.makeText(context, "Přístup k Bluetooth byl zamítnut", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -215,7 +204,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
                 locationUrl = locationUrl,
                 lastState = "Nové stanoviště",
                 siteMAC = macAddress,
-                imageResId = 0 // Můžeš zde upravit výchozí hodnotu obrázku
+                //imageResId = 0 // Můžeš zde upravit výchozí hodnotu obrázku
             )
             stanovisteViewModel.insertStanoviste(newStanoviste)
             adapter.notifyItemChanged(index) // Označ nový stav položky
@@ -236,130 +225,52 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         isFabMenuOpen = !isFabMenuOpen
     }
 
-    // Bluetooth
-    private fun checkBluetoothPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val permissions = arrayOf(
-                Manifest.permission.BLUETOOTH_SCAN,
-                Manifest.permission.BLUETOOTH_CONNECT
-            )
+    private val bluetoothPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val requiredPermissions = PermissionHelper.bluetoothPermissions.toSet()
+            val grantedPermissions = permissions.filterValues { it }.keys
 
-            val missingPermissions = permissions.filter {
+            if (requiredPermissions.all { it in grantedPermissions }) {
+                requestBluetoothDevices()
+            } else {
+                Toast.makeText(context, "Bluetooth oprávnění nebyla udělena", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private fun checkBluetoothPermissions() {
+        val bluetoothPermissions = PermissionHelper.bluetoothPermissions
+
+        // Pokud je pro Bluetooth nějaké oprávnění potřeba, zkontrolujte ho
+        if (bluetoothPermissions.isNotEmpty()) {
+            val missingPermissions = bluetoothPermissions.filter {
                 ActivityCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
             }
 
+            // Pokud nějaká oprávnění chybí, požádejte o ně
             if (missingPermissions.isNotEmpty()) {
-                bluetoothPermissionsLauncher.launch(missingPermissions.toTypedArray())
+                bluetoothPermissionLauncher.launch(missingPermissions.toTypedArray())
             } else {
+                // Pokud jsou všechna oprávnění udělena, pokračujte s Bluetooth operacemi
                 requestBluetoothDevices()
             }
         } else {
+            // Pro starší Android verze pokračujte s Bluetooth operacemi
             requestBluetoothDevices()
         }
     }
 
     private fun requestBluetoothDevices() {
-        // Získání spárovaných zařízení
-        val pairedDevices = getPairedBluetoothDevices()
-
-        val dialog = DeviceListDialog { macAddress ->
-            if (isEsp32Device(macAddress)) {
-                openAddDialog(macAddress, true)
-            } else {
-                Toast.makeText(context, "Neplatné ESP32 zařízení", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        dialog.show(childFragmentManager, "DeviceListDialog")
-
-        // Zahájení skenování dostupných zařízení
-        scanForNearbyDevices { nearbyDevices ->
-            // Sloučení spárovaných a dostupných zařízení a jejich zobrazení
-            dialog.updateDeviceList(pairedDevices, nearbyDevices)
-            if (pairedDevices.isEmpty()){
-                Log.d("StanovisteFragment", "Seznam pairedDevices je prázdný")
-            } else {
-                Log.d("StanovisteFragment", "Seznam pairedDevices není prázdný")
-            }
-
-            if (nearbyDevices.isEmpty()){
-                Log.d("StanovisteFragment", "Seznam nearbyDevices je prázdný")
-            } else {
-                Log.d("StanovisteFragment", "Seznam nearbyDevices není prázdný")
-            }
-        }
-    }
-
-    // Vrací seznam spárovaných zařízení
-    @SuppressLint("MissingPermission")
-    private fun getPairedBluetoothDevices(): List<BluetoothDevice> {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        return bluetoothAdapter?.bondedDevices?.toList() ?: emptyList()
-    }
-
-    // Skenuje okolní zařízení a volá callback s nalezenými zařízeními
-    @SuppressLint("MissingPermission")
-    private fun scanForNearbyDevices(callback: (List<BluetoothDevice>) -> Unit) {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        val scanner = bluetoothAdapter.bluetoothLeScanner
-        val allDevices: MutableList<BluetoothDevice> = mutableListOf()  // MutableList pro dynamickou úpravu seznamu zařízení
-
-        // BLE Scan Callback
-        val bleScanCallback = object : ScanCallback() {
-            override fun onScanResult(callbackType: Int, result: ScanResult) {
-                if (!allDevices.contains(result.device)) {
-                    allDevices.add(result.device)
+        BluetoothHelper.requestBluetoothDevices(
+            context = requireContext(),
+            fragmentManager = childFragmentManager,
+            onDeviceSelected = { macAddress ->
+                if (BluetoothHelper.isEsp32Device(macAddress)) {
+                    openAddDialog(macAddress, true) // Vlastní chování fragmentu
+                } else {
+                    Toast.makeText(context, "Neplatné ESP32 zařízení", Toast.LENGTH_SHORT).show()
                 }
             }
-
-            override fun onBatchScanResults(results: List<ScanResult>) {
-                results.forEach { result ->
-                    if (!allDevices.contains(result.device)) {
-                        allDevices.add(result.device)
-                    }
-                }
-            }
-
-            override fun onScanFailed(errorCode: Int) {
-                Toast.makeText(context, "BLE skenování se nezdařilo", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // Classic Bluetooth Scan Callback
-        val bluetoothReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (BluetoothDevice.ACTION_FOUND == intent?.action) {
-                    val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                    device?.let {
-                        if (!allDevices.contains(it)) {
-                            allDevices.add(it)
-                        }
-                    }
-                }
-            }
-        }
-
-        // Registrovat přijímač pro běžné Bluetooth zařízení
-        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        context?.registerReceiver(bluetoothReceiver, filter)
-
-        // Zahájit skenování BLE
-        scanner.startScan(bleScanCallback)
-        // Zahájit skenování klasických BT zařízení
-        bluetoothAdapter.startDiscovery()
-
-        // Ukončit skenování po 10 sekundách a vrátit seznam zařízení
-        Handler(Looper.getMainLooper()).postDelayed({
-            scanner.stopScan(bleScanCallback)
-            bluetoothAdapter.cancelDiscovery()
-            context?.unregisterReceiver(bluetoothReceiver)
-            callback(allDevices)
-        }, 10000)
-    }
-
-    private fun isEsp32Device(macAddress: String): Boolean {
-        // Filtr na MAC adresu ESP zařízení
-        return macAddress.startsWith("EC:DA:3B")
+        )
     }
 
     // Navigace do modulu s detaily

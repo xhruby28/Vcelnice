@@ -4,13 +4,13 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_back_to_main"
-            android:title="Vrátit na výběr stanoviště"/>
+            android:title="Zpět na výběr stanovišť"/>
         <item
             android:id="@+id/nav_info"
             android:title="Informace o stanovišti"/>
         <item
             android:id="@+id/nav_uly"
-            android:title="Dashboard s úly a základními informacemi"/>
+            android:title="Seznam úlů"/>
         <item
             android:id="@+id/nav_notifications"
             android:title="Notifikace"/>

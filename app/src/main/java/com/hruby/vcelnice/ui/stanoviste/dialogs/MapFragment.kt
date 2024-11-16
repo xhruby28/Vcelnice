@@ -59,7 +59,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             map.clear() // Vyčisti předchozí markery
             map.addMarker(MarkerOptions().position(latLng))
             listener?.onLocationSelected(latLng) // Volej metodu pro předání souřadnic
-            parentFragmentManager.popBackStack() // Zavři mapu
+            //parentFragmentManager.popBackStack() // Zavři mapu
         }
     }
 

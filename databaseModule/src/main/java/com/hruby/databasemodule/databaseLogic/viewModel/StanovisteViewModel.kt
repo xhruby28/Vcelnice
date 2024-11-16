@@ -37,4 +37,8 @@ class StanovisteViewModel(private val repository: StanovisteRepository) : ViewMo
     fun getStanovisteById(id: Int): LiveData<Stanoviste> {
         return repository.getStanovisteById(id)
     }
+
+    fun countUlyByStanovisteId(stanovisteId: Int): LiveData<Int> {
+        return repository.countUlyByStanovisteId(stanovisteId)
+    }
 }

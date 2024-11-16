@@ -1,4 +1,4 @@
-package com.hruby.vcelnice.ui.stanoviste.dialogs
+package com.hruby.sharedresources.dialogs
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -12,12 +12,11 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hruby.vcelnice.R
+import com.hruby.sharedresources.R
 
 class DeviceListDialog(
-    private val onDeviceSelected: (String) -> Unit
+        private val onDeviceSelected: (String) -> Unit
 ) : DialogFragment() {
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DeviceAdapter
     private val pairedDevices: MutableList<BluetoothDevice> = mutableListOf()

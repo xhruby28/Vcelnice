@@ -86,6 +86,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
                         // Zvoleno "Zadat URL"
                         editTextLocationUrl.visibility = View.VISIBLE
                         btnPickLocation.visibility = View.GONE
+                        fragmentContainer?.visibility = View.GONE
                     }
                 }
             }
@@ -146,7 +147,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         val longitude = String.format(Locale.US, "%.6f", latLng.longitude)
         val locationUrl = "https://maps.google.com/?q=$latitude,$longitude"
         editTextLocationUrl.setText(locationUrl)
-        fragmentContainer?.visibility = View.GONE
+        //fragmentContainer?.visibility = View.GONE
     }
 
     private fun showDatePickerDialog() {

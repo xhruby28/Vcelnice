@@ -39,4 +39,7 @@ interface UlyDao {
         WHERE uly.macAddress = :ulMacAddress AND stanoviste.siteMAC = :stanovisteMacAddress
         """)
     fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?>
+
+    @Query("SELECT COUNT(*) FROM uly WHERE stanovisteId = :stanovisteId")
+    fun countUlyByStanovisteId(stanovisteId: Int): LiveData<Int>
 }
