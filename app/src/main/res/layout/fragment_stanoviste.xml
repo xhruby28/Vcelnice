@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="4dp"
         android:orientation="vertical"
         android:visibility="gone"
@@ -34,17 +34,15 @@
         app:layout_constraintEnd_toEndOf="@+id/scrollView"
         tools:visibility="visible">
 
-        <Button
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/button_add_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="#80FFAB00"
             android:paddingStart="4dp"
             android:paddingTop="0dp"
             android:paddingEnd="2dp"
             android:paddingBottom="0dp"
             android:text="Přidat lokalitu"
-            android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             app:icon="@android:drawable/ic_input_add"
@@ -52,17 +50,16 @@
             app:iconTint="#0048FF"
             tools:ignore="HardcodedText" />
 
-        <Button
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/button_add_smart_hive"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="#80FFAB00"
             android:paddingStart="4dp"
             android:paddingTop="0dp"
             android:paddingEnd="2dp"
             android:paddingBottom="0dp"
+            android:layout_marginTop="4dp"
             android:text="Přidat zařízení"
-            android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             app:icon="@android:drawable/stat_sys_data_bluetooth"
@@ -79,12 +76,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/fab_margin"
         android:clickable="true"
         android:contentDescription="@null"
         android:focusable="true"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#FFAB00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

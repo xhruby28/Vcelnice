@@ -1,20 +1,9 @@
 package com.hruby.vcelnice.ui.stanoviste
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.content.pm.PackageManager
-import android.Manifest
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -38,8 +27,8 @@ import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewMod
 import com.hruby.vcelnice.R
 import com.hruby.vcelnice.databinding.FragmentStanovisteBinding
 import com.hruby.navmodule.Navigator
-import com.hruby.sharedresources.permissionHelpers.BluetoothHelper
-import com.hruby.sharedresources.permissionHelpers.PermissionHelper
+import com.hruby.sharedresources.helpers.BluetoothHelper
+import com.hruby.sharedresources.helpers.PermissionHelper
 import com.hruby.vcelnice.ui.stanoviste.dialogs.EditDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

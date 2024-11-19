@@ -1,4 +1,4 @@
-package com.hruby.sharedresources.permissionHelpers
+package com.hruby.sharedresources.helpers
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -32,18 +32,15 @@ object PermissionHelper {
             )
         } else emptyArray()
 
-    val storagePermissions: Array<String>
+    val storagePermissionsRead: Array<String>
         get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                android.Manifest.permission.READ_MEDIA_IMAGES,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+            arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES)
         } else {
-            arrayOf(
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+            arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+
+    val storagePermissionsWrite: Array<String>
+        get() = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     val cameraPermissions: Array<String>
         get() = arrayOf(android.Manifest.permission.CAMERA)

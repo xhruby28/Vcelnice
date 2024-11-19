@@ -1,4 +1,4 @@
-package com.hruby.sharedresources.permissionHelpers
+package com.hruby.sharedresources.helpers
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,60 +8,263 @@
     android:id="@+id/stanoviste_detail_info_fragment"
     tools:context=".ui.infoStanoviste.InfoStanovisteFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="133dp"
+            tools:layout_editor_absoluteY="0dp"
+            tools:visibility="visible">
 
-            <ImageView
-                android:id="@+id/stanoviste_detail_info_fragment_image"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="Obrázek stanoviště"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_launcher_background" />
+                android:layout_margin="2dp">
 
-            <TextView
-                android:id="@+id/stanoviste_detail_info_fragment_nazev_stanoviste"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:breakStrategy="simple"
-                android:gravity="center"
-                android:scrollHorizontally="false"
-                android:singleLine="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_image"
-                tools:text="Název stanoviště je moc dlouhý, jak se to zachová" />
+                <ImageView
+                    android:id="@+id/stanoviste_detail_info_fragment_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:contentDescription="Obrázek stanoviště"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ic_launcher_background" />
 
-            <TextView
-                android:id="@+id/stanoviste_detail_info_fragment_stanoviste_maMac"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_nazev_stanoviste"
-                tools:text="mac adresa" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_image" />
 
+                <TextView
+                    android:id="@+id/stanoviste_detail_info_fragment_nazev_stanoviste"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:breakStrategy="simple"
+                    android:gravity="center"
+                    android:scrollHorizontally="false"
+                    android:singleLine="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_image"
+                    tools:text="Název stanoviště je moc dlouhý, jak se to zachová" />
 
-</androidx.cardview.widget.CardView>
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_nazev_stanoviste" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    style=""
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_nazev_stanoviste">
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_maMac_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MAC adresa: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_maMac"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.113"
+                        app:layout_constraintStart_toEndOf="@+id/stanoviste_detail_info_fragment_stanoviste_maMac_text"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="mac adresa" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_lastCheck_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Kontrola:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_maMac_text" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_lastCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/stanoviste_detail_info_fragment_stanoviste_maMac"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_maMac"
+                        tools:text="posledni kontrola" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_pocetUlu_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Počet úlů:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_lastCheck_text" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_pocetUlu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/stanoviste_detail_info_fragment_stanoviste_lastCheck"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_lastCheck_text"
+                        tools:text="pocet ulu" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_lastState_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Poslední stav: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_pocetUlu_text" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_lastState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/stanoviste_detail_info_fragment_stanoviste_pocetUlu"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_pocetUlu_text"
+                        tools:text="poslední stav" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_gps_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Souřadnice:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_lastState_text" />
+
+                    <TextView
+                        android:id="@+id/stanoviste_detail_info_fragment_stanoviste_gps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:autoLink="web"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/holo_blue_dark"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/stanoviste_detail_info_fragment_stanoviste_lastState"
+                        app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_lastState_text"
+                        tools:text="gps souradnice" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/stanoviste_detail_info_fragment_fab_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Synchronizovat"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:icon="@drawable/sync_24dp"
+        app:iconPadding="0dp"
+        app:iconTint="#DD2C00"
+        app:layout_constraintBottom_toTopOf="@+id/stanoviste_detail_info_fragment_fab"
+        app:layout_constraintEnd_toEndOf="@+id/stanoviste_detail_info_fragment_fab"
+        tools:visibility="visible" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/stanoviste_detail_info_fragment_fab_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Upravit"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:icon="@drawable/edit_square_24dp"
+        app:iconPadding="0dp"
+        app:iconTint="#DD2C00"
+        app:layout_constraintBottom_toTopOf="@+id/stanoviste_detail_info_fragment_fab_sync"
+        app:layout_constraintEnd_toEndOf="@+id/stanoviste_detail_info_fragment_fab"
+        tools:visibility="visible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/stanoviste_detail_info_fragment_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        android:src="@drawable/arrow_upward_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="40dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,6 +66,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         // Otevření kalendáře při kliknutí na editTextLastCheck
         editTextLastCheck.setOnClickListener {
             showDatePickerDialog()
+            hideKeyboard(view)
         }
 
         // Skrytí fragment_containeru na začátku
@@ -98,8 +99,11 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
             }
         }
 
+
+
         // Kliknutí na "Vybrat na mapě" otevře mapu
         btnPickLocation.setOnClickListener {
+            hideKeyboard(view)
             openMap()
         }
 
@@ -114,8 +118,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
                 listener.onDialogSave(maMac, macAdress, index, newName, newLastCheck, newLocationUrl)
 
                 // Skrýt klávesnici
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                hideKeyboard(view)
                 Log.d("EditDialog", "Saving: maMAC: $maMac, MAC: $macAdress, ID: $index, Name: $newName, Last Check: $newLastCheck, Location URL: $newLocationUrl")
             }
             .setNegativeButton("Zrušit") { dialog, _ -> dialog.cancel() }
@@ -164,6 +167,12 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
             }, year, month, day)
 
         datePickerDialog.show()
+    }
+
+    private // Skrytí klávesnice
+    fun hideKeyboard(view: View) {
+        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     interface EditDialogListener {

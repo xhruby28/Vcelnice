@@ -42,11 +42,14 @@ dependencies {
     implementation(project(":databaseModule"))
     implementation(project(":sharedResources"))
     implementation(project(":NavModule"))
+    implementation(project(":ulyDetailModule"))
 
     implementation(libs.hilt.android)
-    implementation(project(":ulyDetailModule"))
     //implementation(libs.androidx.hilt.lifecycle.viewmodel)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.glide)  // Nebo nejnovější verze Glide
+    annotationProcessor(libs.compiler)
 
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
