@@ -29,6 +29,10 @@ class StanovisteRepository(private val db: StanovisteDatabase) {
         return db.stanovisteDao().getStanovisteWithUly(id)
     }
 
+    fun getStanovisteByMAC(macAddress: String): LiveData<Stanoviste> {
+        return db.stanovisteDao().getStanovisteByMAC(macAddress)
+    }
+
     fun countUlyByStanovisteId(stanovisteId: Int): LiveData<Int> {
         return db.ulyDao().countUlyByStanovisteId(stanovisteId)
     }

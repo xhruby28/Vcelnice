@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
+import com.hruby.sharedresources.helpers.BluetoothHelper
 import com.hruby.sharedresources.helpers.ImageHelper
 import com.hruby.sharedresources.helpers.PermissionHelper
 import com.hruby.stanovistedetailmodule.databinding.FragmentInfoStanovisteBinding
@@ -70,7 +73,7 @@ class InfoStanovisteFragment : Fragment() {
         binding.stanovisteDetailInfoFragmentFabSync.setOnClickListener{
             viewModel.stanoviste.observe(viewLifecycleOwner){ stanoviste ->
                 if(stanoviste.maMAC){
-                    //checkBluetoothPermissions()
+                    checkBluetoothPermissions()
                 } else {
                     Toast.makeText(context, "Stanoviště není spárované, párování lze vytvořit pomocí UPRAVIT", Toast.LENGTH_SHORT).show()
                 }
@@ -116,7 +119,9 @@ class InfoStanovisteFragment : Fragment() {
                 binding.stanovisteDetailInfoFragmentStanovisteMaMac.text = String.format("Není spárované")
             }
 
-            viewModel.ulyCount.observe(viewLifecycleOwner) { count -> binding.stanovisteDetailInfoFragmentStanovistePocetUlu.text = String.format("$count") }
+            viewModel.ulyCount.observe(viewLifecycleOwner) { count ->
+                binding.stanovisteDetailInfoFragmentStanovistePocetUlu.text = String.format("$count")
+            }
 
             binding.stanovisteDetailInfoFragmentStanovisteGps.setOnClickListener {
                 val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(stanoviste.locationUrl))
@@ -139,7 +144,7 @@ class InfoStanovisteFragment : Fragment() {
         if (isStanovisteInfoFabMenuOpen) {
             fab.setImageResource(com.hruby.sharedresources.R.drawable.arrow_upward_24dp)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.GONE
-            binding.stanovisteDetailInfoFragmentFabSync.visibility = View.VISIBLE
+            binding.stanovisteDetailInfoFragmentFabSync.visibility = View.GONE
         } else {
             fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.VISIBLE
@@ -257,12 +262,22 @@ class InfoStanovisteFragment : Fragment() {
     }
 
     private fun synchronizeWithBTDevice(){
-        var stanovisteMAC: String
+        viewModel.stanoviste.observe(viewLifecycleOwner){ stanoviste ->
+            val stanovisteMAC = stanoviste.siteMAC.toString()
 
-        viewModel.stanoviste.observe(viewLifecycleOwner){ stanoviste->
-            stanovisteMAC = stanoviste.siteMAC.toString()
+            BluetoothHelper.connectToDevice(
+                context = requireContext(), // Kontext aktivity nebo fragmentu
+                macAddress = stanovisteMAC, // Zde použij MAC adresu zařízení
+                onConnected = {
+                    // Kód, který se spustí po úspěšném připojení
+                    Log.d("Activity", "Device connected, ready to send sync command")
+                    BluetoothHelper.sendSyncCommand("START_SYNC",requireContext())
+                },
+                onError = { error ->
+                    // Kód pro ošetření chyby při připojování
+                    Log.e("Activity", "Error: $error")
+                }
+            )
         }
-
-
     }
 }

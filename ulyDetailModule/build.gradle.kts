@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":NavModule"))
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.legacy.support.v4)
     ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.recyclerview)

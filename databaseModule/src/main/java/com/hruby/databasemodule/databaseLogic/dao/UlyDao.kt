@@ -1,6 +1,5 @@
 package com.hruby.databasemodule.databaseLogic.dao
 
-import android.net.MacAddress
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete

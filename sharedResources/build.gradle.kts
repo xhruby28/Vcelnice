@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":databaseModule"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
