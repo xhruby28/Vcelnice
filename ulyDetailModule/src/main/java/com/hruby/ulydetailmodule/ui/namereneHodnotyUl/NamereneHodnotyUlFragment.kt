@@ -66,7 +66,7 @@ class NamereneHodnotyUlFragment : Fragment() {
             if (ul.mereneHodnoty.isEmpty()) {
                 //TODO("Tuto funkci následně odebrat při hotovém produktu, protože se jedná o prezentační data.")
                 mereneHodnoty.addAll(showcaseHodnoty)
-                Toast.makeText(context,"Tyto data jsou jenom prezent",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Tyto data jsou jenom prezentační",Toast.LENGTH_SHORT).show()
             } else {
                 mereneHodnoty.addAll(ul.mereneHodnoty)
             }
