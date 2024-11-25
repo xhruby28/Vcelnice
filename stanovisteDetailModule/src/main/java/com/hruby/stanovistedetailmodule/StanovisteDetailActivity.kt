@@ -1,11 +1,15 @@
 package com.hruby.stanovistedetailmodule
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.navigation.findNavController
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,6 +17,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.bumptech.glide.Glide
 import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
@@ -20,7 +25,9 @@ import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
 import com.hruby.navmodule.Navigator
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
 import com.hruby.ulydetailmodule.UlDetailActivity
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class StanovisteDetailActivity : AppCompatActivity(), Navigator {
@@ -29,6 +36,7 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
     private lateinit var binding: ActivityStanovisteDetailBinding
 
     private var stanovisteId: Int = -1
+    private var previousImagePath: String? = null
 
     private val stanovisteViewModel: StanovisteViewModel by viewModels {
         StanovisteViewModelFactory(StanovisteRepository(StanovisteDatabase.getDatabase(this)))
@@ -62,13 +70,17 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
         val navView: NavigationView = findViewById(R.id.nav_view_stanoviste)
         val headerView = navView.getHeaderView(0) // Získání hlavičky navigation view
         val navHeaderTitle = headerView.findViewById<TextView>(R.id.nav_stanoviste_detail_header_title) // Odkaz na TextView v headeru
-        //val navHeaderImage = headerView.findViewById<ImageView>(R.id.nav_stanoviste_detail_header_image)
+        val navHeaderImage = headerView.findViewById<ImageView>(R.id.nav_stanoviste_detail_header_image)
 
         navView.setupWithNavController(navController)
 
         stanovisteViewModel.getStanovisteById(stanovisteId).observe(this) { stanoviste ->
             navHeaderTitle.text = stanoviste?.name ?: "Stanoviště Detail"
-            //navHeaderImage.src = stanoviste?.imageResId ?: "Stanoviště Detail"
+
+            if (stanoviste.imagePath != previousImagePath) {
+                previousImagePath = stanoviste.imagePath
+                loadImage(stanoviste.imagePath, navHeaderImage)
+            }
         }
 
         val navMenu: MenuItem = navView.menu.findItem(R.id.nav_back_to_main)
@@ -97,5 +109,33 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
 
     // Prázdná metoda kvůli implementaci navigátoru
     override fun openStanovisteDetail(stanovisteId: Int) {
+    }
+
+    private fun loadImage(imagePath: String?, view: ImageView) {
+        imagePath?.let { path ->
+            if (path == previousImagePath) return
+
+            previousImagePath = path
+
+            val file = File(this.filesDir, path)
+
+            if (file.exists()) {
+                if (path == previousImagePath) return
+
+                previousImagePath = path // Aktualizuj uloženou cestu k obrázku
+                Log.d("InfoStanovisteFragment", "Loading image from: $path")
+                val uri = FileProvider.getUriForFile(
+                    this,
+                    "${this.packageName}.fileprovider",
+                    file
+                )
+                Picasso.get()
+                    .load(uri)
+                    .placeholder(com.hruby.sharedresources.R.drawable.ic_launcher_background)
+                    .into(view)
+            } else {
+                Log.e("InfoStanovisteFragment", "File does not exist at: $path")
+            }
+        }
     }
 }

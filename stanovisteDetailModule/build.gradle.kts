@@ -48,7 +48,8 @@ dependencies {
     //implementation(libs.androidx.hilt.lifecycle.viewmodel)
     ksp(libs.hilt.compiler)
 
-    implementation(libs.glide)  // Nebo nejnovější verze Glide
+    implementation(libs.glide)
+    implementation(libs.picasso)
     annotationProcessor(libs.compiler)
 
     implementation(libs.androidx.legacy.support.v4)

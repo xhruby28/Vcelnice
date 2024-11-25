@@ -49,7 +49,7 @@ class UlDetailActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_info_ul, R.id.nav_namerene_hodnoty_ul, R.id.nav_poznamky_ul, R.id.nav_problemy_historie_ul
+                R.id.nav_info_ul, R.id.nav_namerene_hodnoty_ul//, R.id.nav_poznamky_ul, R.id.nav_problemy_historie_ul
             ),
             binding.drawerLayoutUl
         )
