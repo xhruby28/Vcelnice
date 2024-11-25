@@ -76,7 +76,6 @@ class UlyStanovisteFragment : Fragment(), UlyCreateDialogFragment.UlCreateDialog
         ulyViewModel = ViewModelProvider(this, factory)[UlyViewModel::class.java]
 
         // Pozorování na změny v LiveData
-        val stanovisteId = requireActivity().intent.getIntExtra("stanovisteId", -1)
         ulyViewModel.getUlyByStanovisteId(stanovisteId).observe(viewLifecycleOwner){ uly ->
             ulyList.clear()
             ulyList.addAll(uly)

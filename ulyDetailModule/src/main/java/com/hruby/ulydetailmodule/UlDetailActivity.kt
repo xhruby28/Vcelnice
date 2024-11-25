@@ -1,18 +1,15 @@
 package com.hruby.ulydetailmodule
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
@@ -74,7 +71,8 @@ class UlDetailActivity : AppCompatActivity() {
             val cisloUlu = ul.ul.cisloUlu
             navHeaderTitle.text = String.format("Úl číslo $cisloUlu")
             val navMereneHodnoty: MenuItem = navView.menu.findItem(R.id.nav_namerene_hodnoty_ul)
-            navMereneHodnoty.isVisible = ul.ul.maMAC
+            //TODO("!!!Nezapomenout zapnout následující funkci, protože je vypnutá kvůli testování!!!")
+            //navMereneHodnoty.isVisible = ul.ul.maMAC
         }
     }
 

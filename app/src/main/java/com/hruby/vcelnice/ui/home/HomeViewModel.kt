@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class HomeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "Aplikace je ve vývoji, jedná se o prázdný fragment. Stránka která je v tuto chvíli funkční je Stanoviště"
     }
     val text: LiveData<String> = _text
 }
