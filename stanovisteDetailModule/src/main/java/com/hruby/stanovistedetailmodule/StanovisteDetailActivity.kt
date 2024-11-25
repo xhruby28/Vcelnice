@@ -1,7 +1,6 @@
 package com.hruby.stanovistedetailmodule
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -17,7 +16,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.fragment.NavHostFragment
-import com.bumptech.glide.Glide
 import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
@@ -113,15 +111,9 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
 
     private fun loadImage(imagePath: String?, view: ImageView) {
         imagePath?.let { path ->
-            if (path == previousImagePath) return
-
-            previousImagePath = path
-
             val file = File(this.filesDir, path)
 
             if (file.exists()) {
-                if (path == previousImagePath) return
-
                 previousImagePath = path // Aktualizuj uloženou cestu k obrázku
                 Log.d("InfoStanovisteFragment", "Loading image from: $path")
                 val uri = FileProvider.getUriForFile(

@@ -133,8 +133,9 @@ class InfoStanovisteFragment : Fragment() {
 //            TODO("Při načítání odkazu z databáze to problikává, po znovu")
             if (stanoviste.imagePath != previousImagePath) {
                 previousImagePath = stanoviste.imagePath
-                loadImage(stanoviste.imagePath)
+
             }
+            loadImage(stanoviste.imagePath)
         }
     }
 

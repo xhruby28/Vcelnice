@@ -9,5 +9,15 @@
         android:id="@+id/nav_info_ul"
         android:name="com.hruby.ulydetailmodule.ui.infoUl.InfoUlFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_info_ul" />
+        tools:layout="@layout/fragment_info_ul" >
+        <action
+            android:id="@+id/action_nav_info_ul_to_nav_namerene_hodnoty_ul"
+            app:destination="@id/nav_namerene_hodnoty_ul" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_namerene_hodnoty_ul"
+        android:name="com.hruby.ulydetailmodule.ui.namereneHodnotyUl.NamereneHodnotyUlFragment"
+        android:label="Naměřené hodnoty"
+        tools:layout="@layout/fragment_namerene_hodnoty_ul"/>
 </navigation>
