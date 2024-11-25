@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":NavModule"))
 
     implementation(libs.hilt.android)
+    implementation(libs.picasso)
     //implementation(libs.androidx.hilt.lifecycle.viewmodel)
     ksp(libs.hilt.compiler)
 

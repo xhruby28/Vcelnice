@@ -12,17 +12,16 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
-import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.sharedresources.helpers.BluetoothHelper
 import com.hruby.sharedresources.helpers.ImageHelper
 import com.hruby.sharedresources.helpers.PermissionHelper
 import com.hruby.stanovistedetailmodule.databinding.FragmentInfoStanovisteBinding
 import com.hruby.stanovistedetailmodule.R
+import com.squareup.picasso.Picasso
 import java.io.File
 
 class InfoStanovisteFragment : Fragment() {
@@ -35,6 +34,7 @@ class InfoStanovisteFragment : Fragment() {
     private var isStanovisteInfoFabMenuOpen = false
 
     private var currentPhotoUri: Uri? = null
+    private var previousImagePath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,11 +131,32 @@ class InfoStanovisteFragment : Fragment() {
 
 //            TODO("Zde přidat další informace stanoviště pro Detailní infon např. notifikace, problemy v úlech")
 //            TODO("Při načítání odkazu z databáze to problikává, po znovu")
-            stanoviste.imagePath?.let { path ->
-                Glide.with(requireContext())
-                    .load(File(path))
-                    .centerCrop()
+            if (stanoviste.imagePath != previousImagePath) {
+                previousImagePath = stanoviste.imagePath
+                loadImage(stanoviste.imagePath)
+            }
+        }
+    }
+
+    private fun loadImage(imagePath: String?) {
+        imagePath?.let { path ->
+
+            val file = File(requireContext().filesDir, path)
+
+            if (file.exists()) {
+                Log.d("InfoStanovisteFragment", "Loading image from: $path")
+                val uri = FileProvider.getUriForFile(
+                    requireContext(),
+                    "${requireContext().packageName}.fileprovider",
+                    file
+                )
+                Picasso.get()
+                    .load(uri)
+                    .placeholder(com.hruby.sharedresources.R.drawable.ic_launcher_background)
                     .into(binding.stanovisteDetailInfoFragmentImage)
+
+            } else {
+                Log.e("InfoStanovisteFragment", "File does not exist at: $path")
             }
         }
     }
@@ -194,7 +215,9 @@ class InfoStanovisteFragment : Fragment() {
                         //TODO("Focení/ukládání foto nefunguje")
                         if (PermissionHelper.hasPermissions(requireContext(), PermissionHelper.cameraPermissions)) {
                             currentPhotoUri = ImageHelper.captureImage(requireContext())
-                            cameraLauncher.launch(currentPhotoUri)
+                            currentPhotoUri?.let {
+                                cameraLauncher.launch(it)
+                            } ?: Toast.makeText(context, "Chyba při přípravě fotoaparátu.", Toast.LENGTH_SHORT).show()
                         } else {
                             PermissionHelper.requestPermissions(permissionLauncher, PermissionHelper.cameraPermissions)
                         }
@@ -207,24 +230,29 @@ class InfoStanovisteFragment : Fragment() {
     // Funkce pro aktualizaci obrázku pro stanoviště v databázi
     private fun updateStanovisteImage(imagePath: String?) {
         imagePath?.let { newImagePath ->
-            viewModel.stanoviste.observe(viewLifecycleOwner) { stanoviste ->
+            viewModel.stanoviste.value?.let { stanoviste ->
                 // Smazání starého obrázku, pokud existuje
                 stanoviste.imagePath?.let { oldImagePath ->
                     ImageHelper.deleteImageFromInternalStorage(oldImagePath)
                 }
-                // Aktualizace cesty v databázi
-                stanoviste.imagePath = newImagePath
+                // Aktualizace cesty v databázi s relativní cestou
+                stanoviste.imagePath = "images/${File(newImagePath).name}"
                 viewModel.updateStanoviste(stanoviste)
+            }
 
-                Glide.with(requireContext())
-                    .load("") // Prázdné načtení nebo placeholder
+            val file = File(requireContext().filesDir, newImagePath)
+            if (file.exists()) {
+                val uri = FileProvider.getUriForFile(
+                    requireContext(),
+                    "${requireContext().packageName}.fileprovider",
+                    file
+                )
+                Picasso.get()
+                    .load(uri)
+                    .placeholder(com.hruby.sharedresources.R.drawable.ic_launcher_background)
                     .into(binding.stanovisteDetailInfoFragmentImage)
-
-                // Poté načtěte nový obrázek
-                Glide.with(requireContext())
-                    .load(File(newImagePath))
-                    .centerCrop()
-                    .into(binding.stanovisteDetailInfoFragmentImage)
+            } else {
+                Log.e("InfoStanovisteFragment", "File does not exist at: $newImagePath")
             }
         }
     }

@@ -1,16 +1,21 @@
 package com.hruby.vcelnice.ui.stanoviste
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.hruby.databasemodule.data.Stanoviste
 import com.hruby.vcelnice.R
+import com.squareup.picasso.Picasso
+import java.io.File
 
 
 class StanovisteRecycleViewAdapter(
@@ -53,7 +58,7 @@ class StanovisteRecycleViewAdapter(
 
         holder.textLocationUrl.text = gpsCoordinates
         holder.textLastState.text = stanoviste.lastState
-        holder.imageView
+        loadImage(holder.itemView.context, stanoviste.imagePath, holder.imageView)
 
         if (stanoviste.maMAC){
             holder.stanovisteHaveMac.visibility = View.VISIBLE
@@ -80,6 +85,27 @@ class StanovisteRecycleViewAdapter(
         }
 
 
+    }
+
+    private fun loadImage(context: Context, imagePath: String?, view: ImageView) {
+        imagePath?.let { path ->
+            val file = File(context.filesDir, path)
+
+            if (file.exists()) {
+                Log.d("InfoStanovisteFragment", "Loading image from: $path")
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.fileprovider",
+                    file
+                )
+                Picasso.get()
+                    .load(uri)
+                    .placeholder(com.hruby.sharedresources.R.drawable.ic_launcher_background)
+                    .into(view)
+            } else {
+                Log.e("InfoStanovisteFragment", "File does not exist at: $path")
+            }
+        }
     }
 
     private fun showPopupMenu(view: View, stanoviste: Stanoviste, position: Int) {
