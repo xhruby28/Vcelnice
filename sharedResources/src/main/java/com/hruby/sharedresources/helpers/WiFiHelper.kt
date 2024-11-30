@@ -240,7 +240,7 @@ object WiFiHelper {
                 }
             }
             BluetoothHelper.sendCommand("SYNC_COMPLETE", context)
-            disconnect(context)
+            disconnect(context, true)
         }
     }
 }

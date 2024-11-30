@@ -215,10 +215,17 @@ object BluetoothHelper {
                             )
                         }
                         "WIFI_FAILED" -> {
-
+                            Log.e("BluetoothHelper /CharChange", "ESP WiFi Init failed")
+                            disconnect(context, false)
+                            Handler(Looper.getMainLooper()).post {
+                                Toast.makeText(context, "WiFi na sběrnici se nepodařilo inicializovat", Toast.LENGTH_SHORT).show()
+                            }
                         }
                         "SYNC_COMPLETE_ACK" -> {
-                            disconnect(context)
+                            disconnect(context, true)
+                            Handler(Looper.getMainLooper()).post {
+                                Toast.makeText(context, "Synchronizace hotova", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
@@ -276,7 +283,7 @@ object BluetoothHelper {
             val success = bleGatt?.writeCharacteristic(it) ?: false
             if (!success) {
                 Log.e("BluetoothHelper", "Failed to write sync command")
-                disconnect(context)
+                disconnect(context, false)
             }
         }
     }
@@ -290,17 +297,17 @@ object BluetoothHelper {
             val success = bleGatt?.writeCharacteristic(it, commandBytes, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT) ?: false
             if (success == false) {
                 Log.e("BluetoothHelper", "Failed to write sync command")
-                disconnect(context)
+                disconnect(context, false)
             }
         }
     }
 
     // Odpojení od zařízení BLE
     @SuppressLint("MissingPermission")
-    fun disconnect(context: Context) {
+    fun disconnect(context: Context, lock: Boolean) {
         Log.e("BluetoothHelper", "Closing connection now")
         WiFiHelper.disconnectFromWiFi(context)
-        releaseWakeLock(context, false)
+        releaseWakeLock(context, lock)
         bleGatt?.disconnect()
         bleGatt?.close()
         bleGatt = null
