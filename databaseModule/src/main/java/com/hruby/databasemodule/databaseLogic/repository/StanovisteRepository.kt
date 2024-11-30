@@ -29,7 +29,7 @@ class StanovisteRepository(private val db: StanovisteDatabase) {
         return db.stanovisteDao().getStanovisteWithUly(id)
     }
 
-    fun getStanovisteByMAC(macAddress: String): LiveData<Stanoviste> {
+    suspend fun getStanovisteByMAC(macAddress: String): Stanoviste? {
         return db.stanovisteDao().getStanovisteByMAC(macAddress)
     }
 

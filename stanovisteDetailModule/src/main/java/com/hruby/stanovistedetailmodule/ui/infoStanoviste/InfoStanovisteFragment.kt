@@ -1,5 +1,6 @@
 package com.hruby.stanovistedetailmodule.ui.infoStanoviste
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,9 +17,16 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
+import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
+import com.hruby.databasemodule.databaseLogic.viewModel.MereneHodnotyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.sharedresources.helpers.BluetoothHelper
 import com.hruby.sharedresources.helpers.ImageHelper
 import com.hruby.sharedresources.helpers.PermissionHelper
+import com.hruby.sharedresources.helpers.WiFiHelper
 import com.hruby.stanovistedetailmodule.databinding.FragmentInfoStanovisteBinding
 import com.hruby.stanovistedetailmodule.R
 import com.squareup.picasso.Picasso
@@ -30,6 +38,10 @@ class InfoStanovisteFragment : Fragment() {
 
     private lateinit var viewModel: InfoStanovisteViewModel
     private var stanovisteId: Int = -1
+
+    private lateinit var ulyViewModel: UlyViewModel
+    private lateinit var mereneHodnotyViewModel: MereneHodnotyViewModel
+    private lateinit var stanovisteViewModel: StanovisteViewModel
 
     private var isStanovisteInfoFabMenuOpen = false
 
@@ -73,7 +85,7 @@ class InfoStanovisteFragment : Fragment() {
         binding.stanovisteDetailInfoFragmentFabSync.setOnClickListener{
             viewModel.stanoviste.observe(viewLifecycleOwner){ stanoviste ->
                 if(stanoviste.maMAC){
-                    checkBluetoothPermissions()
+                    checkPermissions()
                 } else {
                     Toast.makeText(context, "Stanoviště není spárované, párování lze vytvořit pomocí UPRAVIT", Toast.LENGTH_SHORT).show()
                 }
@@ -259,29 +271,29 @@ class InfoStanovisteFragment : Fragment() {
     }
 
     // Bluetooth logika
-    private val bluetoothPermissionLauncher =
+    private val bluetoothAndWiFiPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val requiredPermissions = PermissionHelper.bluetoothPermissions.toSet()
+            val requiredPermissions = PermissionHelper.bluetoothPermissions + PermissionHelper.wifiPermissions
             val grantedPermissions = permissions.filterValues { it }.keys
 
             if (requiredPermissions.all { it in grantedPermissions }) {
                 synchronizeWithBTDevice()
             } else {
-                Toast.makeText(context, "Bluetooth oprávnění nebyla udělena", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Nedostatečná oprávnění pro Bluetooth nebo WiFi", Toast.LENGTH_SHORT).show()
             }
         }
 
-    private fun checkBluetoothPermissions() {
-        val bluetoothPermissions = PermissionHelper.bluetoothPermissions
+    private fun checkPermissions() {
+        val permissions = PermissionHelper.bluetoothPermissions  + PermissionHelper.wifiPermissions
 
         // Pokud je pro Bluetooth nějaké oprávnění potřeba, zkontrolujte ho
-        if (bluetoothPermissions.isNotEmpty()) {
-            val missingPermissions = bluetoothPermissions.filter {
+        if (permissions.isNotEmpty()) {
+            val missingPermissions = permissions.filter {
                 ActivityCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
             }
 
             if (missingPermissions.isNotEmpty()) {
-                bluetoothPermissionLauncher.launch(missingPermissions.toTypedArray())
+                bluetoothAndWiFiPermissionLauncher.launch(missingPermissions.toTypedArray())
             } else {
                 synchronizeWithBTDevice()
             }
@@ -291,22 +303,34 @@ class InfoStanovisteFragment : Fragment() {
     }
 
     private fun synchronizeWithBTDevice(){
-        viewModel.stanoviste.observe(viewLifecycleOwner){ stanoviste ->
-            val stanovisteMAC = stanoviste.siteMAC.toString()
+        var stanovisteMAC = viewModel.stanoviste.value?.siteMAC.toString()
+        val bluetoothEnabled = BluetoothHelper.isBluetoothEnabled()
+        val wifiEnabled = WiFiHelper.isWifiEnabled(requireContext())
 
+        if (wifiEnabled && !bluetoothEnabled){
+            Toast.makeText(requireContext(), "Zapněte Bluetooth pro synchronizaci.", Toast.LENGTH_SHORT).show()
+        } else if (!wifiEnabled && bluetoothEnabled){
+            Toast.makeText(requireContext(), "Zapněte WiFi pro synchronizaci", Toast.LENGTH_SHORT).show()
+        } else {
             BluetoothHelper.connectToDevice(
-                context = requireContext(), // Kontext aktivity nebo fragmentu
-                macAddress = stanovisteMAC, // Zde použij MAC adresu zařízení
+                context = requireContext(),
+                macAddress = stanovisteMAC,
                 onConnected = {
                     // Kód, který se spustí po úspěšném připojení
                     Log.d("Activity", "Device connected, ready to send sync command")
-                    BluetoothHelper.sendSyncCommand("START_SYNC",requireContext())
+                    WiFiHelper.writeMACForWifi(stanovisteMAC)
+                    BluetoothHelper.sendCommand("SYNC",requireContext())
                 },
                 onError = { error ->
                     // Kód pro ošetření chyby při připojování
                     Log.e("Activity", "Error: $error")
                 }
             )
+
+            binding.stanovisteDetailInfoFragmentFab.setImageResource(com.hruby.sharedresources.R.drawable.arrow_upward_24dp)
+            binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.GONE
+            binding.stanovisteDetailInfoFragmentFabSync.visibility = View.GONE
+            isStanovisteInfoFabMenuOpen = !isStanovisteInfoFabMenuOpen
         }
     }
 }

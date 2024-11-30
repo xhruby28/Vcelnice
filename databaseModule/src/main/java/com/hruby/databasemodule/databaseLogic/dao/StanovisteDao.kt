@@ -14,8 +14,33 @@ interface StanovisteDao {
     @Update
     suspend fun update(stanoviste: Stanoviste)
 
+    @Transaction
+    suspend fun delete(stanoviste: Stanoviste) {
+        // Smazání všech úlů přiřazených ke stanovišti
+        deleteUlyByStanovisteId(stanoviste.id)
+        // Poté smažte samotné stanoviště
+        deleteStanovisteEntity(stanoviste)
+    }
+
+    @Query("DELETE FROM uly WHERE stanovisteId = :stanovisteId")
+    suspend fun deleteUlyByStanovisteId(stanovisteId: Int) {
+        // Tady budou volány privátní metody pro smazání závislých entit úlů
+        deletePoznamkyByStanovisteId(stanovisteId)
+        deleteMereneHodnotyByStanovisteId(stanovisteId)
+        deleteProblemyByStanovisteId(stanovisteId)
+    }
+
+    @Query("DELETE FROM poznamka WHERE ulId IN (SELECT id FROM uly WHERE stanovisteId = :stanovisteId)")
+    suspend fun deletePoznamkyByStanovisteId(stanovisteId: Int)
+
+    @Query("DELETE FROM merene_hodnoty WHERE ulId IN (SELECT id FROM uly WHERE stanovisteId = :stanovisteId)")
+    suspend fun deleteMereneHodnotyByStanovisteId(stanovisteId: Int)
+
+    @Query("DELETE FROM problem WHERE ulId IN (SELECT id FROM uly WHERE stanovisteId = :stanovisteId)")
+    suspend fun deleteProblemyByStanovisteId(stanovisteId: Int)
+
     @Delete
-    suspend fun delete(stanoviste: Stanoviste)
+    suspend fun deleteStanovisteEntity(stanoviste: Stanoviste)
 
     @Query("SELECT * FROM stanoviste")
     fun getAllStanoviste(): LiveData<List<Stanoviste>>
@@ -28,5 +53,5 @@ interface StanovisteDao {
     fun getStanovisteWithUly(id: Int): LiveData<StanovisteWithUly>
 
     @Query("SELECT * FROM stanoviste WHERE siteMAC = :macAddress")
-    fun getStanovisteByMAC(macAddress: String): LiveData<Stanoviste>
+    suspend fun getStanovisteByMAC(macAddress: String): Stanoviste?
 }

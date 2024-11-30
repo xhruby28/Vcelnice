@@ -32,6 +32,13 @@ object PermissionHelper {
             )
         } else emptyArray()
 
+    val wifiPermissions: Array<String>
+        get() =
+            arrayOf(
+                android.Manifest.permission.ACCESS_WIFI_STATE,
+                android.Manifest.permission.CHANGE_WIFI_STATE
+            )
+
     val storagePermissionsRead: Array<String>
         get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES)

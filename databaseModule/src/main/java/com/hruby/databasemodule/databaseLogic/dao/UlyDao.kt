@@ -19,8 +19,28 @@ interface UlyDao {
     @Update
     suspend fun updateUl(ul: Uly)
 
+    @Transaction
+    suspend fun deleteUl(ul: Uly) {
+        // Nejdříve smažte všechny závislé záznamy (měřené hodnoty, poznámky, problémy)
+        deleteMereneHodnotyByUlId(ul.id)
+        deletePoznamkyByUlId(ul.id)
+        deleteProblemyByUlId(ul.id)
+        // Poté smažte samotný úl
+        deleteUlEntity(ul)
+    }
+
+    @Query("DELETE FROM merene_hodnoty WHERE ulId = :ulId")
+    suspend fun deleteMereneHodnotyByUlId(ulId: Int)
+
+    @Query("DELETE FROM poznamka WHERE ulId = :ulId")
+    suspend fun deletePoznamkyByUlId(ulId: Int)
+
+    @Query("DELETE FROM problem WHERE ulId = :ulId")
+    suspend fun deleteProblemyByUlId(ulId: Int)
+
     @Delete
-    suspend fun deleteUl(ul: Uly)
+    suspend fun deleteUlEntity(ul: Uly)
+
 
     @Transaction
     @Query("SELECT * FROM uly WHERE stanovisteId = :stanovisteId")
@@ -32,13 +52,15 @@ interface UlyDao {
 
     @Transaction
     @Query("""
-        SELECT * 
-        FROM uly 
-        INNER JOIN stanoviste ON uly.stanovisteId = stanoviste.id 
-        WHERE uly.macAddress = :ulMacAddress AND stanoviste.siteMAC = :stanovisteMacAddress
-        """)
-    fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?>
+        SELECT uly.* FROM uly
+        INNER JOIN stanoviste ON uly.stanovisteId = stanoviste.id
+        WHERE uly.macAddress = :ulMacAddress
+        AND stanoviste.siteMAC = :stanovisteMacAddress
+        LIMIT 1
+    """)
+    suspend fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String,stanovisteMacAddress: String): Uly?
 
     @Query("SELECT COUNT(*) FROM uly WHERE stanovisteId = :stanovisteId")
     fun countUlyByStanovisteId(stanovisteId: Int): LiveData<Int>
+
 }

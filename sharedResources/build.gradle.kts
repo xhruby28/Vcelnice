@@ -34,6 +34,9 @@ android {
 
 dependencies {
     implementation(project(":databaseModule"))
+    implementation(libs.okhttp)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -2,6 +2,7 @@ package com.hruby.ulydetailmodule.ui.namereneHodnotyUl
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,20 +62,29 @@ class NamereneHodnotyUlFragment : Fragment() {
 
         val showcaseHodnoty = List(10) { generateRandomMereneHodnoty(ulId)}
 
-        ulyViewModel.getUlWithOthersByStanovisteId(ulId,stanovisteId).observe(viewLifecycleOwner){ ul ->
-            mereneHodnoty.clear()
-            if (ul.mereneHodnoty.isEmpty()) {
-                //TODO("Tuto funkci následně odebrat při hotovém produktu, protože se jedná o prezentační data.")
-                mereneHodnoty.addAll(showcaseHodnoty)
-                Toast.makeText(context,"Tyto data jsou jenom prezentační",Toast.LENGTH_SHORT).show()
-            } else {
-                mereneHodnoty.addAll(ul.mereneHodnoty)
-            }
-            adapter.notifyDataSetChanged()
-        }
+
 
         adapter = NamereneHodnotyUlRecycleViewAdapter(mereneHodnoty)
         recyclerView.adapter = adapter
+
+        ulyViewModel.getUlWithOthersByStanovisteId(ulId,stanovisteId).observe(viewLifecycleOwner){ ul ->
+            mereneHodnoty.clear()
+            Log.d("NamereneHodnotyUlFragment", "Data loaded: ${ul.mereneHodnoty.size} items")
+            if (ul.mereneHodnoty.isEmpty()) {
+                Log.d("NamereneHodnotyUlFragment", "No measured data available.")
+            } else {
+                mereneHodnoty.addAll(ul.mereneHodnoty)
+            }
+//            if (ul.mereneHodnoty.isEmpty()) {
+//                //TODO("Tuto funkci následně odebrat při hotovém produktu, protože se jedná o prezentační data.")
+//                mereneHodnoty.addAll(showcaseHodnoty)
+//                Toast.makeText(context,"Tyto data jsou jenom prezentační",Toast.LENGTH_SHORT).show()
+//            } else {
+//                mereneHodnoty.addAll(ul.mereneHodnoty)
+//            }
+            mereneHodnoty.addAll(ul.mereneHodnoty)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onDestroyView() {

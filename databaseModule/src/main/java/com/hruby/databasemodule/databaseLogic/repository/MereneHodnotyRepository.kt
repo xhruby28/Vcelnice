@@ -2,6 +2,7 @@ package com.hruby.databasemodule.databaseLogic.repository
 
 import androidx.lifecycle.LiveData
 import com.hruby.databasemodule.data.MereneHodnoty
+import com.hruby.databasemodule.data.Uly
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 
 class MereneHodnotyRepository(private val db: StanovisteDatabase) {
@@ -17,7 +18,15 @@ class MereneHodnotyRepository(private val db: StanovisteDatabase) {
         db.mereneHodnotyDao().deleteMereneHodnoty(hodnoty)
     }
 
-    fun getMereneHodnotyByUlId(ulId: Int): LiveData<List<MereneHodnoty>> {
-        return db.mereneHodnotyDao().getMereneHodnotyByUlId(ulId)
+    fun getMereneHodnotyByUlIdAndStanovisteID(ulId: Int, stanovisteId: Int): LiveData<List<MereneHodnoty>> {
+        return db.mereneHodnotyDao().getMereneHodnotyByUlIdAndStanovisteID(ulId,stanovisteId)
+    }
+
+    suspend fun getMereneHodnotyByUlIdAndDate(ulId: Int, datum: Long): MereneHodnoty? {
+        return db.mereneHodnotyDao().getMereneHodnotyByUlIdAndDate(ulId,datum)
+    }
+
+    suspend fun getUlByIdAndMAC(ulId: Int, mac: String): Uly? {
+        return db.mereneHodnotyDao().getUlByIdAndMAC(ulId,mac)
     }
 }

@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 
 class UlyViewModel(private val repository: UlyRepository) : ViewModel() {
     private val _uly = MutableLiveData<List<Uly>>()
-    private val _ulyWithOthers = MutableLiveData<List<UlWithOther>>()
+    private val _ulWithOther = MutableLiveData<List<UlWithOther>>()
     val uly: LiveData<List<Uly>> get() = _uly
-    val ulyWithOthers: LiveData<List<UlWithOther>> get() = _ulyWithOthers
+    val ulWithOther: LiveData<List<UlWithOther>> get() = _ulWithOther
 
     fun getUlyByStanovisteId(stanovisteId: Int): LiveData<List<Uly>> {
         return repository.getUlyByStanovisteId(stanovisteId)
@@ -23,8 +23,8 @@ class UlyViewModel(private val repository: UlyRepository) : ViewModel() {
         return repository.getUlWithOthersByStanovisteId(ulId, stanovisteId)
     }
 
-    fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?> {
-        return  repository.getUlWithOthersByMACAndStanovisteMAC(ulMacAddress, stanovisteMacAddress)
+    suspend fun getUlWithOthersByMACAndStanovisteMAC(macAddress: String, stanovisteMac: String): Uly? {
+        return repository.getUlWithOthersByMACAndStanovisteMAC(macAddress, stanovisteMac)
     }
 
     fun insertUl(ul: Uly) {

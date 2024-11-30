@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanCallback
@@ -21,34 +22,30 @@ import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentManager
-import com.hruby.databasemodule.data.MereneHodnoty
-import com.hruby.databasemodule.data.Uly
-import com.hruby.databasemodule.databaseLogic.viewModel.MereneHodnotyViewModel
-import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
-import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
 import com.hruby.sharedresources.dialogs.DeviceListDialog
 import java.util.UUID
 
 object BluetoothHelper {
     private var bleGatt: BluetoothGatt? = null
-    private var bleGattCharacteristic: BluetoothGattCharacteristic? = null
-
-    private lateinit var ulyViewModel: UlyViewModel
-    private lateinit var mereneHodnotyViewModel: MereneHodnotyViewModel
-    private lateinit var stanovisteViewModel: StanovisteViewModel
+    private var notifyGattCharacteristic: BluetoothGattCharacteristic? = null
+    private var writeGattCharacteristic: BluetoothGattCharacteristic? = null
 
     private var wakeLock: PowerManager.WakeLock? = null
 
     // UUID služby a charakteristiky
-    private const val MY_SERVICE_UUID =         "f6bb2d8d-6ce2-4847-9d0e-47344f9ce34f" // Zadej skutečné UUID služby
-    private const val MY_CHARACTERISTIC_UUID =  "d898d3cd-d161-4876-8858-c07024ab5136" // Zadej skutečné UUID charakteristiky
+    private const val MY_SERVICE_UUID =                         "f6bb2d8d-6ce2-4847-9d0e-47344f9ce34f" // Zadej skutečné UUID služby
+    private const val MY_NOTIFICATION_CHARACTERISTIC_UUID =     "d898d3cd-d161-4876-8858-c07024ab5136" // Zadej skutečné UUID charakteristiky
+    private const val MY_WRITE_CHARACTERISTIC_UUID =            "107c0a9c-df0a-423d-9f7c-faf0e5107408"
 
-    private val receivedChunks = mutableMapOf<Int, String>()
-    private var totalChunks = -1
+    private const val DESCRIPTOR_UUID =         "00002902-0000-1000-8000-00805f9b34fb"
 
     private var stanovisteMac: String = ""
+
+    fun isBluetoothEnabled(): Boolean {
+        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        return bluetoothAdapter?.isEnabled == true
+    }
 
     // Vrací seznam spárovaných zařízení
     @SuppressLint("MissingPermission")
@@ -166,12 +163,13 @@ object BluetoothHelper {
 
             override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                    Log.d("BluetoothHelper", "Services discovered")
-                    initializeGattCharacteristics(gatt)
-                    Handler(Looper.getMainLooper()).post {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        Log.d("BluetoothHelper", "Services discovered")
+                        initializeGattCharacteristics(gatt)
                         Toast.makeText(context, "Zařízení připojeno, služby nalezeny.", Toast.LENGTH_SHORT).show()
-                    }
-                    onConnected() // Volání callbacku, když je připojeno
+
+                        onConnected() // Volání callbacku, když je připojeno
+                    }, 500)
                 } else {
                     Handler(Looper.getMainLooper()).post {
                         Toast.makeText(context, "Nepovedlo se připojit k zařízením.", Toast.LENGTH_SHORT).show()
@@ -195,141 +193,90 @@ object BluetoothHelper {
             }
 
             override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
-                val chunk = gatt.readCharacteristic(characteristic).toString()
-                val (metadata, data) = chunk.split(":", limit = 2)
-                val (index, total) = metadata.split("/").map { it.toInt() }
+                if (characteristic.uuid == UUID.fromString(MY_NOTIFICATION_CHARACTERISTIC_UUID)) {
+                    var message: String
+                    message = characteristic.getStringValue(0)
+                    Log.d("BluetoothHelper /CharChange", "Message received: $message")
+                    when (message) {
+                        "WIFI_STARTED" -> {
+                            WiFiHelper.disconnectFromWiFi(context)
+                            WiFiHelper.connectToWiFi(context,
+                                onConnected = {
+                                    // Kód, který se spustí po úspěšném připojení
+                                    Log.d("BluetoothHelper /CharChange", "Device Wifi connected, ready to receive data")
 
-                receivedChunks[index] = data
-                totalChunks = total
+                                    val url = "http://192.168.4.1:80/download"
+                                    WiFiHelper.downloadDataFromESP32(url,context)
+                                },
+                                onError = { error ->
+                                    // Kód pro ošetření chyby při připojování
+                                    Log.e("BluetoothHelper /CharChange", "Error: $error")
+                                }
+                            )
+                        }
+                        "WIFI_FAILED" -> {
 
-                // Potvrzení přijetí chunku
-                sendAcknowledgment(index)
-
-                // Kontrola, zda byly přijaty všechny chunky
-                if (receivedChunks.size == totalChunks) {
-                    val completeData = (0 until totalChunks).joinToString("") { receivedChunks[it] ?: "" }
-                    processCompleteData(completeData, context)
-                } else {
-                    // Pokud chybí nějaký chunk, požádat o jeho opětovné odeslání
-                    requestMissingChunk(index)
+                        }
+                        "SYNC_COMPLETE_ACK" -> {
+                            disconnect(context)
+                        }
+                    }
                 }
             }
         })
     }
 
-    private fun processCompleteData(csvData: String, context: Context) {
-        val rows = csvData.split("\n")
-        rows.forEach { row ->
-            val values = row.split(",")
-            val macAddress = values[0]
-
-            val ul = ulyViewModel.getUlWithOthersByMACAndStanovisteMAC(macAddress, stanovisteMac).value
-            val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac).value
-
-            if (ul != null) {
-                // Aktualizace úlu
-                val mereneHodnoty = MereneHodnoty(
-                    ulId = ul.ul.id,
-                    datum = values[1].toLong(),
-                    hmotnost = values[2].toFloat(),
-                    teplotaUl = values[3].toFloat(),
-                    vlhkostModul = values[4].toFloat(),
-                    teplotaModul = values[5].toFloat(),
-                    frekvence = values[6].toFloat(),
-                    gyroX = values[7].toFloat(),
-                    gyroY = values[8].toFloat(),
-                    gyroZ = values[9].toFloat(),
-                    accelX = values[10].toFloat(),
-                    accelY = values[11].toFloat(),
-                    accelZ = values[12].toFloat()
-                )
-                mereneHodnotyViewModel.insertMereneHodnoty(mereneHodnoty)
-            } else {
-                // Vytvoření nového úlu
-                val createUl = Uly(
-                    stanovisteId = stanoviste!!.id,
-                    macAddress = macAddress,
-                    cisloUlu = null,
-                    popis = "Vygenerovaný úl s MAC: $macAddress",
-                    maMAC = true
-                )
-                ulyViewModel.insertUl(createUl)
-                val newUl = ulyViewModel.getUlWithOthersByMACAndStanovisteMAC(macAddress, stanovisteMac).value
-
-                val mereneHodnoty = MereneHodnoty(
-                    ulId = newUl!!.ul.id,
-                    datum = values[1].toLong(),
-                    hmotnost = values[2].toFloat(),
-                    teplotaUl = values[3].toFloat(),
-                    vlhkostModul = values[4].toFloat(),
-                    teplotaModul = values[5].toFloat(),
-                    frekvence = values[6].toFloat(),
-                    gyroX = values[7].toFloat(),
-                    gyroY = values[8].toFloat(),
-                    gyroZ = values[9].toFloat(),
-                    accelX = values[10].toFloat(),
-                    accelY = values[11].toFloat(),
-                    accelZ = values[12].toFloat()
-                )
-                mereneHodnotyViewModel.insertMereneHodnoty(mereneHodnoty)
-            }
-        }
-        releaseWakeLock(context, true)
-        disconnect()
-    }
-
     // Inicializace charakteristiky z BluetoothGatt
+    @SuppressLint("MissingPermission")
     private fun initializeGattCharacteristics(gatt: BluetoothGatt) {
         // Získání služby podle UUID
         val service: BluetoothGattService? = gatt.getService(UUID.fromString(MY_SERVICE_UUID))
         if (service != null) {
-            // Získání charakteristiky podle UUID
-            bleGattCharacteristic = service.getCharacteristic(UUID.fromString(MY_CHARACTERISTIC_UUID))
+            // Získání charakteristiky pro zápis příkazů
+            writeGattCharacteristic = service.getCharacteristic(UUID.fromString(MY_WRITE_CHARACTERISTIC_UUID))
+
+            // Nastavení notifikací
+            notifyGattCharacteristic = service.getCharacteristic(UUID.fromString(MY_NOTIFICATION_CHARACTERISTIC_UUID))
             Log.d("BluetoothHelper", "Gatt characteristic initialized")
+            gatt.setCharacteristicNotification(notifyGattCharacteristic, true)
+
+            val descriptor = notifyGattCharacteristic?.getDescriptor(UUID.fromString(DESCRIPTOR_UUID))
+            descriptor?.let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    val enableNotificationValue = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                    gatt.writeDescriptor(it, enableNotificationValue)
+                    Log.d("BluetoothHelper","Descriptor initialized")
+                } else {
+                    it.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                    gatt.writeDescriptor(it)
+                    Log.d("BluetoothHelper","Descriptor initialized")
+                }
+            }
         }
     }
 
     // Odeslání příkazu pro synchronizaci
-    fun sendSyncCommand(syncCommand: String, context: Context) {
+    fun sendCommand(syncCommand: String, context: Context) {
+        Thread.sleep(1000)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            sendSyncCommandForNewAPI(syncCommand, context)
+            Log.d("BluetoothHelper SendCommand", "Using NewAPI")
+            sendCommandForNewAPI(syncCommand, context)
         } else {
-            sendSyncCommandForOldAPI(syncCommand, context)
-        }
-    }
-
-    // Odeílání požadavku o znovu poslání chunku podle indexu
-    private fun requestMissingChunk(index: Int) {
-        val requestCommand = "RESEND:$index"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            sendCommandForNewAPI(requestCommand)
-        } else {
-            sendCommandForOldAPI(requestCommand)
-        }
-    }
-
-    // Odeslání potvrzení přijetí (ACK)
-    @SuppressLint("MissingPermission")
-    private fun sendAcknowledgment(chunkIndex: Int) {
-        val ackCommand = "ACK:$chunkIndex"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            sendCommandForNewAPI(ackCommand)
-        } else {
-            sendCommandForOldAPI(ackCommand)
+            Log.d("BluetoothHelper SendCommand", "Using OldAPI")
+            sendCommandForOldAPI(syncCommand, context)
         }
     }
 
     // Funkce pro odeslání synchronizačního příkazu pro starší API
     @SuppressLint("MissingPermission")
-    private fun sendSyncCommandForOldAPI(syncCommand: String, context: Context) {
+    private fun sendCommandForOldAPI(syncCommand: String, context: Context) {
         // Použití starší metody pro nižší API level
-        bleGattCharacteristic?.let {
+        writeGattCharacteristic?.let {
             it.value = syncCommand.toByteArray(Charsets.UTF_8)
             val success = bleGatt?.writeCharacteristic(it) ?: false
             if (!success) {
                 Log.e("BluetoothHelper", "Failed to write sync command")
-                disconnect()
-                releaseWakeLock(context, false)
+                disconnect(context)
             }
         }
     }
@@ -337,48 +284,23 @@ object BluetoothHelper {
     // Funkce pro odeslání synchronizačního příkazu
     @SuppressLint("MissingPermission")
     @TargetApi(Build.VERSION_CODES.TIRAMISU) // Tento kód bude použit pouze pro API level 33 a vyšší
-    private fun sendSyncCommandForNewAPI(syncCommand: String, context: Context) {
-        bleGattCharacteristic?.let {
+    private fun sendCommandForNewAPI(syncCommand: String, context: Context) {
+        writeGattCharacteristic?.let {
             val commandBytes = syncCommand.toByteArray(Charsets.UTF_8)
             val success = bleGatt?.writeCharacteristic(it, commandBytes, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT) ?: false
             if (success == false) {
                 Log.e("BluetoothHelper", "Failed to write sync command")
-                disconnect()
-                releaseWakeLock(context, false)
-            }
-        }
-    }
-
-    // Funkce pro odeslání synchronizačního pro starší API
-    @SuppressLint("MissingPermission")
-    private fun sendCommandForOldAPI(command: String) {
-        // Použití starší metody pro nižší API level
-        bleGattCharacteristic?.let {
-            it.value = command.toByteArray(Charsets.UTF_8)
-            val success = bleGatt?.writeCharacteristic(it) ?: false
-            if (!success) {
-                Log.e("BluetoothHelper", "Failed to write $command command")
-            }
-        }
-    }
-
-    // Funkce pro odeslání příkazu
-    @SuppressLint("MissingPermission")
-    @TargetApi(Build.VERSION_CODES.TIRAMISU) // Tento kód bude použit pouze pro API level 33 a vyšší
-    private fun sendCommandForNewAPI(command: String) {
-        bleGattCharacteristic?.let {
-            val commandBytes = command.toByteArray(Charsets.UTF_8)
-            val success = bleGatt?.writeCharacteristic(it, commandBytes, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT) ?: false
-            if (success == false) {
-                Log.e("BluetoothHelper", "Failed to write $command command")
+                disconnect(context)
             }
         }
     }
 
     // Odpojení od zařízení BLE
     @SuppressLint("MissingPermission")
-    fun disconnect() {
+    fun disconnect(context: Context) {
         Log.e("BluetoothHelper", "Closing connection now")
+        WiFiHelper.disconnectFromWiFi(context)
+        releaseWakeLock(context, false)
         bleGatt?.disconnect()
         bleGatt?.close()
         bleGatt = null

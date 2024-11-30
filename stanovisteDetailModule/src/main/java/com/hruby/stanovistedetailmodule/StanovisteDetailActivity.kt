@@ -19,8 +19,15 @@ import androidx.navigation.fragment.NavHostFragment
 import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
+import com.hruby.databasemodule.databaseLogic.repository.MereneHodnotyRepository
 import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
+import com.hruby.databasemodule.databaseLogic.repository.UlyRepository
+import com.hruby.databasemodule.databaseLogic.viewModel.MereneHodnotyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.MereneHodnotyViewModelFactory
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.UlyViewModelFactory
 import com.hruby.navmodule.Navigator
+import com.hruby.sharedresources.helpers.WiFiHelper
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
 import com.hruby.ulydetailmodule.UlDetailActivity
 import com.squareup.picasso.Picasso
@@ -38,6 +45,12 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
 
     private val stanovisteViewModel: StanovisteViewModel by viewModels {
         StanovisteViewModelFactory(StanovisteRepository(StanovisteDatabase.getDatabase(this)))
+    }
+    private val ulyViewModel: UlyViewModel by viewModels {
+        UlyViewModelFactory(UlyRepository(StanovisteDatabase.getDatabase(this)))
+    }
+    private val mereneHodnotyViewModel: MereneHodnotyViewModel by viewModels {
+        MereneHodnotyViewModelFactory(MereneHodnotyRepository(StanovisteDatabase.getDatabase(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +99,8 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
             goBackToStanovisteList()
             true
         }
+
+        WiFiHelper.initializeViewModels(ulyViewModel,mereneHodnotyViewModel,stanovisteViewModel)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -27,8 +27,7 @@ class UlyRepository(private val db: StanovisteDatabase) {
         return db.ulyDao().getUlWithOthersByStanovisteId(ulId, stanovisteId)
     }
 
-    fun getUlWithOthersByMACAndStanovisteMAC(ulMacAddress: String, stanovisteMacAddress: String): LiveData<UlWithOther?>{
-        // je třeba dostat id stanvoiště, ale i mac, aby se dalo synchronizovat.
-        return db.ulyDao().getUlWithOthersByMACAndStanovisteMAC(ulMacAddress, stanovisteMacAddress)
+    suspend fun getUlWithOthersByMACAndStanovisteMAC(macAddress: String, stanovisteMac: String): Uly? {
+        return db.ulyDao().getUlWithOthersByMACAndStanovisteMAC(macAddress, stanovisteMac)
     }
 }
