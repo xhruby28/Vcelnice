@@ -72,7 +72,7 @@ class UlDetailActivity : AppCompatActivity() {
             navHeaderTitle.text = String.format("Úl číslo $cisloUlu")
             val navMereneHodnoty: MenuItem = navView.menu.findItem(R.id.nav_namerene_hodnoty_ul)
             //TODO("!!!Nezapomenout zapnout následující funkci, protože je vypnutá kvůli testování!!!")
-            //navMereneHodnoty.isVisible = ul.ul.maMAC
+            navMereneHodnoty.isVisible = ul.ul.maMAC
         }
     }
 
