@@ -10,6 +10,7 @@ import com.hruby.ulydetailmodule.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class NamereneHodnotyUlRecycleViewAdapter(
     private var hodnotyList: List<MereneHodnoty>
@@ -56,8 +57,13 @@ class NamereneHodnotyUlRecycleViewAdapter(
     private fun formatTimestamp(timestamp: Long): String {
         // Vytvoříme instanci SimpleDateFormat s požadovaným formátem
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-        // Převedeme Long timestamp na Date
-        val date = Date(timestamp)
+
+        // Převedeme Long timestamp na Date (sekundy -> milisekundy)
+        val date = Date(timestamp * 1000)  // Převedení na milisekundy
+
+        // Nastavení časové zóny (volitelné, pokud chcete použít místní časovou zónu)
+        dateFormat.timeZone = TimeZone.getDefault()  // Místní časová zóna (pokud je potřeba)
+
         // Naformátujeme datum a vrátíme jako řetězec
         return dateFormat.format(date)
     }
