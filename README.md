@@ -41,7 +41,7 @@ Včelnice je inteligentní systém pro správu včelích úlů, který kombinuje
 - Programovací jazyk: C++
 - Komunikační protokoly: BLE, WiFi
 
-## Kódy lze najít zde: [Kódy k ESP32](https://github.com/xhruby28/Vcelnice_ESP32_Codes)
+Kódy lze najít zde: [Kódy k ESP32](https://github.com/xhruby28/Vcelnice_ESP32_Codes)
 
 # Licence
 Tento projekt je dostupný pod licencí MIT.
