@@ -26,7 +26,7 @@ Včelnice je inteligentní systém pro správu včelích úlů, který kombinuje
 - Knihovny:
   - Dagger/Hilt pro Dependency Injection
   - BluetoothGatt pro BLE komunikaci
-     Grafické knihovny (např. MPAndroidChart)
+    
 ## ESP32 moduly centrální jednotky
 - Hardware:
   - ESP32 ProS3 od Unexpected Maker
@@ -37,9 +37,9 @@ Včelnice je inteligentní systém pro správu včelích úlů, který kombinuje
 ## ESP32 moduly úlové jednotky
 - Hardware:
   - ESP32 ProS3 od Unexpected Maker
-  - Senzory (teplota, vlhkost, váha, akcelerometr, mikrofon)
+  - Senzory (teplota, vlhkost, váha, gyroskop, mikrofon)
 - Programovací jazyk: C++
-- Komunikační protokoly: BLE, WiFi
+- Komunikační protokoly: ESP-NOW
 
 Kódy lze najít zde: [Kódy k ESP32](https://github.com/xhruby28/Vcelnice_ESP32_Codes)
 
