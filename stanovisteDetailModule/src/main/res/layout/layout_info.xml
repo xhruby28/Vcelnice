@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <EditText
+        android:id="@+id/edit_stanoviste_editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Název stanoviště" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <EditText
+        android:id="@+id/edit_stanoviste_editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Popis stanoviště"
+        android:lines="2"
+        android:maxLines="5"
+        android:scrollbars="vertical"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:gravity="top|start"
+        android:padding="8dp" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    <!-- Spinner pro výběr mezi zadáním URL nebo výběrem GPS -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Poloha stanoviště"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/edit_stanoviste_location_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/location_options"
+        android:layout_marginTop="10dp"/>
+
+    <!-- EditText pro URL, zobrazený pokud je vybrána možnost zadání URL -->
+    <EditText
+        android:id="@+id/edit_stanoviste_text_location_url"
+        android:hint="@string/odkaz_na_polohu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:layout_marginTop="10dp" />
+
+    <!-- Tlačítko pro výběr polohy na mapě, zobrazené pokud je vybrán režim mapy -->
+    <Button
+        android:id="@+id/edit_stanoviste_button_select_map"
+        android:text="@string/vybrat_na_mape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Kontejner pro fragment s mapou, výchozí viditelnost je GONE -->
+    <FrameLayout
+        android:id="@+id/edit_stanoviste_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+
+</LinearLayout>

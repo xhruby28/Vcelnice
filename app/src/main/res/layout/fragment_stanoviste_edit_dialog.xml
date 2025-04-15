@@ -23,7 +23,7 @@
         android:focusableInTouchMode="false"
         android:inputType="date"/>
 
-    <!-- Přidáme Spinner pro výběr mezi zadáním URL nebo výběrem GPS -->
+    <!-- Spinner pro výběr mezi zadáním URL nebo výběrem GPS -->
     <Spinner
         android:id="@+id/spinner_mode"
         android:layout_width="match_parent"

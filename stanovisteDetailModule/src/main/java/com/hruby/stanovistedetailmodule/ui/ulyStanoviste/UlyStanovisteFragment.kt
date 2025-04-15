@@ -63,7 +63,7 @@ class UlyStanovisteFragment : Fragment(), UlyCreateDialogFragment.UlCreateDialog
         val fab: FloatingActionButton = view.findViewById(R.id.uly_stanoviste_fab)
 
         fab.setOnLongClickListener {
-            Snackbar.make(view, "Přidat úl nepatřící pod SmartHive Network", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, "Přidat úl nepatřící pod ApiaryConnect Network", Snackbar.LENGTH_SHORT).show()
             true
         }
         fab.setOnClickListener {
@@ -93,10 +93,6 @@ class UlyStanovisteFragment : Fragment(), UlyCreateDialogFragment.UlCreateDialog
                 showUlyDeleteDialog(uly, position)
             },
             { ulId ->
-//                TODO("Při vybrání úlu bude uživatel přesměrován na UlDetailModule, ked bude kompletní informace k úlu," +
-//                        "naměřené hodnoty, jeho MAC pokud je to SmartHive, grafy naměřených hodnot," +
-//                        "tento modul bude mít také svůj vlastní navigační graf, u toho grafu bude vidět číslo úlu a název stanoviště tak," +
-//                        "jak je to teď u stnaoviště")
                 onUlSelected(ulId)
             }
         )

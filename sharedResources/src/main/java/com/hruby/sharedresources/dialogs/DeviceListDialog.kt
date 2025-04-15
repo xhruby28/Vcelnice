@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,8 +26,9 @@ class DeviceListDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireActivity())
         val view = requireActivity().layoutInflater.inflate(R.layout.dialog_device_list, null)
+        Toast.makeText(requireContext(), "Vyberte zařízení s názvem ApiaryConnect Core", Toast.LENGTH_SHORT).show()
         builder.setView(view)
-            // přidat Toast při přesměrování na nastavní BT ve znení "Vyberte zařízení s názvem (Třeba SmartHive)...
+            // přidat Toast při přesměrování na nastavní BT ve znení "Vyberte zařízení s názvem (Třeba ApiaryConnect Core)...
             .setTitle("Vyberte zařízení")
             .setNegativeButton("Zavřít") { dialog, _ -> dialog.dismiss() }
 
@@ -41,6 +43,7 @@ class DeviceListDialog(
         return builder.create()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateDeviceList(pairedDevicesList: List<BluetoothDevice>, nearbyDevicesList: List<BluetoothDevice>) {
         pairedDevices.clear()
         pairedDevices.addAll(pairedDevicesList)

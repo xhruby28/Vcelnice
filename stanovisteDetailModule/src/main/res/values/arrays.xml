@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sms_notifications">
+        <item>Ano</item>
+        <item>Ne</item>
+    </string-array>
+
+    <string-array name="add_location_pick">
+        <item>Vybrat na mapě</item>
+        <item>Zadat URL</item>
+    </string-array>
+
+    <string-array name="pin_spinner">
+        <item>Potřebuje PIN</item>
+        <item>Nepotřebuje PIN</item>
+    </string-array>
+
+    <string-array name="country_codes">
+        <item>+420</item> <!-- Česká republika -->
+        <item>+421</item> <!-- Slovensko -->
+    </string-array>
+
+    <string-array name="location_options">
+        <item>Vybrat na mapě</item>
+        <item>Zadat URL</item>
+    </string-array>
+</resources>

@@ -60,10 +60,6 @@ class NamereneHodnotyUlFragment : Fragment() {
 
         ulyViewModel = ViewModelProvider(this, factory)[UlyViewModel::class.java]
 
-        val showcaseHodnoty = List(10) { generateRandomMereneHodnoty(ulId)}
-
-
-
         adapter = NamereneHodnotyUlRecycleViewAdapter(mereneHodnoty)
         recyclerView.adapter = adapter
 
@@ -82,7 +78,7 @@ class NamereneHodnotyUlFragment : Fragment() {
 //            } else {
 //                mereneHodnoty.addAll(ul.mereneHodnoty)
 //            }
-            mereneHodnoty.addAll(ul.mereneHodnoty)
+            //mereneHodnoty.addAll(ul.mereneHodnoty)
             adapter.notifyDataSetChanged()
         }
     }

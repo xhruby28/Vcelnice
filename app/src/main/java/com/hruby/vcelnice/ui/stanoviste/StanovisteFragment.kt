@@ -78,7 +78,7 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
 
         val fab: FloatingActionButton = view.findViewById(R.id.stanoviste_fab)
         val fabMenu: LinearLayout = view.findViewById(R.id.fab_menu)
-        val buttonAddSmartHive: Button = view.findViewById(R.id.button_add_smart_hive)
+        val buttonAddApiaryConnect: Button = view.findViewById(R.id.button_add_smart_hive)
         val buttonAddLocation: Button = view.findViewById(R.id.button_add_location)
 
         // Nastavení listeneru pro FAB
@@ -87,13 +87,18 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
         }
 
         // Listener pro tlačítko "Přidat zařízení pomocí BT/BLE"
-        buttonAddSmartHive.setOnClickListener {
-            checkBluetoothPermissions()
+        buttonAddApiaryConnect.setOnClickListener {
+            val bluetoothEnabled = BluetoothHelper.isBluetoothEnabled()
+            if (bluetoothEnabled) {
+                checkBluetoothPermissions()
+            } else {
+                Toast.makeText(requireContext(), "Zapněte prosím Bluetooth.", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // Listener pro tlačítko "Přidat lokalitu bez SmartHive"
+        // Listener pro tlačítko "Přidat lokalitu bez ApiaryConnect Core"
         buttonAddLocation.setOnClickListener {
-            openAddDialog("Lokalita bez SmartHive")
+            openAddDialog("")
         }
 
         // Inicializace ViewModel

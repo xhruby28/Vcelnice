@@ -29,9 +29,10 @@
                 <ImageView
                     android:id="@+id/stanoviste_detail_info_fragment_image"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:contentDescription="Obrázek stanoviště"
                     android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/ic_launcher_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -236,6 +237,23 @@
         tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/stanoviste_detail_info_fragment_fab_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Upravit fotku"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:icon="@drawable/ic_menu_camera"
+        app:iconPadding="0dp"
+        app:iconTint="#DD2C00"
+        app:layout_constraintBottom_toTopOf="@+id/stanoviste_detail_info_fragment_fab_sync"
+        app:layout_constraintEnd_toEndOf="@+id/stanoviste_detail_info_fragment_fab"
+        tools:visibility="visible" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/stanoviste_detail_info_fragment_fab_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -248,7 +266,7 @@
         app:icon="@drawable/edit_square_24dp"
         app:iconPadding="0dp"
         app:iconTint="#DD2C00"
-        app:layout_constraintBottom_toTopOf="@+id/stanoviste_detail_info_fragment_fab_sync"
+        app:layout_constraintBottom_toTopOf="@+id/stanoviste_detail_info_fragment_fab_pic"
         app:layout_constraintEnd_toEndOf="@+id/stanoviste_detail_info_fragment_fab"
         tools:visibility="visible" />
 

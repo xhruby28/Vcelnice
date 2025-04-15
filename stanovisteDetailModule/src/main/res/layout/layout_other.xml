@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+
+    <TextView
+        android:id="@+id/tvPairingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zařízení není spárováno"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnPairDevice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Připojit k zařízení" />
+
+    <Button
+        android:id="@+id/btnResetConnection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Resetovat propojení" />
+</LinearLayout>

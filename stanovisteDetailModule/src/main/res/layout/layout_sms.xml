@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSmsNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Povolit SMS notifikace" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <Spinner
+            android:id="@+id/spinnerCountryCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:entries="@array/country_codes"/>
+
+        <EditText
+            android:id="@+id/editTextPhoneNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:inputType="phone"
+            android:maxLength="9"
+            android:hint="Telefonní číslo"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSimPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIM karta má PIN"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editTextPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:maxLength="8"
+        android:hint="PIN SIM karty"
+        android:visibility="visible" />
+
+</LinearLayout>

@@ -10,13 +10,10 @@ import android.net.wifi.WifiNetworkSpecifier
 import android.os.Build
 import android.util.Log
 import com.hruby.databasemodule.data.MereneHodnoty
-import com.hruby.databasemodule.data.Poznamka
 import com.hruby.databasemodule.data.Uly
-import com.hruby.databasemodule.databaseLogic.connections.UlWithOther
 import com.hruby.databasemodule.databaseLogic.viewModel.MereneHodnotyViewModel
 import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
-import com.hruby.sharedresources.helpers.BluetoothHelper.disconnect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
@@ -137,9 +134,41 @@ object WiFiHelper {
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    val data = response.body?.string()
-                    Log.d("ESP32", "Data received: $data")
-                    processCompleteData(data.toString(),context)
+                    val inputStream = response.body?.byteStream()
+
+                    if (inputStream != null) {
+                        val contentLength = response.body?.contentLength() ?: -1
+                        Log.d("ESP32", "Content-Length: $contentLength")
+
+                        val data = StringBuilder()
+                        val buffer = ByteArray(1024)  // Velikost bufferu pro bloky
+                        var bytesRead: Int
+
+                        try {
+                            while (true) {
+                                // Čteme data po blocích
+                                bytesRead = inputStream.read(buffer)
+                                Log.d("ESP32", "Bytes received: $bytesRead")
+                                if (bytesRead == -1) {
+                                    break  // Konec streamu
+                                }
+
+                                // Přidáme přečtená data do StringBuilder
+                                data.append(String(buffer, 0, bytesRead))
+                            }
+
+                            Log.d("ESP32", "Data received: $data")
+
+                            // Zpracování dat
+                            processCompleteData(data.toString(), context)
+                        } catch (e: IOException) {
+                            Log.e("ESP32", "Error reading stream", e)
+                        } finally {
+                            inputStream.close()  // Uzavření streamu
+                        }
+                    } else {
+                        Log.e("ESP32", "Input stream is null")
+                    }
                 } else {
                     Log.e("ESP32", "Failed with code: ${response.code}")
                 }

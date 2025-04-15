@@ -1,6 +1,5 @@
 package com.hruby.stanovistedetailmodule.ui.infoStanoviste
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,31 +16,26 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
-import com.hruby.databasemodule.databaseLogic.repository.StanovisteRepository
+import com.hruby.databasemodule.data.Stanoviste
 import com.hruby.databasemodule.databaseLogic.viewModel.MereneHodnotyViewModel
 import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
 import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
-import com.hruby.databasemodule.databaseLogic.viewModelFactory.StanovisteViewModelFactory
 import com.hruby.sharedresources.helpers.BluetoothHelper
 import com.hruby.sharedresources.helpers.ImageHelper
 import com.hruby.sharedresources.helpers.PermissionHelper
 import com.hruby.sharedresources.helpers.WiFiHelper
 import com.hruby.stanovistedetailmodule.databinding.FragmentInfoStanovisteBinding
 import com.hruby.stanovistedetailmodule.R
+import com.hruby.stanovistedetailmodule.ui.infoStanoviste.editDialog.EditStanovisteDialogFragment
 import com.squareup.picasso.Picasso
 import java.io.File
 
-class InfoStanovisteFragment : Fragment() {
+class InfoStanovisteFragment : Fragment(), EditStanovisteDialogFragment.EditStanovisteDialogListener {
     private var _binding: FragmentInfoStanovisteBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: InfoStanovisteViewModel
     private var stanovisteId: Int = -1
-
-    private lateinit var ulyViewModel: UlyViewModel
-    private lateinit var mereneHodnotyViewModel: MereneHodnotyViewModel
-    private lateinit var stanovisteViewModel: StanovisteViewModel
 
     private var isStanovisteInfoFabMenuOpen = false
 
@@ -74,30 +68,39 @@ class InfoStanovisteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fab: FloatingActionButton = view.findViewById(R.id.stanoviste_detail_info_fragment_fab)
+        viewModel.stanoviste.observe(viewLifecycleOwner) { stanoviste ->
+            val fab: FloatingActionButton =
+                view.findViewById(R.id.stanoviste_detail_info_fragment_fab)
 
-        infoStanovisteFragmentText()
+            infoStanovisteFragmentText()
 
-        fab.setOnClickListener {
-            toggleStanovisteInfoFabMenu(fab)
-        }
+            fab.setOnClickListener {
+                toggleStanovisteInfoFabMenu(fab)
+            }
 
-        binding.stanovisteDetailInfoFragmentFabSync.setOnClickListener{
-            viewModel.stanoviste.observe(viewLifecycleOwner){ stanoviste ->
-                if(stanoviste.maMAC){
+            binding.stanovisteDetailInfoFragmentFabSync.setOnClickListener {
+                if (stanoviste.maMAC) {
                     checkPermissions()
                 } else {
-                    Toast.makeText(context, "Stanoviště není spárované, párování lze vytvořit pomocí UPRAVIT", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Stanoviště není propojené, propojení lze vytvořit pomocí UPRAVIT",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-        }
 
-        binding.stanovisteDetailInfoFragmentFabEdit.setOnClickListener{
-//            TODO("Rozsáhlá možnost editovat paratmetry stanoviště, " +
-//                    "včetně přidání obrázku z galerie nebo možnost rovnou vyfotit stanoviště," +
-//                    " spárování s modulem SmartHive, pokud nemá MAC, nebo spárování s jiný modulem (změna MAC).")
-//            TODO("Opravdu udělat to, že v UPRAVIT bude možnost spárovat se SmartHive")
-            showImageSelectionDialog()
+            binding.stanovisteDetailInfoFragmentFabEdit.setOnClickListener {
+                val dialog = EditStanovisteDialogFragment()
+                val bundle = Bundle()
+                bundle.putSerializable("stanoviste", stanoviste)
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager, "EditStanovisteDialogFragment")
+            }
+
+            binding.stanovisteDetailInfoFragmentFabPic.setOnClickListener {
+                    showImageSelectionDialog()
+            }
         }
     }
 
@@ -116,7 +119,6 @@ class InfoStanovisteFragment : Fragment() {
             val stringURL: String = stanoviste.locationUrl.toString()
             val arrayGPS: List<String> = stringURL.split("=")
 
-            //holder.textLocationUrl.text = stanoviste.locationUrl
             var gpsCoordinates = if (arrayGPS.size > 1 && arrayGPS[1].isNotEmpty()) {
                 arrayGPS[1]
             } else {
@@ -165,6 +167,8 @@ class InfoStanovisteFragment : Fragment() {
                 )
                 Picasso.get()
                     .load(uri)
+                    .fit() // přizpůsobí velikosti ImageView
+                    .centerInside() // zachová celý obrázek uvnitř
                     .placeholder(com.hruby.sharedresources.R.drawable.ic_launcher_background)
                     .into(binding.stanovisteDetailInfoFragmentImage)
 
@@ -179,12 +183,18 @@ class InfoStanovisteFragment : Fragment() {
             fab.setImageResource(com.hruby.sharedresources.R.drawable.arrow_upward_24dp)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.GONE
             binding.stanovisteDetailInfoFragmentFabSync.visibility = View.GONE
+            binding.stanovisteDetailInfoFragmentFabPic.visibility = View.GONE
         } else {
             fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.VISIBLE
             binding.stanovisteDetailInfoFragmentFabSync.visibility = View.VISIBLE
+            binding.stanovisteDetailInfoFragmentFabPic.visibility = View.VISIBLE
         }
         isStanovisteInfoFabMenuOpen = !isStanovisteInfoFabMenuOpen
+    }
+
+    override fun onStanovisteUpdated(updatedStanoviste: Stanoviste) {
+            viewModel.updateStanoviste(updatedStanoviste)
     }
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -225,7 +235,6 @@ class InfoStanovisteFragment : Fragment() {
                         }
                     }
                     1 -> {
-                        //TODO("Focení/ukládání foto nefunguje")
                         if (PermissionHelper.hasPermissions(requireContext(), PermissionHelper.cameraPermissions)) {
                             currentPhotoUri = ImageHelper.captureImage(requireContext())
                             currentPhotoUri?.let {
@@ -237,6 +246,7 @@ class InfoStanovisteFragment : Fragment() {
                     }
                 }
             }
+            .setNegativeButton("Zrušit") { dialog, _ -> dialog.cancel() }
             .show()
     }
 
@@ -262,6 +272,8 @@ class InfoStanovisteFragment : Fragment() {
                 )
                 Picasso.get()
                     .load(uri)
+                    .fit() // přizpůsobí velikosti ImageView
+                    .centerInside() // zachová celý obrázek uvnitř
                     .placeholder(com.hruby.sharedresources.R.drawable.ic_launcher_background)
                     .into(binding.stanovisteDetailInfoFragmentImage)
             } else {
@@ -330,6 +342,7 @@ class InfoStanovisteFragment : Fragment() {
             binding.stanovisteDetailInfoFragmentFab.setImageResource(com.hruby.sharedresources.R.drawable.arrow_upward_24dp)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.GONE
             binding.stanovisteDetailInfoFragmentFabSync.visibility = View.GONE
+            binding.stanovisteDetailInfoFragmentFabPic.visibility = View.GONE
             isStanovisteInfoFabMenuOpen = !isStanovisteInfoFabMenuOpen
         }
     }

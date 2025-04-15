@@ -63,6 +63,11 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.coordinatorlayout)
 
+    implementation(libs.expandablelayout)
+
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
