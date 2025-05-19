@@ -25,6 +25,7 @@ interface UlyDao {
         deleteMereneHodnotyByUlId(ul.id)
         deletePoznamkyByUlId(ul.id)
         deleteProblemyByUlId(ul.id)
+        deleteZaznamKontrolyByUlId(ul.id)
         // Poté smažte samotný úl
         deleteUlEntity(ul)
     }
@@ -37,6 +38,9 @@ interface UlyDao {
 
     @Query("DELETE FROM problem WHERE ulId = :ulId")
     suspend fun deleteProblemyByUlId(ulId: Int)
+
+    @Query("DELETE FROM zaznam_kontroly WHERE ulId = :ulId")
+    suspend fun deleteZaznamKontrolyByUlId(ulId: Int)
 
     @Delete
     suspend fun deleteUlEntity(ul: Uly)

@@ -10,13 +10,15 @@ import com.hruby.databasemodule.data.Poznamka
 import com.hruby.databasemodule.data.Problem
 import com.hruby.databasemodule.data.Stanoviste
 import com.hruby.databasemodule.data.Uly
+import com.hruby.databasemodule.data.ZaznamKontroly
 import com.hruby.databasemodule.databaseLogic.dao.MereneHodnotyDao
 import com.hruby.databasemodule.databaseLogic.dao.PoznamkaDao
 import com.hruby.databasemodule.databaseLogic.dao.ProblemDao
 import com.hruby.databasemodule.databaseLogic.dao.StanovisteDao
 import com.hruby.databasemodule.databaseLogic.dao.UlyDao
+import com.hruby.databasemodule.databaseLogic.dao.ZaznamKontrolyDao
 
-@androidx.room.Database(entities = [Stanoviste::class, Uly::class, Poznamka::class, MereneHodnoty::class, Problem::class], version = 1, exportSchema = false)
+@androidx.room.Database(entities = [Stanoviste::class, Uly::class, Poznamka::class, MereneHodnoty::class, Problem::class, ZaznamKontroly::class], version = 2, exportSchema = false)
 abstract class StanovisteDatabase : RoomDatabase() {
 
     abstract fun stanovisteDao(): StanovisteDao
@@ -24,6 +26,7 @@ abstract class StanovisteDatabase : RoomDatabase() {
     abstract fun poznamkaDao(): PoznamkaDao
     abstract fun mereneHodnotyDao(): MereneHodnotyDao
     abstract fun problemDao(): ProblemDao
+    abstract fun zaznamKontrolyDao(): ZaznamKontrolyDao
 
     companion object {
         @Volatile
@@ -38,10 +41,38 @@ abstract class StanovisteDatabase : RoomDatabase() {
                 )
                     //.addMigrations(MIGRATION_1_2)  // Přidání migrace pro verzi 1 → 2
                     //TODO("nezapomenout změnit v oficiálním release .fallbackToDestructiveMigration() na addMigrations()")
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 instance
+            }
+        }
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Vytvoření tabulky
+                database.execSQL("""
+            CREATE TABLE IF NOT EXISTS `zaznam_kontroly` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `ulId` INTEGER NOT NULL,
+                `datum` INTEGER NOT NULL,
+                `typKontroly` TEXT,
+                `zaznamText` TEXT,
+                `stavZasob` TEXT,
+                `medobrani` INTEGER NOT NULL,
+                `medobraniRamky` INTEGER,
+                `problemovyUl` INTEGER NOT NULL,
+                `hodnoceni` REAL NOT NULL,
+                `agresivita` INTEGER NOT NULL,
+                `mezolitostPlodu` INTEGER NOT NULL,
+                `silaVcelstva` INTEGER NOT NULL,
+                `stavebniPud` INTEGER NOT NULL,
+                FOREIGN KEY(`ulId`) REFERENCES `uly`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+            )
+        """.trimIndent())
+
+                // Vytvoření indexu
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_zaznam_kontroly_ulId` ON `zaznam_kontroly` (`ulId`)")
             }
         }
     }

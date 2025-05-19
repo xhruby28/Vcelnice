@@ -61,6 +61,8 @@ object WiFiHelper {
     fun connectToWiFi(context: Context, onConnected: () -> Unit, onError: (String) -> Unit) {
         if(!isInProcess){
             isInProcess = true
+            disconnectFromWiFi(context)
+
             Log.d("WiFiHelper", "Connection lock Enabled")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val wifiSpecifier = WifiNetworkSpecifier.Builder()
@@ -74,22 +76,23 @@ object WiFiHelper {
                     .build()
 
                 val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                val networkCallback = object : ConnectivityManager.NetworkCallback() {
+                networkCallback = object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         connectivityManager.bindProcessToNetwork(network)
-                        isInProcess = false
-                        Log.d("WiFiHelper", "Connection lock Disabled")
+                        Log.d("WiFiHelperN", "Connection lock Disabled")
                         onConnected()
+                        isInProcess = false
                     }
 
                     override fun onUnavailable() {
                         isInProcess = false
-                        Log.d("WiFiHelper", "Connection lock Disabled")
+                        Log.d("WiFiHelperN", "Connection lock Disabled")
                         onError("WiFi connection failed")
+                        BluetoothHelper.disconnect(context,false)
                     }
                 }
 
-                connectivityManager.requestNetwork(networkRequest, networkCallback)
+                connectivityManager.requestNetwork(networkRequest, networkCallback!!)
             } else {
                 val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
                 val wifiConfig = WifiConfiguration().apply {
@@ -100,13 +103,14 @@ object WiFiHelper {
                 val networkId = wifiManager.addNetwork(wifiConfig)
                 if (networkId != -1) {
                     wifiManager.enableNetwork(networkId, true)
-                    isInProcess = false
-                    Log.d("WiFiHelper", "Connection lock Disabled")
+                    Log.d("WiFiHelperO", "Connection lock Disabled")
                     onConnected()
+                    isInProcess = false
                 } else {
                     isInProcess = false
-                    Log.d("WiFiHelper", "Connection lock Disabled")
+                    Log.d("WiFiHelperO", "Connection lock Disabled")
                     onError("WiFi configuration failed")
+                    BluetoothHelper.disconnect(context,false)
                 }
             }
         }
@@ -114,9 +118,16 @@ object WiFiHelper {
 
     fun disconnectFromWiFi(context: Context) {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        networkCallback?.let {
-            connectivityManager.unregisterNetworkCallback(it)
-            Log.d("WiFiHelper", "Disconnected from WiFi")
+        try {
+            networkCallback?.let {
+                connectivityManager.unregisterNetworkCallback(it)
+                Log.d("WiFiHelper", "Disconnected from WiFi")
+            }
+        } catch (e: Exception) {
+            Log.w("WiFiHelper", "Tried to unregister a null or already unregistered callback")
+        } finally {
+            networkCallback = null
+            connectivityManager.bindProcessToNetwork(null)
         }
         connectivityManager.bindProcessToNetwork(null)
     }
@@ -209,7 +220,7 @@ object WiFiHelper {
                                 teplotaUl = values[3].toFloat(),
                                 vlhkostModul = values[4].toFloat(),
                                 teplotaModul = values[5].toFloat(),
-                                frekvence = values[6].toFloat(),
+                                frekvence = values[6].toFloatOrNull() ?: -127f,
                                 gyroX = values[7].toFloat(),
                                 gyroY = values[8].toFloat(),
                                 gyroZ = values[9].toFloat(),
@@ -252,7 +263,7 @@ object WiFiHelper {
                                     teplotaUl = values[3].toFloat(),
                                     vlhkostModul = values[4].toFloat(),
                                     teplotaModul = values[5].toFloat(),
-                                    frekvence = values[6].toFloat(),
+                                    frekvence = values[6].toFloatOrNull() ?: -127f,
                                     gyroX = values[7].toFloat(),
                                     gyroY = values[8].toFloat(),
                                     gyroZ = values[9].toFloat(),

@@ -46,7 +46,7 @@ class UlDetailActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_info_ul, R.id.nav_namerene_hodnoty_ul//, R.id.nav_poznamky_ul, R.id.nav_problemy_historie_ul
+                R.id.nav_info_ul, R.id.nav_namerene_hodnoty_ul, R.id.nav_zaznam_ul//, R.id.nav_poznamky_ul, R.id.nav_problemy_historie_ul
             ),
             binding.drawerLayoutUl
         )
@@ -71,7 +71,6 @@ class UlDetailActivity : AppCompatActivity() {
             val cisloUlu = ul.ul.cisloUlu
             navHeaderTitle.text = String.format("Úl číslo $cisloUlu")
             val navMereneHodnoty: MenuItem = navView.menu.findItem(R.id.nav_namerene_hodnoty_ul)
-            //TODO("!!!Nezapomenout zapnout následující funkci, protože je vypnutá kvůli testování!!!")
             navMereneHodnoty.isVisible = ul.ul.maMAC
         }
     }

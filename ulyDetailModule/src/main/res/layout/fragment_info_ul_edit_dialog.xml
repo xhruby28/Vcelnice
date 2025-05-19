@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/editUlDialogRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextCisloUlu"
+            android:inputType="number"
+            android:hint="Číslo úlu" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <EditText
+            android:id="@+id/editTextPopisUlu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Popis úlu"
+            android:lines="2"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:gravity="top|start"
+            android:padding="8dp" />
+
+    </LinearLayout>
+</ScrollView>

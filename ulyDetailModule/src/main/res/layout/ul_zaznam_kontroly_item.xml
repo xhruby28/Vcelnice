@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_kontrola"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Datum kontroly -->
+        <TextView
+            android:id="@+id/tvDatumKontroly"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Datum: 01.05.2025"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivProblemovyUl"
+            app:layout_constraintBottom_toTopOf="@+id/tvTypKontroly"
+            app:layout_constraintHorizontal_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/ivMedobraniUl"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="6dp"
+            android:src="@drawable/honey_comb_32dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/ivProblemovyUl"
+            app:layout_constraintTop_toTopOf="@id/tvDatumKontroly"
+            app:tint="@android:color/holo_orange_dark"
+            tools:visibility="visible" />
+
+        <!-- Ikona problémového úlu -->
+        <ImageView
+            android:id="@+id/ivProblemovyUl"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_dialog_alert"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvDatumKontroly"
+            app:tint="@android:color/holo_red_dark"
+            tools:visibility="visible" />
+
+        <!-- Typ kontroly -->
+        <TextView
+            android:id="@+id/tvTypKontroly"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Typ: Jarní kontrola"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvDatumKontroly"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

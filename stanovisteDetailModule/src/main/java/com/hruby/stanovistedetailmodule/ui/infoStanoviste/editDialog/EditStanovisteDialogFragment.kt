@@ -285,6 +285,7 @@ class EditStanovisteDialogFragment : DialogFragment(), StanovisteEditMapFragment
             .setTitle("Upravit stanoviště")
             .setPositiveButton("Uložit", null)
             .setNegativeButton("Zrušit") { dialog, _ -> dialog.cancel() }
+            .setCancelable(false)
 
         val dialog = builder.create()
         dialog.setOnShowListener {

@@ -10,15 +10,15 @@
             android:title="Informace o úlu" />
         <item
             android:id="@+id/nav_zaznam_ul"
-            android:title="Záznam kontroly" />
+            android:title="Záznam kontroly"/>
         <item
             android:id="@+id/nav_namerene_hodnoty_ul"
             android:title="Naměřené hodnoty"/>
-        <item
+        <!--item
             android:id="@+id/nav_poznamky_ul"
-            android:title="Poznámky" />
-        <item
+            android:title="Poznámky" /-->
+        <!--item
             android:id="@+id/nav_problemy_historie_ul"
-            android:title="Historie problémů" />
+            android:title="Historie problémů" /-->
     </group>
 </menu>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/graphsScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp">
+
+        <Spinner
+            android:id="@+id/spinnerVelicina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/veliciny_array"
+            android:paddingBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerCasovyUsek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/casove_useky_array"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewRozsah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zobrazené období: dd.MM.yyyy - dd.MM.yyyy"
+            android:textSize="16sp"
+            android:paddingTop="8dp"/>
+
+        <!--TextView
+            android:id="@+id/textViewAnalyza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Analýza bude zde..."
+            android:paddingTop="16dp"/-->
+    </LinearLayout>
+</ScrollView>

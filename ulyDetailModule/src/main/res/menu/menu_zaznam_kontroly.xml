@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--item
-        android:id="@+id/uly_action_edit"
-        android:title="@string/uprava" /-->
     <item
-        android:id="@+id/uly_action_delete"
+        android:id="@+id/action_zaznam_kontroly_delete"
         android:title="@string/smazat" />
 </menu>

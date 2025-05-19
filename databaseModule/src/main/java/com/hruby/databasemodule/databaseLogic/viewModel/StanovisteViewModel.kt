@@ -38,7 +38,7 @@ class StanovisteViewModel(private val repository: StanovisteRepository) : ViewMo
         return repository.getStanovisteById(id)
     }
 
-    suspend fun getStanovisteByMAC(macAddress: String): Stanoviste?{
+    fun getStanovisteByMAC(macAddress: String): Stanoviste?{
         return repository.getStanovisteByMAC(macAddress)
     }
 

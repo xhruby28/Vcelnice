@@ -6,6 +6,7 @@ import com.hruby.databasemodule.data.MereneHodnoty
 import com.hruby.databasemodule.data.Poznamka
 import com.hruby.databasemodule.data.Problem
 import com.hruby.databasemodule.data.Uly
+import com.hruby.databasemodule.data.ZaznamKontroly
 
 data class UlWithOther(
     @Embedded val ul: Uly,
@@ -23,5 +24,10 @@ data class UlWithOther(
         parentColumn = "id",
         entityColumn = "ulId"
     )
-    val problem: List<Problem>
+    val problem: List<Problem>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "ulId"
+    )
+    val zaznamKontroly: List<ZaznamKontroly>
 )

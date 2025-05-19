@@ -22,7 +22,11 @@ import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
+import com.hruby.databasemodule.databaseLogic.viewModel.MereneHodnotyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.StanovisteViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
 import com.hruby.sharedresources.dialogs.DeviceListDialog
 import java.util.UUID
 
@@ -41,6 +45,15 @@ object BluetoothHelper {
     private const val DESCRIPTOR_UUID =         "00002902-0000-1000-8000-00805f9b34fb"
 
     private var stanovisteMac: String = ""
+    private var wifiStartedHandled = false
+
+    private lateinit var stanovisteViewModel: StanovisteViewModel
+
+    fun initializeViewModels(
+        stanovisteViewModel: StanovisteViewModel
+    ) {
+        this.stanovisteViewModel = stanovisteViewModel
+    }
 
     fun isBluetoothEnabled(): Boolean {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -194,25 +207,60 @@ object BluetoothHelper {
 
             override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
                 if (characteristic.uuid == UUID.fromString(MY_NOTIFICATION_CHARACTERISTIC_UUID)) {
-                    var message: String
-                    message = characteristic.getStringValue(0)
+                    var message: String = characteristic.getStringValue(0)
                     Log.d("BluetoothHelper /CharChange", "Message received: $message")
                     when (message) {
-                        "WIFI_STARTED" -> {
-                            WiFiHelper.disconnectFromWiFi(context)
-                            WiFiHelper.connectToWiFi(context,
-                                onConnected = {
-                                    // Kód, který se spustí po úspěšném připojení
-                                    Log.d("BluetoothHelper /CharChange", "Device Wifi connected, ready to receive data")
+                        "SEND_TEL_ACK" -> {
+                            val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac)
+                            val tel = stanoviste?.notificationPhoneNumber ?: "NULL"
 
-                                    val url = "http://192.168.4.1:80/download"
-                                    WiFiHelper.downloadDataFromESP32(url,context)
-                                },
-                                onError = { error ->
-                                    // Kód pro ošetření chyby při připojování
-                                    Log.e("BluetoothHelper /CharChange", "Error: $error")
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed({
+                                if (stanoviste?.notificationsEnabled == true) {
+                                    sendCommand("TEL:$tel", context)
+                                } else {
+                                    sendCommand("TEL:NULL", context)
                                 }
-                            )
+                            }, 500)
+                        }
+                        "TEL_ACK" -> {
+                            val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac)
+                            val pin = stanoviste?.hashedPin ?: "NULL"
+
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed({
+                                if (stanoviste?.isPin == true && stanoviste.notificationsEnabled == true) {
+                                    sendCommand("PIN:$pin", context)
+                                } else {
+                                    sendCommand("PIN:NULL", context)
+                                }
+                            }, 500)
+                        }
+                        "PIN_ACK" -> {
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed({
+                                sendCommand("SYNC",context)
+                            }, 500)
+                        }
+                        "WIFI_STARTED" -> {
+
+                            if (!wifiStartedHandled) {
+                                wifiStartedHandled = true // Zamezí opakovanému spuštění
+                                WiFiHelper.disconnectFromWiFi(context)
+                                WiFiHelper.connectToWiFi(
+                                    context,
+                                    onConnected = {
+                                        Log.d("BluetoothHelper /CharChange", "Device Wifi connected, ready to receive data")
+                                        val url = "http://192.168.4.1:80/download"
+                                        WiFiHelper.downloadDataFromESP32(url, context)
+                                    },
+                                    onError = { error ->
+                                        Log.e("BluetoothHelper /CharChange", "Error: $error")
+                                    }
+                                )
+                            } else {
+                                Log.d("BluetoothHelper /CharChange", "WIFI_STARTED already handled")
+                            }
                         }
                         "WIFI_FAILED" -> {
                             Log.e("BluetoothHelper /CharChange", "ESP WiFi Init failed")
@@ -220,12 +268,14 @@ object BluetoothHelper {
                             Handler(Looper.getMainLooper()).post {
                                 Toast.makeText(context, "WiFi na sběrnici se nepodařilo inicializovat", Toast.LENGTH_SHORT).show()
                             }
+                            wifiStartedHandled = false
                         }
                         "SYNC_COMPLETE_ACK" -> {
                             disconnect(context, true)
                             Handler(Looper.getMainLooper()).post {
                                 Toast.makeText(context, "Synchronizace hotova", Toast.LENGTH_SHORT).show()
                             }
+                            wifiStartedHandled = false
                         }
                     }
                 }
@@ -289,8 +339,8 @@ object BluetoothHelper {
     }
 
     // Funkce pro odeslání synchronizačního příkazu
-    @SuppressLint("MissingPermission")
-    @TargetApi(Build.VERSION_CODES.TIRAMISU) // Tento kód bude použit pouze pro API level 33 a vyšší
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @SuppressLint("MissingPermission")// Tento kód bude použit pouze pro API level 33 a vyšší
     private fun sendCommandForNewAPI(syncCommand: String, context: Context) {
         writeGattCharacteristic?.let {
             val commandBytes = syncCommand.toByteArray(Charsets.UTF_8)
@@ -311,6 +361,7 @@ object BluetoothHelper {
         bleGatt?.disconnect()
         bleGatt?.close()
         bleGatt = null
+        wifiStartedHandled = false
     }
 
     private fun acquireWakeLock(context: Context) {

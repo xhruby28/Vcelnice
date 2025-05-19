@@ -69,13 +69,12 @@ class InfoStanovisteFragment : Fragment(), EditStanovisteDialogFragment.EditStan
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.stanoviste.observe(viewLifecycleOwner) { stanoviste ->
-            val fab: FloatingActionButton =
-                view.findViewById(R.id.stanoviste_detail_info_fragment_fab)
+            val fab: FloatingActionButton = view.findViewById(R.id.stanoviste_detail_info_fragment_fab)
 
             infoStanovisteFragmentText()
 
             fab.setOnClickListener {
-                toggleStanovisteInfoFabMenu(fab)
+                toggleStanovisteInfoFabMenu(fab, stanoviste)
             }
 
             binding.stanovisteDetailInfoFragmentFabSync.setOnClickListener {
@@ -115,6 +114,7 @@ class InfoStanovisteFragment : Fragment(), EditStanovisteDialogFragment.EditStan
             binding.stanovisteDetailInfoFragmentNazevStanoviste.text = stanoviste.name
             binding.stanovisteDetailInfoFragmentStanovisteLastCheck.text = stanoviste.lastCheck
             binding.stanovisteDetailInfoFragmentStanovisteLastState.text = stanoviste.lastState
+            binding.stanovisteDetailInfoFragmentDetailStanoviste.text = stanoviste.description
 
             val stringURL: String = stanoviste.locationUrl.toString()
             val arrayGPS: List<String> = stringURL.split("=")
@@ -178,7 +178,7 @@ class InfoStanovisteFragment : Fragment(), EditStanovisteDialogFragment.EditStan
         }
     }
 
-    private fun toggleStanovisteInfoFabMenu(fab: FloatingActionButton) {
+    private fun toggleStanovisteInfoFabMenu(fab: FloatingActionButton, stanoviste: Stanoviste) {
         if (isStanovisteInfoFabMenuOpen) {
             fab.setImageResource(com.hruby.sharedresources.R.drawable.arrow_upward_24dp)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.GONE
@@ -187,7 +187,11 @@ class InfoStanovisteFragment : Fragment(), EditStanovisteDialogFragment.EditStan
         } else {
             fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
             binding.stanovisteDetailInfoFragmentFabEdit.visibility = View.VISIBLE
-            binding.stanovisteDetailInfoFragmentFabSync.visibility = View.VISIBLE
+            if (stanoviste.maMAC) {
+                binding.stanovisteDetailInfoFragmentFabSync.visibility = View.VISIBLE
+            } else {
+                binding.stanovisteDetailInfoFragmentFabSync.visibility = View.GONE
+            }
             binding.stanovisteDetailInfoFragmentFabPic.visibility = View.VISIBLE
         }
         isStanovisteInfoFabMenuOpen = !isStanovisteInfoFabMenuOpen
@@ -331,7 +335,7 @@ class InfoStanovisteFragment : Fragment(), EditStanovisteDialogFragment.EditStan
                     // Kód, který se spustí po úspěšném připojení
                     Log.d("Activity", "Device connected, ready to send sync command")
                     WiFiHelper.writeMACForWifi(stanovisteMAC)
-                    BluetoothHelper.sendCommand("SYNC",requireContext())
+                    BluetoothHelper.sendCommand("SEND_TEL",requireContext())
                 },
                 onError = { error ->
                     // Kód pro ošetření chyby při připojování

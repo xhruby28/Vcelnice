@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="veliciny_array">
+        <item>-------</item>
+        <item>Teplota v úlu</item>
+        <item>Váha úlu</item>
+        <item>Frekvence v úlu</item>
+        <item>Teplota a vlhkost modulu</item>
+    </string-array>
+
+    <string-array name="casove_useky_array">
+        <item>Celé období</item>
+        <item>Poslední rok</item>
+        <item>Poslední měsíc</item>
+        <item>Poslední týden</item>
+        <item>Poslední den</item>
+        <item>Vlastní rozmezí</item>
+    </string-array>
+
+    <string-array name="typ_kontroly">
+        <item>- - - - - - - - -</item>
+        <item>Medobraní</item>
+    </string-array>
+</resources>

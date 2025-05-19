@@ -169,8 +169,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         datePickerDialog.show()
     }
 
-    private // Skrytí klávesnice
-    fun hideKeyboard(view: View) {
+    private fun hideKeyboard(view: View) {
         val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }

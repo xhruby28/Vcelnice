@@ -11,23 +11,23 @@
         <item
             android:id="@+id/nav_uly"
             android:title="Seznam úlů"/>
-        <item
+        <!--item
             android:id="@+id/nav_notifications"
-            android:title="Notifikace"/>
-        <item
+            android:title="Notifikace"/-->
+        <!--item
             android:id="@+id/nav_visits_diary"
-            android:title="Návštěvy/Deník"/>
-        <item
+            android:title="Návštěvy/Deník"/-->
+        <!--item
             android:id="@+id/nav_honey_collection"
-            android:title="Medobraní/Evidence medobraní"/>
-        <item
+            android:title="Medobraní/Evidence medobraní"/-->
+        <!--item
             android:id="@+id/nav_feeding"
-            android:title="Krmení"/>
-        <item
+            android:title="Krmení"/-->
+        <!--item
             android:id="@+id/nav_status"
-            android:title="Stav stanoviště"/>
-        <item
+            android:title="Stav stanoviště"/-->
+        <!--item
             android:id="@+id/nav_treatment"
-            android:title="Léčení"/>
+            android:title="Léčení"/-->
     </group>
 </menu>

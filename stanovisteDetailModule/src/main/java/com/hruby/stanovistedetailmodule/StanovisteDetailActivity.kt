@@ -27,6 +27,7 @@ import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.MereneHodnotyViewModelFactory
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.UlyViewModelFactory
 import com.hruby.navmodule.Navigator
+import com.hruby.sharedresources.helpers.BluetoothHelper
 import com.hruby.sharedresources.helpers.WiFiHelper
 import com.hruby.stanovistedetailmodule.databinding.ActivityStanovisteDetailBinding
 import com.hruby.ulydetailmodule.UlDetailActivity
@@ -101,6 +102,7 @@ class StanovisteDetailActivity : AppCompatActivity(), Navigator {
         }
 
         WiFiHelper.initializeViewModels(ulyViewModel,mereneHodnotyViewModel,stanovisteViewModel)
+        BluetoothHelper.initializeViewModels(stanovisteViewModel)
     }
 
     override fun onSupportNavigateUp(): Boolean {

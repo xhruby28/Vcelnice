@@ -15,9 +15,51 @@
             app:destination="@id/nav_namerene_hodnoty_ul" />
     </fragment>
 
-    <fragment
+    <!--fragment
         android:id="@+id/nav_namerene_hodnoty_ul"
         android:name="com.hruby.ulydetailmodule.ui.namereneHodnotyUl.NamereneHodnotyUlFragment"
         android:label="Naměřené hodnoty"
-        tools:layout="@layout/fragment_namerene_hodnoty_ul"/>
+        tools:layout="@layout/fragment_namerene_hodnoty_ul"/-->
+
+    <fragment
+        android:id="@+id/nav_namerene_hodnoty_ul"
+        android:name="com.hruby.ulydetailmodule.ui.namereneHodnotyUl.NamereneHodnotyUlFragmentGraphs"
+        android:label="Naměřené hodnoty grafy"
+        tools:layout="@layout/fragment_namerene_hodnoty_ul_graphs"/>
+
+    <fragment
+        android:id="@+id/nav_zaznam_ul"
+        android:name="com.hruby.ulydetailmodule.ui.zaznamKontrolyUl.ZaznamKontrolyUlFragment"
+        android:label="Záznam kontroly"
+        tools:layout="@layout/fragment_zaznam_kontroly_ul">
+        <action
+            android:id="@+id/action_nav_zaznam_ul_to_nav_zaznam_ul_add"
+            app:destination="@id/nav_zaznam_ul_add" >
+            <argument
+                android:name="ulId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_nav_zaznam_ul_to_nav_zaznam_ul_preview"
+            app:destination="@id/nav_zaznam_ul_preview" >
+            <argument
+                android:name="ulId"
+                app:argType="integer"/>
+            <argument
+                android:name="zaznamId"
+                app:argType="integer"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_zaznam_ul_add"
+        android:name="com.hruby.ulydetailmodule.ui.zaznamKontrolyUl.AddZaznamKontrolyFragment"
+        android:label="Vytvoření záznamu"
+        tools:layout="@layout/fragment_add_zaznam_kontroly" />
+
+    <fragment
+        android:id="@+id/nav_zaznam_ul_preview"
+        android:name="com.hruby.ulydetailmodule.ui.zaznamKontrolyUl.ViewZaznamKontrolyFragment"
+        android:label="Záznam ze dne"
+        tools:layout="@layout/fragment_view_zaznam_kontroly" />
 </navigation>

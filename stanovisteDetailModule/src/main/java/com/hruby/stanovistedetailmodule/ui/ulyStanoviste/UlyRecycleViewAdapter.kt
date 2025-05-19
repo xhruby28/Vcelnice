@@ -75,10 +75,10 @@ class UlyRecycleViewAdapter (
         popup.inflate(R.menu.menu_uly_stanoviste)
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.uly_action_edit -> {
+                /*R.id.uly_action_edit -> {
                     onEditClick(uly, position) // Volání pro úpravu
                     true
-                }
+                }*/
                 R.id.uly_action_delete -> {
                     onDeleteClick(uly, position)
                     true

@@ -53,5 +53,5 @@ interface StanovisteDao {
     fun getStanovisteWithUly(id: Int): LiveData<StanovisteWithUly>
 
     @Query("SELECT * FROM stanoviste WHERE siteMAC = :macAddress")
-    suspend fun getStanovisteByMAC(macAddress: String): Stanoviste?
+    fun getStanovisteByMAC(macAddress: String): Stanoviste?
 }
