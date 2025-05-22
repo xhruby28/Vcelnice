@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="veliciny_array">
-        <item>-------</item>
+        <item>-- Vyberte --</item>
         <item>Teplota v úlu</item>
         <item>Váha úlu</item>
         <item>Frekvence v úlu</item>
@@ -9,6 +9,7 @@
     </string-array>
 
     <string-array name="casove_useky_array">
+        <item>-- Vyberte --</item>
         <item>Celé období</item>
         <item>Poslední rok</item>
         <item>Poslední měsíc</item>
@@ -17,8 +18,36 @@
         <item>Vlastní rozmezí</item>
     </string-array>
 
-    <string-array name="typ_kontroly">
+    <string-array name="typ_manipulace_nastavek">
         <item>- - - - - - - - -</item>
-        <item>Medobraní</item>
+        <item>Přidán</item>
+        <item>Odebrán</item>
+        <item>Prohozen</item>
+        <item>Vyměněn</item>
+    </string-array>
+
+    <string-array name="mezisteny_souse_array">
+        <item>- - - -</item>
+        <item>-10</item>
+        <item>-9</item>
+        <item>-8</item>
+        <item>-7</item>
+        <item>-6</item>
+        <item>-5</item>
+        <item>-4</item>
+        <item>-3</item>
+        <item>-2</item>
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
 </resources>

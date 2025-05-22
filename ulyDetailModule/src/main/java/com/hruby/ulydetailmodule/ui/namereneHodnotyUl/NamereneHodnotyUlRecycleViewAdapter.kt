@@ -37,7 +37,7 @@ class NamereneHodnotyUlRecycleViewAdapter(
 
     override fun onBindViewHolder(holder: NamereneHodnotyViewHolder, position: Int) {
         val hodnoty = hodnotyList[position]
-        holder.datetime.text = formatTimestamp(hodnoty.datum)
+        holder.datetime.text = formatTimestamp(hodnoty.datum.toLong())
         holder.tempUl.text = String.format(hodnoty.teplotaUl.toString())
         holder.tempModul.text = String.format(hodnoty.teplotaModul.toString())
         holder.humModul.text = String.format(hodnoty.vlhkostModul.toString())

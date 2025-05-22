@@ -17,12 +17,12 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -66,20 +66,15 @@
                         android:entries="@array/casove_useky_array"
                         android:padding="3dp" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textViewRozsah"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Zobrazené období: dd.MM.yyyy - dd.MM.yyyy"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
             </LinearLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="1dp"/>
-
-            <TextView
-                android:id="@+id/textViewRozsah"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Zobrazené období: dd.MM.yyyy - dd.MM.yyyy"
-                android:textSize="16sp"
-                android:padding="3dp"/>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -89,8 +84,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_height="200dp" />
 
             <!--TextView
                 android:id="@+id/textViewAnalyza"

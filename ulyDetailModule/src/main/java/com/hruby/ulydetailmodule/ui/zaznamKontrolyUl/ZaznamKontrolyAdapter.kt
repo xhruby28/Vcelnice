@@ -37,8 +37,6 @@ class ZaznamKontrolyAdapter(
         val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
         holder.tvDatum.text = "Datum: ${sdf.format(Date(zaznam.datum))}"
-        holder.tvTyp.text = "Typ: ${zaznam.typKontroly ?: "Neurčeno"}"
-        holder.ivMedobrani.visibility = if (zaznam.medobrani) View.VISIBLE else View.GONE
         holder.ivProblem.visibility = if (zaznam.problemovyUl) View.VISIBLE else View.GONE
 
         holder.itemView.setOnLongClickListener {

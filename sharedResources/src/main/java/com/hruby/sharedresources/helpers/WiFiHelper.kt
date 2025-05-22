@@ -27,7 +27,7 @@ import java.io.IOException
 
 
 object WiFiHelper {
-    private const val WIFI_SSID = "Hive_Gateway"
+    private const val WIFI_SSID = "ApiaryConnect"
     private const val WIFI_PASSWORD = "6m=JaFt0P=J0f!z}Sq69"
 
     private lateinit var ulyViewModel: UlyViewModel

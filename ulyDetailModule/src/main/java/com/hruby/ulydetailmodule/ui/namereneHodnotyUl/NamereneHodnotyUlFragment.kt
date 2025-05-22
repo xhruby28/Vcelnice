@@ -80,7 +80,7 @@ class NamereneHodnotyUlFragment : Fragment() {
         _binding = null
     }
 
-    fun generateRandomMereneHodnoty(ulId: Int): MereneHodnoty {
+    /*fun generateRandomMereneHodnoty(ulId: Int): MereneHodnoty {
         fun randomWithTwoDecimals(min: Float, max: Float): Float {
             return ((Random.nextFloat() * (max - min) + min) * 100).roundToInt() / 100f
         }
@@ -101,5 +101,5 @@ class NamereneHodnotyUlFragment : Fragment() {
             accelY = randomWithTwoDecimals(-10f, 10f),
             accelZ = randomWithTwoDecimals(-10f, 10f)
         )
-    }
+    }*/
 }

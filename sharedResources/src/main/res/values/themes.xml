@@ -10,13 +10,22 @@
         <item name="colorSecondaryVariant">@color/yellow_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/yellow_primary</item>
         <!-- Customize your theme here. -->
+
+        <!-- Text -->
+        <item name="android:textColor">@color/dark_gray</item>
     </style>
 
     <style name="Theme.Vcelnice.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+    
+    <style name="Theme.Vcelnice.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="Theme.Vcelnice.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
