@@ -16,6 +16,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import com.hruby.databasemodule.data.ZaznamKontroly
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
@@ -61,9 +62,9 @@ class AddZaznamKontrolyFragment : Fragment() {
         val factory = ZaznamKontrolyViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[ZaznamKontrolyViewModel::class.java]
 
-        spinnerTypKontroly = view.findViewById<Spinner>(R.id.add_ul_kontrola_spinnerTypKontroly)
+        //spinnerTypKontroly = view.findViewById<Spinner>(R.id.add_ul_kontrola_spinnerTypKontroly)
         datePicker = view.findViewById<EditText>(R.id.add_ul_kontrola_datePicker)
-        medobraniRamkyLayout = view.findViewById<LinearLayout>(R.id.add_ul_kontrola_layoutMedobrani)
+        //medobraniRamkyLayout = view.findViewById<ConstraintLayout>(R.id.add_ul_kontrola_layoutMedobrani)
         //medobraniCount = view.findViewById<EditText>(R.id.add_ul_kontrola_editTextMedobraniRamky)
         medobraniCount = view.findViewById<Spinner>(R.id.add_ul_kontrola_editTextMedobraniRamky)
         buttonCancel = view.findViewById<Button>(R.id.add_ul_kontrola_buttonCancel)
@@ -72,18 +73,12 @@ class AddZaznamKontrolyFragment : Fragment() {
         // Nastavení výchozího data na aktuální čas
         setDateToCurrent()
 
-        val ramkyList = mutableListOf("- - - - - - - - -")
-        ramkyList.addAll((0..99).map { it.toString() })
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ramkyList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        medobraniCount.adapter = adapter
-
         datePicker.setOnClickListener {
             showDatePickerDialog()
             hideKeyboard(view)
         }
 
-        spinnerTypKontroly.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        /*spinnerTypKontroly.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedItem = parent.getItemAtPosition(position) as String
                 if (selectedItem == "Medobraní") {
@@ -94,7 +89,7 @@ class AddZaznamKontrolyFragment : Fragment() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
+        }*/
 
         buttonSave.setOnClickListener {
             saveZaznam()

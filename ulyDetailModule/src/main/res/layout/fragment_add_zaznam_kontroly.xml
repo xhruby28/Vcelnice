@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Základní data"
+                android:text="@string/z_kladn_data"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -35,7 +34,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Datum kontroly:"
+                    android:text="@string/datum_kontroly"
+                    android:paddingVertical="10dp"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -46,100 +46,600 @@
                     android:layout_marginStart="4dp"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="Datum kontroly"
+                    android:hint="@string/vyberte_datum"
                     android:inputType="date" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0.5dp"
-                android:background="@android:color/darker_gray"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp" />
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="3dp"/>
 
-            <LinearLayout
+            <!-- Popis kontroly -->
+            <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/popis_kontroly"
+                android:paddingVertical="10dp"
+                android:theme="@style/ZaznamKontrolaSpinnerText" />
+
+            <EditText
+                android:id="@+id/editTextKontrolaPopisKontroly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/popis_kontroly2"
+                android:lines="2"
+                android:maxLines="5"
+                android:scrollbars="vertical"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:gravity="top|start"
+                android:padding="8dp"/>
+
+            <!-- Problémový úl -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Typ kontroly: "
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:text="@string/probl_m_v_lu"
+                    android:paddingVertical="10dp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <Spinner
-                    android:id="@+id/add_ul_kontrola_spinnerTypKontroly"
+                <TextView
+                    android:id="@+id/textswitchKontrolaProblemovyUl"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    android:layout_marginEnd="3dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/switchKontrolaProblemovyUl"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchKontrolaProblemovyUl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:entries="@array/typ_kontroly"
-                    android:minWidth="160dp"
-                    android:layout_marginStart="4dp"
-                    android:theme="@style/SpinnerTextStyle" />
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0.5dp"
-                android:background="@android:color/darker_gray"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp" />
-
-            <LinearLayout
-                android:id="@+id/add_ul_kontrola_layoutMedobrani"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/editTextKontrolaPopisProblemu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:hint="@string/popis_probl_mu"
+                android:lines="2"
+                android:maxLines="5"
+                android:scrollbars="vertical"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:gravity="top|start"
+                android:padding="8dp"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="3dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Matka viděna -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/matka_vid_na"
+                    android:paddingVertical="10dp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textswitchZaznamMatkaVidena"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/switchZaznamMatkaVidena"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchZaznamMatkaVidena"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="3dp"/>
+
+            <!-- Zásahy -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rámků vzato:"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/z_sahy_b_hem_kontroly"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkMatkaOznacena"
+                    android:text="@string/matka_ozna_ena"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkKrmeni"
+                    android:text="@string/krmen"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkMrizkaVlozena"
+                    android:text="@string/vlo_ena_m_ka"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkMrizkaOdebrana"
+                    android:text="@string/odebr_na_m_ka"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkPripravaKrmeni"
+                    android:text="@string/p_prava_na_krmen"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkZrusenoSpojenim"
+                    android:text="@string/zru_eno_spojen_m"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkCisteniDno"
+                    android:text="@string/vy_i_t_n_dno"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/checkOskrAbaneSteny"
+                    android:text="@string/o_kraban_st_ny"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="3dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_nastavek_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintGuide_begin="0dp"
+                    android:orientation="vertical" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_nastavek_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.3" />
+
+                <TextView
+                    android:id="@+id/textView_nastavek_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/n_stavek"
+                    android:paddingVertical="8dp"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_text"/>
 
                 <Spinner
                     android:id="@+id/add_ul_kontrola_editTextMedobraniRamky"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:minWidth="160dp"
-                    android:theme="@style/SpinnerTextStyle" />
-            </LinearLayout>
+                    android:minWidth="100dp"
+                    android:spinnerMode="dialog"
+                    android:entries="@array/typ_manipulace_nastavek"
+                    android:theme="@style/SpinnerTextStyle"
+                    android:paddingVertical="8dp"
+                    app:layout_constraintTop_toTopOf="@id/textView_nastavek_text"
+                    app:layout_constraintBottom_toBottomOf="@id/textView_nastavek_text"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_spinner"/>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0.5dp"
-                android:background="@android:color/darker_gray"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp" />
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider_nastavek"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_ul_kontrola_editTextMedobraniRamky"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+                <!-- Mezistěny a souše (plodiště) -->
+                <TextView
+                    android:id="@+id/mezisteny_souse_plodiste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mezist_ny_a_sou_e_plodi_t"
+                    android:textSize="20sp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_nastavek"/>
+
+                <TextView
+                    android:id="@+id/mezisteny_plodiste_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mezist_ny"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_text"
+                    app:layout_constraintTop_toBottomOf="@id/mezisteny_souse_plodiste"/>
+
+                <Spinner
+                    android:id="@+id/mezisteny_plodiste_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:spinnerMode="dialog"
+                    android:paddingVertical="8dp"
+                    android:entries="@array/mezisteny_souse_array"
+                    android:theme="@style/SpinnerTextStyle"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_spinner"
+                    app:layout_constraintTop_toTopOf="@id/mezisteny_plodiste_text"
+                    app:layout_constraintBottom_toBottomOf="@id/mezisteny_plodiste_text"/>
+
+                <TextView
+                    android:id="@+id/souse_plodiste_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sou_e"
+                    android:paddingVertical="8dp"
+                    android:layout_marginStart="8dp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_text"
+                    app:layout_constraintTop_toBottomOf="@id/mezisteny_plodiste_text"/>
+
+                <Spinner
+                    android:id="@+id/souse_plodiste_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:spinnerMode="dialog"
+                    android:paddingVertical="8dp"
+                    android:entries="@array/mezisteny_souse_array"
+                    android:theme="@style/SpinnerTextStyle"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_spinner"
+                    app:layout_constraintTop_toTopOf="@id/souse_plodiste_text"
+                    app:layout_constraintBottom_toBottomOf="@id/souse_plodiste_text"/>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider_plodiste"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/souse_plodiste_spinner"/>
+
+                <!-- Mezistěny a souše (mednik) -->
+                <TextView
+                    android:id="@+id/mezisteny_souse_mednik"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mezist_ny_a_sou_e_mednik"
+                    android:textSize="20sp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_plodiste"/>
+
+                <TextView
+                    android:id="@+id/mezisteny_mednik_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mezist_ny"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_text"
+                    app:layout_constraintTop_toBottomOf="@id/mezisteny_souse_mednik"/>
+
+                <Spinner
+                    android:id="@+id/mezisteny_mednik_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:spinnerMode="dialog"
+                    android:paddingVertical="8dp"
+                    android:entries="@array/mezisteny_souse_array"
+                    android:theme="@style/SpinnerTextStyle"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_spinner"
+                    app:layout_constraintTop_toTopOf="@id/mezisteny_mednik_text"
+                    app:layout_constraintBottom_toBottomOf="@id/mezisteny_mednik_text"/>
+
+                <TextView
+                    android:id="@+id/souse_mednik_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sou_e"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_text"
+                    app:layout_constraintTop_toBottomOf="@id/mezisteny_mednik_text"/>
+
+                <Spinner
+                    android:id="@+id/souse_mednik_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:spinnerMode="dialog"
+                    android:paddingVertical="8dp"
+                    android:entries="@array/mezisteny_souse_array"
+                    android:theme="@style/SpinnerTextStyle"
+                    app:layout_constraintStart_toStartOf="@id/guideline_nastavek_spinner"
+                    app:layout_constraintTop_toTopOf="@id/souse_mednik_text"
+                    app:layout_constraintBottom_toBottomOf="@id/souse_mednik_text"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="3dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal" >
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_plod_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintGuide_begin="0dp"
+                    android:orientation="vertical" />
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_plod_switch_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.3" />
 
-            </LinearLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_plod_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.3" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_plod_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.3" />
+
+                <TextView
+                    android:id="@+id/plod_text_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stav_plodu"
+                    android:textSize="20sp"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <!-- Otevreny -->
+                <TextView
+                    android:id="@+id/plod_otevreny_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/otev_en"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_plod_text"
+                    app:layout_constraintTop_toBottomOf="@id/plod_text_main"/>
+
+                <TextView
+                    android:id="@+id/plod_otevreny_switch_text"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    app:layout_constraintTop_toTopOf="@id/plod_otevreny_switch"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_otevreny_switch"
+                    app:layout_constraintEnd_toStartOf="@id/plod_otevreny_switch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/plod_otevreny_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/plod_otevreny_text"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_otevreny_text"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Zavreny -->
+                <TextView
+                    android:id="@+id/plod_zavreny_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zav_en"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_plod_text"
+                    app:layout_constraintTop_toBottomOf="@id/plod_otevreny_text"/>
+
+                <TextView
+                    android:id="@+id/plod_zavreny_switch_text"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    app:layout_constraintTop_toTopOf="@id/plod_zavreny_switch"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_zavreny_switch"
+                    app:layout_constraintEnd_toStartOf="@id/plod_zavreny_switch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/plod_zavreny_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/plod_zavreny_text"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_zavreny_text"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- V medniku -->
+                <TextView
+                    android:id="@+id/plod_mednik_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/v_medn_ku"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_plod_text"
+                    app:layout_constraintTop_toBottomOf="@id/plod_zavreny_text"/>
+
+                <TextView
+                    android:id="@+id/plod_mednik_switch_text"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    app:layout_constraintTop_toTopOf="@id/plod_mednik_switch"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_mednik_switch"
+                    app:layout_constraintEnd_toStartOf="@id/plod_mednik_switch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/plod_mednik_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/plod_mednik_text"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_mednik_text"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Trubcina -->
+                <TextView
+                    android:id="@+id/plod_trubcina_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trub_ina"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_plod_text"
+                    app:layout_constraintTop_toBottomOf="@id/plod_mednik_text"/>
+
+                <TextView
+                    android:id="@+id/plod_trubcina_switch_text"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    app:layout_constraintTop_toTopOf="@id/plod_trubcina_switch"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_trubcina_switch"
+                    app:layout_constraintEnd_toStartOf="@id/plod_trubcina_switch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/plod_trubcina_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/plod_trubcina_text"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_trubcina_text"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Matecnik -->
+                <TextView
+                    android:id="@+id/plod_matecnik_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mate_n_k"
+                    android:theme="@style/ZaznamKontrolaSpinnerText"
+                    android:paddingVertical="10dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_plod_text"
+                    app:layout_constraintTop_toBottomOf="@id/plod_trubcina_text"/>
+
+                <TextView
+                    android:id="@+id/plod_matecnik_switch_text"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/ne"
+                    android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                    app:layout_constraintTop_toTopOf="@id/plod_matecnik_switch"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_matecnik_switch"
+                    app:layout_constraintEnd_toStartOf="@id/plod_matecnik_switch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/plod_matecnik_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/plod_matecnik_text"
+                    app:layout_constraintBottom_toBottomOf="@id/plod_matecnik_text"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hodnocení úlu"
+                android:text="@string/hodnocen_lu"
                 android:textSize="20sp"
-                android:textStyle="bold"/>
+                android:theme="@style/ZaznamKontrolaSpinnerChoice"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                
+
 
             </LinearLayout>
 
@@ -153,6 +653,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Uložit"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -161,6 +662,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Zrušit"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

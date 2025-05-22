@@ -1,6 +1,32 @@
 <resources>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="z_sahy_b_hem_kontroly"><u>Zásahy během kontroly</u>:</string>
+    <string name="mezist_ny_a_sou_e_plodi_t"><u>Mezistěny a souše - Plodiště</u></string>
+    <string name="mezist_ny_a_sou_e_mednik"><u>Mezistěny a souše - Mednik</u></string>
+    <string name="stav_plodu"><u>Stav plodu</u></string>
+    <string name="z_kladn_data"><u>Základní data</u></string>
+    <string name="ne">Ne</string>
+    <string name="mezist_ny">Mezistěny:</string>
+    <string name="sou_e">Souše:</string>
+    <string name="datum_kontroly">Datum kontroly:</string>
+    <string name="vyberte_datum">Vyberte datum</string>
+    <string name="popis_kontroly">Popis kontroly:</string>
+    <string name="popis_kontroly2">Popis kontroly</string>
+    <string name="probl_m_v_lu">Problém v úlu:</string>
+    <string name="popis_probl_mu">Popis problému</string>
+    <string name="matka_vid_na">Matka viděna</string>
+    <string name="matka_ozna_ena">Matka označena</string>
+    <string name="krmen">Krmení</string>
+    <string name="vlo_ena_m_ka">Vložena mřížka</string>
+    <string name="odebr_na_m_ka">Odebrána mřížka</string>
+    <string name="p_prava_na_krmen">Příprava na krmení</string>
+    <string name="zru_eno_spojen_m">Zrušeno spojením</string>
+    <string name="vy_i_t_n_dno">Vyčištěné dno</string>
+    <string name="o_kraban_st_ny">Oškrabané stěny</string>
+    <string name="n_stavek">Nástavek:</string>
+    <string name="otev_en">Otevřený:</string>
+    <string name="zav_en">Zavřený:</string>
+    <string name="v_medn_ku">V medníku:</string>
+    <string name="trub_ina">Trubčina:</string>
+    <string name="mate_n_k">Matečník:</string>
+    <string name="hodnocen_lu"><u>Hodnocení úlu</u></string>
 </resources>

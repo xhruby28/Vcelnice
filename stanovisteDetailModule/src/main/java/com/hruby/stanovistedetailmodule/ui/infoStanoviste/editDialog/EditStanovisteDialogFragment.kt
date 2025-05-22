@@ -14,6 +14,7 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -59,6 +60,8 @@ class EditStanovisteDialogFragment : DialogFragment(), StanovisteEditMapFragment
         val builder = AlertDialog.Builder(requireContext())
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.fragment_edit_stanoviste, null)
+
+        val ex2_main = view.findViewById<LinearLayout>(R.id.expandable_sms_main)
 
         val ex1 = view.findViewById<ExpandableLayout>(R.id.expandable_info)
         val ex2 = view.findViewById<ExpandableLayout>(R.id.expandable_sms)
@@ -139,11 +142,13 @@ class EditStanovisteDialogFragment : DialogFragment(), StanovisteEditMapFragment
         macAdress = stanoviste?.siteMAC
 
         if (maMac == true) {
+            ex2_main.visibility = View.VISIBLE
             isConnected.text = "Stanoviště je spárované"
             connectDevice.visibility = View.GONE
             connectionReset.visibility = View.VISIBLE
             maMac = true
         } else {
+            ex2_main.visibility = View.GONE
             isConnected.text = "Stanoviště není spárované"
             connectDevice.visibility = View.VISIBLE
             connectionReset.visibility = View.GONE
@@ -183,6 +188,8 @@ class EditStanovisteDialogFragment : DialogFragment(), StanovisteEditMapFragment
                 switchSimPin.visibility = View.VISIBLE
                 if(switchSimPin.isChecked){
                     editPin.visibility = View.VISIBLE
+                } else {
+                    editPin.visibility = View.GONE
                 }
             } else {
                 spinnerCountryCode.visibility = View.GONE
@@ -298,7 +305,7 @@ class EditStanovisteDialogFragment : DialogFragment(), StanovisteEditMapFragment
                 val prefix = spinnerCountryCode.selectedItem.toString()
                 val phoneNumber = editPhone.text.toString().trim()
                 var phone = prefix + phoneNumber
-                val simPin = switchSimPin.isChecked
+                var simPin = switchSimPin.isChecked
                 var pin = editPin.text.toString().trim()
 
                 if (newSmsNotification) {
@@ -316,6 +323,11 @@ class EditStanovisteDialogFragment : DialogFragment(), StanovisteEditMapFragment
                         return@setOnClickListener
                     }
                 } else {
+                    pin = ""
+                }
+
+                if (!newSmsNotification){
+                    simPin = false;
                     pin = ""
                 }
 

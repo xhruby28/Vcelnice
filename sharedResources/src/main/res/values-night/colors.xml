@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CardView -->
+    <color name="cardview_color">#2e2e2e</color>
+    <color name="main_text_color">#f0c400</color>
+</resources>

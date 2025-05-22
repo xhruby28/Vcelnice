@@ -45,6 +45,9 @@ object BluetoothHelper {
     private const val DESCRIPTOR_UUID =         "00002902-0000-1000-8000-00805f9b34fb"
 
     private var stanovisteMac: String = ""
+    private var sendTelAck = false
+    private var telAck = false
+    private var pinAck = false
     private var wifiStartedHandled = false
 
     private lateinit var stanovisteViewModel: StanovisteViewModel
@@ -211,36 +214,45 @@ object BluetoothHelper {
                     Log.d("BluetoothHelper /CharChange", "Message received: $message")
                     when (message) {
                         "SEND_TEL_ACK" -> {
-                            val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac)
-                            val tel = stanoviste?.notificationPhoneNumber ?: "NULL"
+                            if (!sendTelAck) {
+                                sendTelAck = true
+                                val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac)
+                                val tel = stanoviste?.notificationPhoneNumber ?: "NULL"
 
-                            val handler = Handler(Looper.getMainLooper())
-                            handler.postDelayed({
-                                if (stanoviste?.notificationsEnabled == true) {
-                                    sendCommand("TEL:$tel", context)
-                                } else {
-                                    sendCommand("TEL:NULL", context)
-                                }
-                            }, 500)
+                                val handler = Handler(Looper.getMainLooper())
+                                handler.postDelayed({
+                                    if (stanoviste?.notificationsEnabled == true) {
+                                        sendCommand("TEL:$tel", context)
+                                    } else {
+                                        sendCommand("TEL:NULL", context)
+                                    }
+                                }, 500)
+                            }
                         }
                         "TEL_ACK" -> {
-                            val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac)
-                            val pin = stanoviste?.hashedPin ?: "NULL"
+                            if (!telAck) {
+                                telAck = true
+                                val stanoviste = stanovisteViewModel.getStanovisteByMAC(stanovisteMac)
+                                val pin = stanoviste?.hashedPin ?: "NULL"
 
-                            val handler = Handler(Looper.getMainLooper())
-                            handler.postDelayed({
-                                if (stanoviste?.isPin == true && stanoviste.notificationsEnabled == true) {
-                                    sendCommand("PIN:$pin", context)
-                                } else {
-                                    sendCommand("PIN:NULL", context)
-                                }
-                            }, 500)
+                                val handler = Handler(Looper.getMainLooper())
+                                handler.postDelayed({
+                                    if (stanoviste?.isPin == true && stanoviste.notificationsEnabled == true) {
+                                        sendCommand("PIN:$pin", context)
+                                    } else {
+                                        sendCommand("PIN:NULL", context)
+                                    }
+                                }, 500)
+                            }
                         }
                         "PIN_ACK" -> {
-                            val handler = Handler(Looper.getMainLooper())
-                            handler.postDelayed({
-                                sendCommand("SYNC",context)
-                            }, 500)
+                            if (!pinAck) {
+                                pinAck = true
+                                val handler = Handler(Looper.getMainLooper())
+                                handler.postDelayed({
+                                    sendCommand("SYNC", context)
+                                }, 500)
+                            }
                         }
                         "WIFI_STARTED" -> {
 
@@ -268,14 +280,12 @@ object BluetoothHelper {
                             Handler(Looper.getMainLooper()).post {
                                 Toast.makeText(context, "WiFi na sběrnici se nepodařilo inicializovat", Toast.LENGTH_SHORT).show()
                             }
-                            wifiStartedHandled = false
                         }
                         "SYNC_COMPLETE_ACK" -> {
                             disconnect(context, true)
                             Handler(Looper.getMainLooper()).post {
                                 Toast.makeText(context, "Synchronizace hotova", Toast.LENGTH_SHORT).show()
                             }
-                            wifiStartedHandled = false
                         }
                     }
                 }
@@ -362,6 +372,9 @@ object BluetoothHelper {
         bleGatt?.close()
         bleGatt = null
         wifiStartedHandled = false
+        sendTelAck = false
+        telAck = false
+        pinAck = false
     }
 
     private fun acquireWakeLock(context: Context) {

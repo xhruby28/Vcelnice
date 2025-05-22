@@ -16,58 +16,85 @@
         android:clickable="true"
         android:gravity="center_horizontal">
 
-        <!-- Expandable sekce - Základní informace -->
-        <com.skydoves.expandablelayout.ExpandableLayout
-            android:id="@+id/expandable_info"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandable_duration="300"
-            app:expandable_isExpanded="false"
-            app:expandable_parentLayout="@layout/layout_parent"
-            app:expandable_secondLayout="@layout/layout_info"
-            app:expandable_showSpinner="true"
-            app:expandable_spinner="@drawable/ic_arrow_down"
-            app:expandable_spinner_animate="true"
-            app:expandable_spinner_gravity="start"
-            app:expandable_spinner_size="20dp" />
+            android:id="@+id/expandable_info_main"
+            android:orientation="vertical">
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
+            <!-- Expandable sekce - Základní informace -->
+            <com.skydoves.expandablelayout.ExpandableLayout
+                android:id="@+id/expandable_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:expandable_duration="300"
+                app:expandable_isExpanded="false"
+                app:expandable_parentLayout="@layout/layout_parent"
+                app:expandable_secondLayout="@layout/layout_info"
+                app:expandable_showSpinner="true"
+                app:expandable_spinner="@drawable/ic_arrow_down"
+                app:expandable_spinner_color="@color/main_text_color"
+                app:expandable_spinner_animate="true"
+                app:expandable_spinner_gravity="start"
+                app:expandable_spinner_size="20dp" />
 
-        <!-- Expandable sekce - SMS Notifikace -->
-        <com.skydoves.expandablelayout.ExpandableLayout
-            android:id="@+id/expandable_sms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expandable_parentLayout="@layout/layout_parent_sms"
-            app:expandable_secondLayout="@layout/layout_sms"
-            app:expandable_duration="300"
-            app:expandable_showSpinner="true"
-            app:expandable_spinner="@drawable/ic_arrow_down"
-            app:expandable_spinner_animate="true"
-            app:expandable_spinner_gravity="start"
-            app:expandable_spinner_size="20dp"
-            app:expandable_isExpanded="false" />
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
+        </LinearLayout>
 
-        <!-- Expandable sekce - Ostatní -->
-        <com.skydoves.expandablelayout.ExpandableLayout
-            android:id="@+id/expandable_others"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandable_parentLayout="@layout/layout_parent_other"
-            app:expandable_secondLayout="@layout/layout_other"
-            app:expandable_duration="300"
-            app:expandable_showSpinner="true"
-            app:expandable_spinner="@drawable/ic_arrow_down"
-            app:expandable_spinner_animate="true"
-            app:expandable_spinner_gravity="start"
-            app:expandable_spinner_size="20dp"
-            app:expandable_isExpanded="false" />
+            android:id="@+id/expandable_sms_main"
+            android:orientation="vertical">
 
+            <!-- Expandable sekce - SMS Notifikace -->
+            <com.skydoves.expandablelayout.ExpandableLayout
+                android:id="@+id/expandable_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:expandable_parentLayout="@layout/layout_parent_sms"
+                app:expandable_secondLayout="@layout/layout_sms"
+                app:expandable_duration="300"
+                app:expandable_showSpinner="true"
+                app:expandable_spinner="@drawable/ic_arrow_down"
+                app:expandable_spinner_color="@color/main_text_color"
+                app:expandable_spinner_animate="true"
+                app:expandable_spinner_gravity="start"
+                app:expandable_spinner_size="20dp"
+                app:expandable_isExpanded="false" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expandable_others_main"
+            android:orientation="vertical">
+
+            <!-- Expandable sekce - Ostatní -->
+            <com.skydoves.expandablelayout.ExpandableLayout
+                android:id="@+id/expandable_others"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:expandable_parentLayout="@layout/layout_parent_other"
+                app:expandable_secondLayout="@layout/layout_other"
+                app:expandable_duration="300"
+                app:expandable_showSpinner="true"
+                app:expandable_spinner="@drawable/ic_arrow_down"
+                app:expandable_spinner_color="@color/main_text_color"
+                app:expandable_spinner_animate="true"
+                app:expandable_spinner_gravity="start"
+                app:expandable_spinner_size="20dp"
+                app:expandable_isExpanded="false" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

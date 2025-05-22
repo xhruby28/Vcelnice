@@ -72,6 +72,7 @@ class NamereneHodnotyUlFragmentGraphs : Fragment() {
         stanovisteId = requireActivity().intent.getIntExtra("stanovisteId", -1)
 
         lineChart = binding.lineChart
+        lineChart.description.isEnabled = false
         spinnerVelicina = binding.spinnerVelicina
         spinnerCasovyUsek = binding.spinnerCasovyUsek
         //textViewAnalyza = binding.textViewAnalyza
@@ -232,7 +233,7 @@ class NamereneHodnotyUlFragmentGraphs : Fragment() {
                 }
 
                 val dataSet = LineDataSet(entries, "$selectedVelicina [$jednotka]").apply {
-                    color = Color.YELLOW
+                    color = Color.RED
                     setDrawCircles(true)
                     circleRadius = 2f
                     setDrawValues(false)
@@ -240,7 +241,7 @@ class NamereneHodnotyUlFragmentGraphs : Fragment() {
                 }
 
                 lineChart.axisLeft.apply {
-                    textColor = Color.YELLOW
+                    textColor = Color.RED
                     textSize = 12f
                     setDrawGridLines(true)
                     setDrawLabels(true)
@@ -288,6 +289,9 @@ class NamereneHodnotyUlFragmentGraphs : Fragment() {
     ) {
         val now = System.currentTimeMillis() / 1000
         when (timeRange) {
+            "-- Vyberte --" -> {
+                onFiltered(emptyList(), -1, -1)
+            }
             "Poslední den" -> {
                 val start = now - TimeUnit.DAYS.toSeconds(1)
                 onFiltered(data.filter { it.datum in start..now }, start, now)
@@ -340,10 +344,14 @@ class NamereneHodnotyUlFragmentGraphs : Fragment() {
     }
 
     private fun updateDateRangeText(start: Long, end: Long) {
-        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-        val startStr = sdf.format(Date(start * 1000))
-        val endStr = sdf.format(Date(end * 1000))
-        binding.textViewRozsah.text = "Zobrazené období: $startStr – $endStr"
+        if(start.toInt() == -1 && end.toInt() == -1) {
+            binding.textViewRozsah.text = ""
+        } else {
+            val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val startStr = sdf.format(Date(start * 1000))
+            val endStr = sdf.format(Date(end * 1000))
+            binding.textViewRozsah.text = "Zobrazené období: $startStr – $endStr"
+        }
     }
 
     private fun formatUnixTimestamp(seconds: Long): String {

@@ -8,6 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="dark_gray">#141414</color>
+    <color name="light_gray">#f0f0f0</color>
+    <color name="yellow_light_text">#f0c400</color>
+
+    <!-- CardView -->
+    <color name="cardview_color">#ebebeb</color>
+    <color name="main_text_color">#141414</color>
+
     <!-- Yellow main theme-->
     <color name="yellow_primary">#C67C00</color>
     <color name="yellow_light">#FFDD4B</color>

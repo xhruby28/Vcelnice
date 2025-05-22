@@ -101,7 +101,7 @@ class ZaznamKontrolyUlFragment : Fragment() {
 
     private fun openDetail(zaznam: ZaznamKontroly) {
         // TODO: Přesměrování na detail
-        Toast.makeText(requireContext(), "Kliknuto: ${zaznam.typKontroly}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), "Kliknuto: ${zaznam.typKontroly}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
