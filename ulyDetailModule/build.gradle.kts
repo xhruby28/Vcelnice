@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.philjay.mpandroidchart)
+    implementation(libs.flexbox)
 
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)

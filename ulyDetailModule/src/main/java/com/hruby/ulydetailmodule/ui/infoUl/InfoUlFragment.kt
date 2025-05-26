@@ -10,10 +10,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.hruby.databasemodule.data.Uly
 import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
 import com.hruby.databasemodule.databaseLogic.repository.UlyRepository
+import com.hruby.databasemodule.databaseLogic.repository.ZaznamKontrolyRepository
 import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.ZaznamKontrolyViewModel
 import com.hruby.databasemodule.databaseLogic.viewModelFactory.UlyViewModelFactory
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.ZaznamKontrolyViewModelFactory
 import com.hruby.ulydetailmodule.databinding.FragmentInfoUlBinding
 import com.hruby.ulydetailmodule.ui.infoUl.infoUlEdit.InfoUlEditDialog
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class InfoUlFragment : Fragment(), InfoUlEditDialog.EditUlEditDialogListener {
     private var stanovisteId: Int = -1
@@ -23,6 +29,7 @@ class InfoUlFragment : Fragment(), InfoUlEditDialog.EditUlEditDialogListener {
     private val binding get() = _binding!!
 
     private lateinit var ulyViewModel: UlyViewModel
+    private lateinit var zaznamViewModel: ZaznamKontrolyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +41,10 @@ class InfoUlFragment : Fragment(), InfoUlEditDialog.EditUlEditDialogListener {
         val repository = UlyRepository(StanovisteDatabase.getDatabase(application))
         val factory = UlyViewModelFactory(repository)
         ulyViewModel = ViewModelProvider(this, factory)[UlyViewModel::class.java]
+
+        val zaznamRepository = ZaznamKontrolyRepository(StanovisteDatabase.getDatabase(application))
+        val zaznamFactory = ZaznamKontrolyViewModelFactory(zaznamRepository)
+        zaznamViewModel = ViewModelProvider(this, zaznamFactory)[ZaznamKontrolyViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -60,9 +71,90 @@ class InfoUlFragment : Fragment(), InfoUlEditDialog.EditUlEditDialogListener {
             // MAC adresa
             if (ul.maMAC) {
                 binding.ulDetailInfoFragmentMac.text = ul.macAddress ?: "Neuvedeno"
+                binding.ulDetailInfoIvInfoMac.visibility = View.VISIBLE
+                binding.ulDetailInfoFragmentMac.visibility = View.VISIBLE
+                binding.ulDetailInfoFragmentMacText.visibility = View.VISIBLE
             } else {
+                binding.ulDetailInfoIvInfoMac.visibility = View.GONE
                 binding.ulDetailInfoFragmentMac.visibility = View.GONE
                 binding.ulDetailInfoFragmentMacText.visibility = View.GONE
+            }
+
+            // Matka, označení, videna naposled
+            binding.ulDetailInfoFragmentMatka.text = ul.matkaOznaceni ?: ""
+            zaznamViewModel.getLastMatkaVidena(ulId).observe(viewLifecycleOwner) { zaznamMatka ->
+                if (zaznamMatka != null) {
+                    val formatted = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                        .format(Date(zaznamMatka.datum))
+                    binding.ulDetailInfoFragmentMatkaPosledniVideni.text = formatted
+
+                    // Zkontrolujeme, zda je potřeba aktualizovat
+                    val needsUpdate = (ul.matkaVidena != zaznamMatka.matkaVidena ||
+                            ul.matkaVidenaDatum != zaznamMatka.datum)
+
+                    if (needsUpdate) {
+                        val updatedUl = ul.copy(
+                            matkaVidena = zaznamMatka.matkaVidena,
+                            matkaVidenaDatum = zaznamMatka.datum
+                        )
+                        ulyViewModel.updateUl(updatedUl)
+                    }
+                }else {
+                    binding.ulDetailInfoFragmentMatkaPosledniVideni.text = "-"
+                }
+            }
+
+            // Problem v úlu z posledního záznamu
+            zaznamViewModel.getLastZaznamForUl(ulId).observe(viewLifecycleOwner) { zaznam ->
+                if (zaznam != null) {
+                    val textLayout = binding.ulDetailInfoFragmentProblemLl
+                    val textProblemy = binding.ulDetailInfoFragmentProblem
+
+                    if (zaznam.problemovyUl == true) {
+                        val problemy = mutableListOf<String>()
+
+                        if (zaznam.problemMatkaNeni == true) problemy.add("Matka není")
+                        if (zaznam.problemMatkaMednik == true) problemy.add("Matka v medníku")
+                        if (zaznam.problemMatkaNeklade == true) problemy.add("Matka neklade")
+                        if (zaznam.problemMatkaVybehliMatecnik == true) problemy.add("Vyběhlý matečník")
+                        if (zaznam.problemMatkaZvapenatelyPlod == true) problemy.add("Zvápenatělý plod")
+                        if (zaznam.problemMatkaNosema == true) problemy.add("Nosema")
+                        if (zaznam.problemMatkaLoupezOtevrena == true) problemy.add("Loupež otevřená")
+                        if (zaznam.problemMatkaLoupezSkryta == true) problemy.add("Loupež skrytá")
+                        if (zaznam.problemMatkaTrubcice == true) problemy.add("Trubčice")
+                        if (zaznam.problemMatkaJine == true && !zaznam.problemText.isNullOrBlank())
+                            problemy.add(zaznam.problemText.toString())
+
+                        textProblemy.text = problemy.joinToString(", ")
+                        textLayout.visibility = View.VISIBLE
+                        binding.ulDetailInfoIvProblem.visibility = View.VISIBLE
+                        binding.ulDetailInfoFragmentProblemText.visibility = View.VISIBLE
+                    } else {
+                        // Skryj, pokud žádný problém
+                        textLayout.visibility = View.GONE
+                        binding.ulDetailInfoIvProblem.visibility = View.GONE
+                        binding.ulDetailInfoFragmentProblemText.visibility = View.GONE
+                    }
+
+                    if (ul.problemovyUl != zaznam.problemovyUl || ul.posledniProblem != textProblemy.text.toString()) {
+                        val updatedUl = ul.copy(
+                            problemovyUl = zaznam.problemovyUl == true,
+                            posledniProblem = textProblemy.text.toString()
+                        )
+                        ulyViewModel.updateUl(updatedUl)
+                    }
+
+                    val newKontrolaDate = zaznam.datum
+                    val oldKontrolaDate = ul.lastKontrolaDate
+
+                    if (oldKontrolaDate == null || oldKontrolaDate < newKontrolaDate) {
+                        val updateUl = ul.copy(
+                            lastKontrola = newKontrolaDate.toString(),
+                            lastKontrolaDate = newKontrolaDate
+                        )
+                        ulyViewModel.updateUl(updateUl)
+                    }
+                }
             }
 
             // Hodnocení

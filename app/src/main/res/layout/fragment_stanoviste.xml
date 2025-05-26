@@ -21,6 +21,22 @@
             tools:listitem="@layout/stanoviste_item" />
     </ScrollView>
 
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pro vytvoření stanoviště klikněte na tlačítko + v pravém dolním rohu"
+        android:textSize="18sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <LinearLayout
         android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
@@ -88,5 +104,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:maxImageSize="40dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,4 +3,5 @@
     <!-- CardView -->
     <color name="cardview_color">#2e2e2e</color>
     <color name="main_text_color">#f0c400</color>
+    <color name="main_icon_color">#C67C00</color>
 </resources>

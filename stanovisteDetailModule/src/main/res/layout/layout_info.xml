@@ -4,23 +4,41 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="6dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Název stanoviště"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/edit_stanoviste_editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
         android:hint="Název stanoviště" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Popis stanoviště"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/edit_stanoviste_editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Popis stanoviště"
+        android:layout_marginVertical="3dp"
         android:lines="2"
         android:maxLines="5"
         android:scrollbars="vertical"

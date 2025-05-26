@@ -29,4 +29,18 @@
     <string name="trub_ina">Trubčina:</string>
     <string name="mate_n_k">Matečník:</string>
     <string name="hodnocen_lu"><u>Hodnocení úlu</u></string>
+    <string name="medobran">Medobraní</string>
+    <string name="matka_nen">Matka není</string>
+    <string name="matka_v_medn_ku">Matka v medníku</string>
+    <string name="matka_neklade">Matka neklade</string>
+    <string name="vyb_hl_mate_n_k">Vyběhlí matečník</string>
+    <string name="zv_pnenat_n_plodu">Zvápnenatění plodu</string>
+    <string name="nosema">Nosema</string>
+    <string name="loupe_otev_en">Loupež otevřená</string>
+    <string name="loupe_skryt">Loupež skrytá</string>
+    <string name="trub_ice">Trubčice</string>
+    <string name="jin">Jiný:</string>
+    <string name="jin_probl_m">Jiný problém</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

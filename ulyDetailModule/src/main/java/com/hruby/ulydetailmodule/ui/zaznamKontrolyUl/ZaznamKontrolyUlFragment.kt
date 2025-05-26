@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -60,10 +59,13 @@ class ZaznamKontrolyUlFragment : Fragment() {
         adapter = ZaznamKontrolyAdapter(
             zaznamyKontrol,
             { zaznam, position ->
+                openEdit(zaznam, position)
+            },
+            { zaznam, position ->
                 showDeleteDialog(zaznam, position)
             },
-            { zaznam ->
-                openDetail(zaznam)
+            { zaznam, position ->
+                openDetail(zaznam, position)
             }
         )
         
@@ -75,7 +77,7 @@ class ZaznamKontrolyUlFragment : Fragment() {
             adapter.notifyDataSetChanged()
         }
 
-        binding.ulyStanovisteFab.setOnClickListener {
+        binding.ulyZaznamFab.setOnClickListener {
             // Otevření dialogu nebo activity pro přidání kontroly
             val action = ZaznamKontrolyUlFragmentDirections.actionNavZaznamUlToNavZaznamUlAdd(ulId)
             findNavController().navigate(action)
@@ -99,9 +101,16 @@ class ZaznamKontrolyUlFragment : Fragment() {
         alertDialog.show()
     }
 
-    private fun openDetail(zaznam: ZaznamKontroly) {
-        // TODO: Přesměrování na detail
-        //Toast.makeText(requireContext(), "Kliknuto: ${zaznam.typKontroly}", Toast.LENGTH_SHORT).show()
+    private fun openDetail(zaznam: ZaznamKontroly, position: Int) {
+        val action = ZaznamKontrolyUlFragmentDirections
+            .actionNavZaznamUlToNavZaznamUlPreview(ulId = zaznam.ulId, zaznamId = zaznam.id)
+        findNavController().navigate(action)
+    }
+
+    private fun openEdit(zaznam: ZaznamKontroly, position: Int) {
+        val action = ZaznamKontrolyUlFragmentDirections
+            .actionNavZaznamUlToNavZaznamUlEdit(ulId = zaznam.ulId, zaznamId = zaznam.id)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

@@ -15,6 +15,7 @@
     <!-- CardView -->
     <color name="cardview_color">#ebebeb</color>
     <color name="main_text_color">#141414</color>
+    <color name="main_icon_color">#141414</color>
 
     <!-- Yellow main theme-->
     <color name="yellow_primary">#C67C00</color>

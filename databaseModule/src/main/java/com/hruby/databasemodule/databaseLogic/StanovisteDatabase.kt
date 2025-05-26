@@ -20,7 +20,7 @@ import com.hruby.databasemodule.databaseLogic.dao.ZaznamKontrolyDao
 
 @androidx.room.Database(
     entities = [Stanoviste::class, Uly::class, Poznamka::class, MereneHodnoty::class, Problem::class, ZaznamKontroly::class],
-    version = 2,
+    version = 8,
     exportSchema = false)
 abstract class StanovisteDatabase : RoomDatabase() {
 
@@ -42,12 +42,61 @@ abstract class StanovisteDatabase : RoomDatabase() {
                     StanovisteDatabase::class.java,
                     "stanoviste_database"
                 )
-                    //.addMigrations(MIGRATION_1_2)  // Přidání migrace pro verzi 1 → 2
                     //TODO("nezapomenout změnit v oficiálním release .fallbackToDestructiveMigration() na addMigrations()")
-                    .fallbackToDestructiveMigration()
+                    //.fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_2_3,MIGRATION_3_4,MIGRATION_4_5,MIGRATION_5_6,MIGRATION_6_7,MIGRATION_7_8)
                     .build()
                 INSTANCE = instance
                 instance
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaNeni INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaMednik INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaNeklade INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaVybehliMatecnik INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaZvapenatelyPlod INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaNosema INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaLoupezOtevrena INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaLoupezSkryta INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaTrubcice INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE zaznam_kontroly ADD COLUMN problemMatkaJine INTEGER DEFAULT 0")
+            }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE uly ADD COLUMN matkaVidena INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE uly ADD COLUMN matkaVidenaDatum INTEGER")
+                database.execSQL("ALTER TABLE uly ADD COLUMN matkaOznaceni TEXT")
+            }
+        }
+
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE uly ADD COLUMN matkaBarva TEXT")
+                database.execSQL("ALTER TABLE uly ADD COLUMN matkaRok TEXT")
+                database.execSQL("ALTER TABLE uly ADD COLUMN matkaKridla INTEGER DEFAULT 0")
+            }
+        }
+
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE uly ADD COLUMN lastKontrola TEXT")
+            }
+        }
+
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE uly ADD COLUMN lastKontrolaDate INTEGER")
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE uly ADD COLUMN createdTimestamp INTEGER")
             }
         }
     }

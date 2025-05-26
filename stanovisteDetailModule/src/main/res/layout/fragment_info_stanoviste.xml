@@ -44,12 +44,11 @@
                     android:src="@drawable/ic_launcher_background"
                     tools:src="@drawable/ic_launcher_background" />
 
-                <View
-                    android:id="@+id/divider1"
-                    android:layout_width="0dp"
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:id="@+id/divider1"
                     android:layout_marginTop="1dp"
-                    android:background="@android:color/darker_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/stanoviste_detail_info_fragment_image" />
@@ -93,13 +92,12 @@
                 </LinearLayout>
 
 
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="0dp"
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:id="@+id/divider2"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
-                    android:background="@android:color/darker_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/stanovisteLinLayoutName" />
@@ -110,7 +108,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toTopOf="@+id/divider3"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/divider2" >
+                    app:layout_constraintTop_toBottomOf="@+id/divider2"
+                    tools:ignore="UseCompoundDrawables">
 
                     <ImageView
                         android:id="@+id/imageViewInfoIcon"
@@ -131,19 +130,22 @@
                         android:paddingStart="0dp"
                         android:layout_marginStart="16dp"
                         android:layout_gravity="center"
-                        tools:text="popisghafffffffffffffffffffud adghfkjsjsjsjsjsjsjsjsjsjsjsjsjsjsjsjsjsakghdfjsjsjsjsjssjjjj" />
+                        android:lineSpacingExtra="2dp"
+                        android:hyphenationFrequency="normal"
+                        android:breakStrategy="simple"
+                        android:ellipsize="none"
+                        tools:text="popis" />
                 </LinearLayout>
 
 
 
-                <View
-                    android:id="@+id/divider3"
-                    android:layout_width="0dp"
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:id="@+id/divider3"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginVertical="3dp"
-                    android:background="@android:color/darker_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/stanovisteLinLayoutDesc" />
@@ -208,7 +210,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/stanoviste_detail_info_fragment_stanoviste_maMac_text"
                         app:layout_constraintStart_toStartOf="@id/guideline_text_value"
                         app:layout_constraintTop_toTopOf="@+id/stanoviste_detail_info_fragment_stanoviste_maMac_text"
-                        tools:text="mac adresa" />
+                        tools:text="00:11:22:33:44:55" />
 
                     <!-- Zalozeno -->
 
@@ -356,10 +358,10 @@
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:visibility="gone"
-        app:icon="@drawable/sync_24dp"
         app:iconPadding="0dp"
         app:iconTint="#DD2C00"
+        android:visibility="gone"
+        app:icon="@drawable/sync_24dp"
         app:layout_constraintBottom_toTopOf="@+id/stanoviste_detail_info_fragment_fab"
         app:layout_constraintEnd_toEndOf="@+id/stanoviste_detail_info_fragment_fab"
         tools:visibility="visible" />
@@ -408,6 +410,7 @@
         android:clickable="true"
         android:contentDescription="@null"
         android:focusable="true"
+        android:alpha="0.75"
         android:src="@drawable/arrow_upward_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -20,49 +20,255 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Datum: 01.05.2025"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="16sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivProblemovyUl"
-            app:layout_constraintBottom_toTopOf="@+id/tvTypKontroly"
-            app:layout_constraintHorizontal_chainStyle="packed" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivMedobraniUl"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="6dp"
-            android:src="@drawable/honey_comb_32dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@id/ivProblemovyUl"
-            app:layout_constraintTop_toTopOf="@id/tvDatumKontroly"
-            app:tint="@android:color/holo_orange_dark"
-            tools:visibility="visible" />
-
-        <!-- Ikona problémového úlu -->
-        <ImageView
-            android:id="@+id/ivProblemovyUl"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@android:drawable/ic_dialog_alert"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvDatumKontroly"
-            app:tint="@android:color/holo_red_dark"
-            tools:visibility="visible" />
-
-        <!-- Typ kontroly -->
+        <!-- Matka viděna? -->
         <TextView
-            android:id="@+id/tvTypKontroly"
+            android:id="@+id/ivMatkaVidenaText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Typ: Jarní kontrola"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@+id/tvDatumKontroly"
+            android:text="Matka viděna: "
+            android:textSize="16sp"
+            android:paddingVertical="4dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvDatumKontroly" />
+
+        <TextView
+            android:id="@+id/ivMatkaVidena"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ne"
+            android:textSize="16sp"
+            android:layout_marginStart="4dp"
+            android:paddingVertical="4dp"
+            app:layout_constraintStart_toEndOf="@id/ivMatkaVidenaText"
+            app:layout_constraintTop_toTopOf="@id/ivMatkaVidenaText"
+            app:layout_constraintBottom_toBottomOf="@id/ivMatkaVidenaText" />
+
+        <!-- Typ kontroly (můžeš přejmenovat na poznámku nebo vynechat) -->
+        <TextView
+            android:id="@+id/tvTypZasahu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Zásahy: "
+            android:textSize="16sp"
+            android:paddingVertical="4dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMatkaVidenaText" />
+
+        <LinearLayout
+            android:id="@+id/layoutMainIkony"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Problémový úl -->
+            <ImageView
+                android:id="@+id/ivProblemovyUl"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="Problémový úl"
+                android:src="@android:drawable/ic_dialog_alert"
+                app:tint="@android:color/holo_red_dark"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Matka viděna -->
+            <!--ImageView
+                android:id="@+id/ivMatkaVidena"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="Matka viděna"
+                android:src="@drawable/queenbee1_64"
+                app:tint="@color/main_icon_color"
+                tools:visibility="visible" /-->
+        </LinearLayout>
+
+        <!-- Kontejner pro ikony -->
+        <LinearLayout
+            android:id="@+id/layoutIkony"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="@id/tvTypZasahu"
+            app:layout_constraintBottom_toBottomOf="@id/tvTypZasahu"
+            app:layout_constraintStart_toEndOf="@id/tvTypZasahu">
+
+            <!-- Zásahy (příklady) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ivZasahMatkaOznacena"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Matka označena"
+                    android:src="@drawable/queenbee1_64"
+                    app:tint="@color/main_icon_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="Označení"
+                    android:src="@drawable/circle_64"
+                    app:tint="@android:color/holo_red_dark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/ivZasahKrmeniNeboPriprava"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Krmení nebo příprava na krmení"
+                android:src="@drawable/krmeni_64"
+                app:tint="@color/main_icon_color"
+                android:rotation="-25"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/ivZasahMrizkaVlozena"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Vložena mřížka"
+                android:src="@drawable/mrizka_64"
+                app:tint="@color/main_icon_color"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ivZasahMrizkaOdebrana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp" >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Odebrána mřížka"
+                    android:src="@drawable/mrizka_64"
+                    app:tint="@color/main_icon_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Odebrána mřížka"
+                    android:src="@drawable/mrizka_odebrana2_64"
+                    app:tint="@android:color/holo_red_dark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/ivZasahMedobrani"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Medobraní"
+                android:src="@drawable/medobrani_64"
+                app:tint="@color/main_icon_color"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ivZasahZruseno"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Zrušeno spojením"
+                    android:src="@drawable/hive_64"
+                    app:tint="@color/main_icon_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="2dp"
+                    android:contentDescription="Odebrána mřížka"
+                    android:src="@drawable/mrizka_odebrana2_64"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@android:color/holo_red_dark" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:contentDescription="Odebrána mřížka"
+                    android:src="@android:drawable/ic_input_add"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@android:color/holo_green_dark" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPopisZasahu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTypZasahu" />
+
+        <LinearLayout
+            android:id="@+id/loProblemyTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPopisZasahu">
+
+            <TextView
+                android:id="@+id/tvProblemyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Problémy: "
+                android:textSize="16sp"
+                android:paddingVertical="2dp"
+                android:layout_marginEnd="4dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvProblemyVypisText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingVertical="4dp"/>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

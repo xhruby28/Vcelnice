@@ -7,9 +7,18 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.hruby.databasemodule.data.Uly
+import com.hruby.databasemodule.databaseLogic.StanovisteDatabase
+import com.hruby.databasemodule.databaseLogic.repository.UlyRepository
+import com.hruby.databasemodule.databaseLogic.viewModel.UlyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModel.ZaznamKontrolyViewModel
+import com.hruby.databasemodule.databaseLogic.viewModelFactory.UlyViewModelFactory
 import com.hruby.stanovistedetailmodule.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class UlyRecycleViewAdapter (
@@ -18,13 +27,22 @@ class UlyRecycleViewAdapter (
     private val onDeleteClick: (Uly, Int) -> Unit, // Lambda pro mazání
     private val onItemClick: (Int) -> Unit
 ): RecyclerView.Adapter<UlyRecycleViewAdapter.UlyViewHolder>(){
-
     class UlyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ulId: TextView = itemView.findViewById(R.id.ul_id_ids)
-        val latestProblem: TextView = itemView.findViewById(R.id.ul_problem)
-        val ulRating: RatingBar = itemView.findViewById(R.id.ul_hodnoceni_stars)
-        val latestProblemText: TextView = itemView.findViewById(R.id.ul_problem_text)
         val haveMacAddress: ImageView = itemView.findViewById(R.id.ul_sync_icon)
+
+        val posledniKontrolaIcon: ImageView = itemView.findViewById(R.id.iv_uly_kontrola)
+        val posledniKontrola: TextView = itemView.findViewById(R.id.ul_kontrola)
+        val posledniKontrolaText: TextView = itemView.findViewById(R.id.ul_kontrola_text)
+
+        val kralovnaIcon: ImageView = itemView.findViewById(R.id.iv_uly_queen)
+        val kralovna: TextView = itemView.findViewById(R.id.ul_kralovna)
+        val kralovnaText: TextView = itemView.findViewById(R.id.ul_kralovna_text)
+
+        val latestProblemIcon: ImageView = itemView.findViewById(R.id.iv_uly_problem)
+        val latestProblemText: TextView = itemView.findViewById(R.id.ul_problem_text)
+        val latestProblem: TextView = itemView.findViewById(R.id.ul_problem)
+        //val ulRating: RatingBar = itemView.findViewById(R.id.ul_hodnoceni_stars)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UlyViewHolder {
@@ -38,16 +56,42 @@ class UlyRecycleViewAdapter (
         val uly = ulList[position]
 
         holder.ulId.text = String.format(uly.cisloUlu.toString())
-//        TODO("Upravit hodnocení tak, aby to tvořilo průměr ze všech hodnot")
-        holder.ulRating.rating = uly.hodnoceni
-//        TODO("Změnit zobrazování posledního problému na problemovyUl true/false, " +
-//                "když false, tak se neobjeví v seznamu informace o problému")
+
+        //holder.ulRating.rating = uly.hodnoceni
+
+        if (!uly.lastKontrola.isNullOrEmpty()){
+            holder.posledniKontrolaIcon.visibility = View.VISIBLE
+            holder.posledniKontrola.visibility = View.VISIBLE
+            holder.posledniKontrolaText.visibility = View.VISIBLE
+
+            val formatted = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date(uly.lastKontrola!!.toLong()))
+            holder.posledniKontrolaText.text = formatted.toString()
+        } else {
+            holder.posledniKontrolaIcon.visibility = View.GONE
+            holder.posledniKontrola.visibility = View.GONE
+            holder.posledniKontrolaText.visibility = View.GONE
+        }
+
+        if (!uly.matkaOznaceni.isNullOrEmpty()){
+            holder.kralovnaIcon.visibility = View.VISIBLE
+            holder.kralovna.visibility = View.VISIBLE
+            holder.kralovnaText.visibility = View.VISIBLE
+
+            holder.kralovnaText.text = uly.matkaOznaceni
+        } else {
+            holder.kralovnaIcon.visibility = View.GONE
+            holder.kralovna.visibility = View.GONE
+            holder.kralovnaText.visibility = View.GONE
+        }
+
         if(uly.problemovyUl == false){
+            holder.latestProblemIcon.visibility = View.GONE
             holder.latestProblem.visibility = View.GONE
             holder.latestProblemText.visibility = View.GONE
         } else {
             holder.latestProblem.text = uly.posledniProblem
 
+            holder.latestProblemIcon.visibility = View.VISIBLE
             holder.latestProblem.visibility = View.VISIBLE
             holder.latestProblemText.visibility = View.VISIBLE
         }

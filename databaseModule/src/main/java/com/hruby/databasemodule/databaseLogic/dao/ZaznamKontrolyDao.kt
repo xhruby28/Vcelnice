@@ -21,8 +21,17 @@ interface ZaznamKontrolyDao {
     @Delete
     suspend fun deleteZaznam(zaznam: ZaznamKontroly)
 
-    @Query("SELECT * FROM zaznam_kontroly WHERE ulId = :ulId ORDER BY datum DESC")
+    @Query("SELECT * FROM zaznam_kontroly WHERE ulId = :ulId ORDER BY datum DESC, createdTimestamp DESC")
     fun getZaznamyByUlId(ulId: Int): LiveData<List<ZaznamKontroly>>
+
+    @Query("SELECT * FROM zaznam_kontroly WHERE ulId = :ulId ORDER BY datum DESC, createdTimestamp DESC LIMIT 1")
+    fun getLastZaznamForUl(ulId: Int): LiveData<ZaznamKontroly?>
+
+    @Query("SELECT * FROM zaznam_kontroly WHERE ulId = :ulId AND matkaVidena = 1 ORDER BY datum DESC, createdTimestamp DESC LIMIT 1")
+    fun getLastMatkaVidenaByUlId(ulId: Int): LiveData<ZaznamKontroly?>
+
+    @Query("SELECT * FROM zaznam_kontroly WHERE id = :zaznamId AND ulId = :ulId LIMIT 1")
+    fun getZaznamByIdAndUlId(zaznamId: Int, ulId: Int): LiveData<ZaznamKontroly>
 
     // Poslední záznam pro každý úl pod daným stanovistem
     @Query("""

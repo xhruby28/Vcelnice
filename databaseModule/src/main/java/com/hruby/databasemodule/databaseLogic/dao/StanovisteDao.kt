@@ -3,6 +3,7 @@ package com.hruby.databasemodule.databaseLogic.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.hruby.databasemodule.data.Stanoviste
+import com.hruby.databasemodule.data.Uly
 import com.hruby.databasemodule.databaseLogic.connections.StanovisteWithUly
 
 @Dao
@@ -42,7 +43,7 @@ interface StanovisteDao {
     @Delete
     suspend fun deleteStanovisteEntity(stanoviste: Stanoviste)
 
-    @Query("SELECT * FROM stanoviste")
+    @Query("SELECT * FROM stanoviste ORDER BY stanoviste.name ASC")
     fun getAllStanoviste(): LiveData<List<Stanoviste>>
 
     @Query("SELECT * FROM stanoviste WHERE id = :id")

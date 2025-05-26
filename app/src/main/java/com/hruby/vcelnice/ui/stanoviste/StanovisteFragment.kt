@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -40,6 +41,8 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
     private lateinit var adapter: StanovisteRecycleViewAdapter
     private lateinit var stanovisteViewModel: StanovisteViewModel
     private val stanovisteList: MutableList<Stanoviste> = mutableListOf()
+
+    private lateinit var emptyView: TextView
 
     @Inject
     lateinit var navigator: Navigator
@@ -72,6 +75,8 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("StanovisteFragment", "onViewCreated called")
+
+        emptyView = view.findViewById(R.id.emptyView)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -113,6 +118,14 @@ class StanovisteFragment : Fragment(), EditDialogFragment.EditDialogListener {
             stanovisteList.clear()
             stanovisteList.addAll(stanoviste)
             adapter.notifyDataSetChanged()
+
+            if (stanovisteList.isEmpty()) {
+                recyclerView.visibility = View.GONE
+                emptyView.visibility = View.VISIBLE
+            } else {
+                recyclerView.visibility = View.VISIBLE
+                emptyView.visibility = View.GONE
+            }
         }
 
         adapter = StanovisteRecycleViewAdapter(

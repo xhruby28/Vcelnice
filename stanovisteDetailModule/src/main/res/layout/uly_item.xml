@@ -13,63 +13,161 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="4dp">
+        android:padding="12dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ul_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_begin="0dp"
+            android:orientation="vertical" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ul_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="44dp" />
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="24dp"
-            android:layout_height="22dp"
+            android:id="@+id/iv_uly_item"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:contentDescription="ul_icon"
             android:src="@drawable/hive_64"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/ul_id_text"
-            android:layout_width="36dp"
-            android:layout_height="22dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/cislo_ulu"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.005"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/iv_uly_item"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ul_item_text"
+            app:layout_constraintTop_toTopOf="@+id/iv_uly_item" />
 
         <TextView
             android:id="@+id/ul_id_ids"
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
+            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="18sp"
+            android:layout_marginStart="3dp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_uly_item"
             app:layout_constraintStart_toEndOf="@+id/ul_id_text"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_uly_item"
             tools:text="id_ulu"/>
+
+        <ImageView
+            android:id="@+id/iv_uly_kontrola"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="Kontrola"
+            android:src="@drawable/created_64"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_icon"
+            app:layout_constraintTop_toBottomOf="@id/iv_uly_item" />
+
+        <TextView
+            android:id="@+id/ul_kontrola"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kontrola: "
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_uly_kontrola"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_text"
+            app:layout_constraintTop_toTopOf="@+id/iv_uly_kontrola" />
+
+        <TextView
+            android:id="@+id/ul_kontrola_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:paddingVertical="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ul_kontrola"
+            app:layout_constraintTop_toTopOf="@+id/ul_kontrola"
+            app:layout_constraintBottom_toBottomOf="@+id/ul_kontrola"
+            tools:text="Datum kontroly" />
+
+        <ImageView
+            android:id="@+id/iv_uly_queen"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="Matka"
+            android:src="@drawable/queenbee_64"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_icon"
+            app:layout_constraintTop_toBottomOf="@id/iv_uly_kontrola" />
+
+        <TextView
+            android:id="@+id/ul_kralovna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Matka: "
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_uly_queen"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_text"
+            app:layout_constraintTop_toTopOf="@+id/iv_uly_queen" />
+
+        <TextView
+            android:id="@+id/ul_kralovna_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:breakStrategy="simple"
+            android:ellipsize="none"
+            android:layout_marginStart="3dp"
+            android:hyphenationFrequency="normal"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="5"
+            android:paddingVertical="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ul_kralovna"
+            app:layout_constraintTop_toTopOf="@+id/ul_kralovna"
+            app:layout_constraintBottom_toBottomOf="@+id/ul_kralovna"
+            tools:text="Popis matky" />
+
+        <ImageView
+            android:id="@+id/iv_uly_problem"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="ul_problem_ic"
+            android:src="@android:drawable/ic_dialog_alert"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_icon"
+            app:layout_constraintTop_toBottomOf="@+id/ul_kralovna_text"
+            app:tint="@android:color/holo_red_dark" />
 
         <TextView
             android:id="@+id/ul_problem_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:text="@string/problem_ulu"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ul_id_text" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_uly_problem"
+            app:layout_constraintStart_toStartOf="@id/guideline_ul_item_text"
+            app:layout_constraintTop_toTopOf="@+id/iv_uly_problem" />
 
         <TextView
             android:id="@+id/ul_problem"
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:layout_marginTop="2dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:breakStrategy="simple"
+            android:ellipsize="none"
+            android:hyphenationFrequency="normal"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.01"
-            app:layout_constraintStart_toEndOf="@+id/ul_problem_text"
-            app:layout_constraintTop_toBottomOf="@+id/ul_id_ids"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ul_item_text"
+            app:layout_constraintTop_toBottomOf="@+id/ul_problem_text"
             tools:text="Problém v úlu" />
 
-        <TextView
+        <!--TextView
             android:id="@+id/ul_hodnoceni_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,9 +176,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ul_problem_text" />
+            app:layout_constraintTop_toBottomOf="@+id/ul_problem_text" /-->
 
-        <RatingBar
+        <!--RatingBar
             android:id="@+id/ul_hodnoceni_stars"
             style="@style/CustomRatingBar"
             android:layout_width="wrap_content"
@@ -90,7 +188,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.02"
             app:layout_constraintStart_toEndOf="@+id/ul_hodnoceni_text"
-            app:layout_constraintTop_toBottomOf="@+id/ul_problem" />
+            app:layout_constraintTop_toBottomOf="@+id/ul_problem" /-->
 
         <ImageView
             android:id="@+id/ul_sync_icon"
@@ -98,8 +196,6 @@
             android:layout_height="wrap_content"
             android:background="#0066FF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/ul_id_ids"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/stat_sys_data_bluetooth" />
 

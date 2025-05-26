@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_detail_header_height"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:padding="@dimen/activity_horizontal_margin"
     android:background="@drawable/side_nav_bar">
 
     <!-- Můžete přidat obrázek nebo text podle potřeby -->
@@ -18,7 +15,7 @@
         android:layout_height="130dp"
         android:scaleType="centerCrop"
         android:contentDescription="Header Image"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/nav_stanoviste_detail_header_title"

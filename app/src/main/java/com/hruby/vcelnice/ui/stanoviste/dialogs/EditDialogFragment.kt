@@ -162,7 +162,7 @@ class EditDialogFragment : DialogFragment(), MapFragment.OnLocationSelectedListe
         val datePickerDialog = DatePickerDialog(requireContext(),
             { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                 // Zobrazit vybrané datum ve formátu DD-MM-YYYY
-                val formattedDate = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
+                val formattedDate = String.format("%02d.%02d.%04d", selectedDay, selectedMonth + 1, selectedYear)
                 editTextLastCheck.setText(formattedDate)
             }, year, month, day)
 

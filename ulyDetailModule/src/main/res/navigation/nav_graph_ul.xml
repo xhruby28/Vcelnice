@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_info_ul"
         android:name="com.hruby.ulydetailmodule.ui.infoUl.InfoUlFragment"
-        android:label="@string/menu_home"
+        android:label="Informace o úlu"
         tools:layout="@layout/fragment_info_ul" >
         <action
             android:id="@+id/action_nav_info_ul_to_nav_namerene_hodnoty_ul"
@@ -44,10 +44,25 @@
             app:destination="@id/nav_zaznam_ul_preview" >
             <argument
                 android:name="ulId"
-                app:argType="integer"/>
+                app:argType="integer"
+                app:nullable="false" />
             <argument
                 android:name="zaznamId"
-                app:argType="integer"/>
+                app:argType="integer"
+                app:nullable="false" />
+        </action>
+
+        <action
+            android:id="@+id/action_nav_zaznam_ul_to_nav_zaznam_ul_edit"
+            app:destination="@id/nav_zaznam_ul_edit">
+            <argument
+                android:name="ulId"
+                app:argType="integer"
+                app:nullable="false" />
+            <argument
+                android:name="zaznamId"
+                app:argType="integer"
+                app:nullable="false" />
         </action>
     </fragment>
 
@@ -61,5 +76,43 @@
         android:id="@+id/nav_zaznam_ul_preview"
         android:name="com.hruby.ulydetailmodule.ui.zaznamKontrolyUl.ViewZaznamKontrolyFragment"
         android:label="Záznam ze dne"
-        tools:layout="@layout/fragment_view_zaznam_kontroly" />
+        tools:layout="@layout/fragment_view_zaznam_kontroly" >
+
+        <argument
+            android:name="ulId"
+            app:argType="integer"
+            app:nullable="false" />
+        <argument
+            android:name="zaznamId"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/action_nav_zaznam_ul_preview_to_nav_zaznam_ul_edit"
+            app:destination="@id/nav_zaznam_ul_edit">
+            <argument
+                android:name="ulId"
+                app:argType="integer"
+                app:nullable="false" />
+            <argument
+                android:name="zaznamId"
+                app:argType="integer"
+                app:nullable="false" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_zaznam_ul_edit"
+        android:name="com.hruby.ulydetailmodule.ui.zaznamKontrolyUl.EditZaznamKontrolyFragment"
+        android:label="Úprava záznamu"
+        tools:layout="@layout/fragment_add_zaznam_kontroly">
+        <argument
+            android:name="ulId"
+            app:argType="integer"
+            app:nullable="false" />
+        <argument
+            android:name="zaznamId"
+            app:argType="integer"
+            app:nullable="false" />
+    </fragment>
 </navigation>

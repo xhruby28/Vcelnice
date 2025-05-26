@@ -4,18 +4,18 @@ Včelnice je inteligentní systém pro správu včelích úlů, který kombinuje
 # Základní funkce
 ## Správa stanovišť a úlů:
 - Přidávání a správa stanovišť a úlů. DONE
-- Evidence poznámek, historie a aktuálního stavu včelstev. TODO
+- Evidence poznámek, historie a aktuálního stavu včelstev. DONE
 ## Sběr a analýza dat:
-- Data získaná ze senzorů (teplota, vlhkost, váha, akcelerace). TODO
+- Data získaná ze senzorů (teplota, vlhkost, váha, akcelerace). DONE
 - Diagnostika zdraví včelstva na základě frekvencí zvuků (akustická analýza). TODO
 ## Synchronizace dat:
 - Synchronizace dat mezi aplikací a ESP32 pomocí BLE a WiFi.
 - Automatické ukládání naměřených dat do Room databáze.
 ## Přehledné vizualizace:
-- Grafy pro zobrazení historických dat. TODO
-- Hodnocení úlů pomocí jednoduchého hvězdičkového systému. TODO
+- Grafy pro zobrazení historických dat. DONE
+- Hodnocení úlů pomocí jednoduchého hvězdičkového systému. ZAVRHNUTO
 ## Upozornění a notifikace:
-- Monitoring problémů a upozornění na změny stavu. TODO
+- Monitoring problémů a upozornění na změny stavu. DONE
 
 # Použité technologie
 ## Android aplikace

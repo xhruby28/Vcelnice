@@ -50,4 +50,13 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+
+    <string-array name="barva_oznaceni_kralovny">
+        <item>- - - - - -</item>
+        <item>Modrá</item>
+        <item>Bílá</item>
+        <item>Žlutá</item>
+        <item>Červená</item>
+        <item>Zelená</item>
+    </string-array>
 </resources>

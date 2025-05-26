@@ -8,11 +8,14 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/zaznam_kontroly_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
         android:padding="16dp">
 
         <LinearLayout
+            android:id="@+id/add_zaznam_kontroly_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +117,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
+            <!--EditText
                 android:id="@+id/editTextKontrolaPopisProblemu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +127,91 @@
                 android:scrollbars="vertical"
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:gravity="top|start"
-                android:padding="8dp"/>
+                android:padding="8dp"/-->
+
+            <LinearLayout
+                android:id="@+id/editTextKontrolaPopisProblemu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaMatkaNeni"
+                    android:text="@string/matka_nen"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaMatkaMednik"
+                    android:text="@string/matka_v_medn_ku"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaMatkaNeklade"
+                    android:text="@string/matka_neklade"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaVybehlyMatecnik"
+                    android:text="@string/vyb_hl_mate_n_k"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaZvapenatelyPlod"
+                    android:text="@string/zv_pnenat_n_plodu"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaNosema"
+                    android:text="@string/nosema"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaLoupezOtevrena"
+                    android:text="@string/loupe_otev_en"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaLoupezSkryta"
+                    android:text="@string/loupe_skryt"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/editTextKontrolaTrubcice"
+                    android:text="@string/trub_ice"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:id="@+id/editTextKontrolaJine"
+                        android:text="@string/jin"
+                        style="@style/Theme.Vcelnice.CheckBox"/>
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/editTextKontrolaJineText"
+                        android:inputType="text"
+                        android:layout_marginStart="6dp"
+                        android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                        android:hint="@string/jin_probl_m"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -201,6 +288,12 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
+                    android:id="@+id/checkPripravaKrmeni"
+                    android:text="@string/p_prava_na_krmen"
+                    style="@style/Theme.Vcelnice.CheckBox"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
                     android:id="@+id/checkMrizkaVlozena"
                     android:text="@string/vlo_ena_m_ka"
                     style="@style/Theme.Vcelnice.CheckBox"/>
@@ -213,8 +306,8 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:id="@+id/checkPripravaKrmeni"
-                    android:text="@string/p_prava_na_krmen"
+                    android:id="@+id/checkMedobrani"
+                    android:text="@string/medobran"
                     style="@style/Theme.Vcelnice.CheckBox"/>
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -632,12 +725,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/hodnocen_lu"
                 android:textSize="20sp"
+                android:visibility="gone"
                 android:theme="@style/ZaznamKontrolaSpinnerChoice"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
 
 
@@ -648,21 +743,28 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/add_ul_kontrola_buttonSave"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Uložit"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/zaznam_kontroly_scrollview">
 
-    <Button
-        android:id="@+id/add_ul_kontrola_buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zrušit"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <Button
+            android:id="@+id/add_ul_kontrola_buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zrušit"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/add_ul_kontrola_buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Uložit"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

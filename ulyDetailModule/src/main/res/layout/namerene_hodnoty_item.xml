@@ -61,21 +61,19 @@
             app:layout_constraintStart_toEndOf="@+id/divider_cent"
             app:layout_constraintTop_toBottomOf="@+id/datum_cas_mereni_text" />
 
-        <View
-            android:id="@+id/divider_horizontal"
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:id="@+id/divider_horizontal"
             android:layout_marginTop="1dp"
-            android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="@+id/security_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/hodnoty_ul_text" />
 
-        <View
-            android:id="@+id/divider_cent"
-            android:layout_width="1dp"
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
+            android:id="@+id/divider_cent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,11 +127,10 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:id="@+id/divider_vert"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="?android:attr/listDivider"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

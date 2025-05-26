@@ -23,8 +23,16 @@ data class Uly(
     var popis: String?,
     var maMAC: Boolean = false,
     var macAddress: String? = null,
+    var lastKontrola: String? = null,
+    var lastKontrolaDate: Long? = null,
     var problemovyUl: Boolean = false,
     var posledniProblem: String? = null, // Poslední zaznamenaný problém
+    var matkaVidena: Boolean? = false,
+    val matkaVidenaDatum: Long? = null,
+    val matkaBarva: String? = null,
+    val matkaRok: String? = null,
+    val matkaKridla: Boolean? = false,
+    var matkaOznaceni: String? = null,
     var hodnoceni: Float = 0.0f, // Hodnocení pomocí hvězdiček
     var agresivita: Int = 0,
     var stavZasob: String? = null,

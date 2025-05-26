@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:fillViewport="true">
 
@@ -11,25 +12,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:clickable="true"
-        android:gravity="center_horizontal">
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Základní informace"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Číslo úlu"
+            android:layout_marginTop="10dp"
+            android:theme="@style/ZaznamKontrolaSpinnerText"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextCisloUlu"
             android:inputType="number"
+            android:layout_marginVertical="3dp"
             android:hint="Číslo úlu" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="1dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popis úlu"
+            android:layout_marginTop="10dp"
+            android:theme="@style/ZaznamKontrolaSpinnerText"/>
+
         <EditText
             android:id="@+id/editTextPopisUlu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Popis úlu"
+            android:layout_marginVertical="3dp"
             android:lines="2"
             android:maxLines="5"
             android:scrollbars="vertical"
@@ -37,5 +60,132 @@
             android:gravity="top|start"
             android:padding="8dp" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Označení matky"
+            android:layout_marginTop="10dp"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- GUIDELINES -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ul_edit_info_guideline_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintGuide_begin="8dp"
+                android:orientation="vertical" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ul_edit_info_guideline_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.46" />
+
+            <TextView
+                android:id="@+id/ul_edit_info_barva_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Barva označení matky: "
+                android:paddingVertical="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:theme="@style/ZaznamKontrolaSpinnerText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ul_edit_info_guideline_text"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/ul_edit_info_guideline_label"/>
+
+            <Spinner
+                android:id="@+id/ul_edit_info_barva_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/barva_oznaceni_kralovny"
+                android:minWidth="100dp"
+                android:paddingVertical="8dp"
+                android:spinnerMode="dialog"
+                android:theme="@style/SpinnerTextStyle"
+                app:layout_constraintBottom_toBottomOf="@id/ul_edit_info_barva_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@id/ul_edit_info_guideline_text"
+                app:layout_constraintTop_toTopOf="@id/ul_edit_info_barva_text"/>
+
+            <TextView
+                android:id="@+id/ul_edit_info_rok_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Rok označení matky: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:theme="@style/ZaznamKontrolaSpinnerText"
+                app:layout_constraintEnd_toStartOf="@id/ul_edit_info_guideline_text"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/ul_edit_info_guideline_label"
+                app:layout_constraintTop_toBottomOf="@+id/ul_edit_info_barva_text" />
+
+            <EditText
+                android:id="@+id/ul_edit_info_rok_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Rok"
+                android:inputType="numberDecimal"
+                android:maxEms="4"
+                android:minWidth="100dp"
+                android:focusable="false"
+                android:paddingVertical="8dp"
+                android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                app:layout_constraintBottom_toBottomOf="@id/ul_edit_info_rok_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/ul_edit_info_barva_spinner"
+                app:layout_constraintTop_toTopOf="@id/ul_edit_info_rok_text"/>
+
+            <TextView
+                android:id="@+id/ul_edit_info_kridla_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Zastřižená křídla (zk): "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:theme="@style/ZaznamKontrolaSpinnerText"
+                app:layout_constraintEnd_toStartOf="@id/ul_edit_info_guideline_text"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/ul_edit_info_guideline_label"
+                app:layout_constraintTop_toBottomOf="@+id/ul_edit_info_rok_text" />
+
+            <TextView
+                android:id="@+id/ul_edit_info_kridla_switch_text"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:text="@string/ne"
+                android:theme="@style/ZaznamKontrolaSpinnerChoice"
+                app:layout_constraintTop_toTopOf="@id/ul_edit_info_kridla_switch"
+                app:layout_constraintBottom_toBottomOf="@id/ul_edit_info_kridla_switch"
+                app:layout_constraintEnd_toStartOf="@id/ul_edit_info_kridla_switch"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/ul_edit_info_kridla_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/ul_edit_info_kridla_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@id/ul_edit_info_barva_spinner"
+                app:layout_constraintTop_toTopOf="@id/ul_edit_info_kridla_text"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>

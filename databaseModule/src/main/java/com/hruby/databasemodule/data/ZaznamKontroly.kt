@@ -21,9 +21,22 @@ data class ZaznamKontroly(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val ulId: Int,
     val datum: Long, // Timestamp
+    val createdTimestamp: Long = System.currentTimeMillis(),
     var typKontroly: String? = null,
     var zaznamText: String? = null,
     var problemovyUl: Boolean = false,
+
+    var problemMatkaNeni: Boolean? = false,
+    var problemMatkaMednik: Boolean? = false,
+    var problemMatkaNeklade: Boolean? = false,
+    var problemMatkaVybehliMatecnik: Boolean? = false,
+    var problemMatkaZvapenatelyPlod: Boolean? = false,
+    var problemMatkaNosema: Boolean? = false,
+    var problemMatkaLoupezOtevrena: Boolean? = false,
+    var problemMatkaLoupezSkryta: Boolean? = false,
+    var problemMatkaTrubcice: Boolean? = false,
+    var problemMatkaJine: Boolean? = false,
+
     var problemText: String? = null,
 
     // Matka
@@ -36,9 +49,10 @@ data class ZaznamKontroly(
     // Zasahy
     var zasahMatkaOznacena: Boolean = false,
     var zasahKrmeni: Boolean = false,
+    var zasahPripravaNaKrmeni: Boolean = false,
     var zasahVlozenaMrizka: Boolean = false,
     var zasahOdebranaMrizka: Boolean = false,
-    var zasahPripravaNaKrmeni: Boolean = false,
+    var zasahMedobrani: Boolean = false,
     var zasahZrusenoSpojenim: Boolean = false,
     var zasahVycisteneDno: Boolean = false,
     var zasahOskrabaneSteny: Boolean = false,

@@ -47,7 +47,7 @@ interface UlyDao {
 
 
     @Transaction
-    @Query("SELECT * FROM uly WHERE stanovisteId = :stanovisteId")
+    @Query("SELECT * FROM uly WHERE stanovisteId = :stanovisteId ORDER BY uly.cisloUlu ASC")
     fun getUlyByStanovisteId(stanovisteId: Int): LiveData<List<Uly>>
 
     @Transaction

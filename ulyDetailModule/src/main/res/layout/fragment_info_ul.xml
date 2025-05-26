@@ -20,75 +20,305 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp" >
+            android:padding="4dp"
+            tools:layout_editor_absoluteX="133dp"
+            tools:layout_editor_absoluteY="0dp"
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="2dp">
 
-                <TextView
-                    android:id="@+id/ul_detail_info_fragment_nazev"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/ul_detail_info_fragment_nazev_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="Název úlu" />
+                    tools:ignore="UseCompoundDrawables">
 
-                <View
-                    android:layout_width="0dp"
+                    <ImageView
+                        android:id="@+id/ul_detail_info_fragment_ivNameIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/hive_64"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:layout_constraintVertical_bias="0.5" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_nazev"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:breakStrategy="simple"
+                        android:gravity="start"
+                        android:paddingVertical="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="0dp"
+                        android:scrollHorizontally="false"
+                        android:layout_gravity="center"
+                        android:textAlignment="textStart"
+                        android:singleLine="false"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textStyle="bold"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintVertical_bias="0.5"
+                        tools:text="Název úlu" />
+                </LinearLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/ul_detail_info_fragment_divider1"
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_nazev"
+                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_nazev_layout"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <TextView
-                    android:id="@+id/ul_detail_info_fragment_popis"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/ul_detail_info_fragment_LayoutDesc"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_nazev"
+                    app:layout_constraintBottom_toTopOf="@+id/ul_detail_info_fragment_divider2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="Popis úlu" />
+                    app:layout_constraintTop_toBottomOf="@+id/ul_detail_info_fragment_divider1"
+                    tools:ignore="UseCompoundDrawables">
 
-                <View
-                    android:layout_width="0dp"
+                    <ImageView
+                        android:id="@+id/ul_detail_info_fragment_ivInfoIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/info_64"
+                        android:layout_margin="8dp"
+                        android:layout_gravity="center"
+                        app:layout_constraintVertical_bias="0.5" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_popis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:paddingVertical="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="0dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_gravity="center"
+                        android:lineSpacingExtra="2dp"
+                        android:hyphenationFrequency="normal"
+                        android:breakStrategy="simple"
+                        android:ellipsize="none"
+                        tools:text="Popis úlu" />
+                </LinearLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/ul_detail_info_fragment_divider2"
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_popis"
+                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_LayoutDesc"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <!-- MAC adresa -->
-                <TextView
-                    android:id="@+id/ul_detail_info_fragment_mac_text"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ul_detail_info_fragment_constraint_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="MAC adresa: "
-                    android:textStyle="bold"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_popis"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/ul_detail_info_fragment_mac"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    app:layout_constraintTop_toTopOf="@id/ul_detail_info_fragment_mac_text"
-                    app:layout_constraintStart_toEndOf="@id/ul_detail_info_fragment_mac_text"
+                    android:paddingVertical="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="00:11:22:33:44:55" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ul_detail_info_fragment_divider2">
+
+                    <!-- GUIDELINES -->
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/ul_detail_info_guideline_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintGuide_begin="8dp"
+                        android:orientation="vertical" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/ul_detail_info_guideline_text_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="64dp" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/ul_detail_info_guideline_text_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.55" />
+
+                    <!-- MAC adresa -->
+                    <ImageView
+                        android:id="@+id/ul_detail_info_ivInfoMac"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/paired_64"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_mac_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MAC adresa: "
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/ul_detail_info_ivInfoMac"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_label"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_ivInfoMac" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_mac"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/ul_detail_info_fragment_mac_text"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_value"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_fragment_mac_text"
+                        tools:text="00:11:22:33:44:55" />
+
+                    <!-- Matka -->
+                    <ImageView
+                        android:id="@+id/ul_detail_info_ivMatka"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/queenbee_64"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_icon"
+                        app:layout_constraintTop_toBottomOf="@id/ul_detail_info_ivInfoMac" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ul_detail_info_ivMatkaOznaceni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_icon"
+                        app:layout_constraintTop_toBottomOf="@id/ul_detail_info_ivInfoMac" >
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:contentDescription="Matka označena"
+                            android:src="@drawable/queenbee_64"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="11dp"
+                            android:layout_marginTop="11dp"
+                            android:contentDescription="Označení"
+                            android:src="@drawable/circle_64"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@android:color/holo_red_dark" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_matka_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Matka označení: "
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/ul_detail_info_ivMatka"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_label"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_ivMatka" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_matka"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_value"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_fragment_matka_text"
+                        tools:text="barva, rok, zk" />
+
+                    <!-- Matka posledni videni -->
+                    <ImageView
+                        android:id="@+id/ul_detail_info_ivMatka_posledni_videni"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="12dp"
+                        android:src="@drawable/queenbee_64"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_icon"
+                        app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_matka" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_matka_posledni_videni_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Matka viděna: "
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/ul_detail_info_ivMatka_posledni_videni"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_label"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_ivMatka_posledni_videni" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_matka_posledni_videni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/ul_detail_info_fragment_matka_posledni_videni_text"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_value"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_fragment_matka_posledni_videni_text"
+                        tools:text="15.06.2001" />
+
+                    <!-- Problem -->
+                    <ImageView
+                        android:id="@+id/ul_detail_info_ivProblem"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/status_64"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_icon"
+                        app:layout_constraintTop_toBottomOf="@id/ul_detail_info_ivMatka_posledni_videni" />
+
+                    <TextView
+                        android:id="@+id/ul_detail_info_fragment_problem_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Problémy: "
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/ul_detail_info_ivProblem"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_label"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_ivProblem" />
+
+                    <LinearLayout
+                        android:id="@+id/ul_detail_info_fragment_problem_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@id/ul_detail_info_guideline_text_value"
+                        app:layout_constraintTop_toTopOf="@+id/ul_detail_info_fragment_problem_text"
+                        app:layout_constraintVertical_bias="1.0">
+
+                        <TextView
+                            android:id="@+id/ul_detail_info_fragment_problem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:lineSpacingExtra="2dp"
+                            android:hyphenationFrequency="normal"
+                            android:breakStrategy="simple"
+                            android:ellipsize="none"
+                            android:maxLines="10"
+                            tools:text="lorem ipsum domine goooo losajnbsa sadasddasdsaasdasasasddas sda" />
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <LinearLayout
                     android:id="@+id/rating_layout"
@@ -96,10 +326,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_mac"
+                    app:layout_constraintTop_toBottomOf="@id/ul_detail_info_fragment_constraint_layout"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/labelHodnoceni"
@@ -206,9 +435,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:alpha="0.75"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:iconPadding="0dp"
         app:icon="@drawable/edit_square_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:text="Upravit"
         tools:text="Upravit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
